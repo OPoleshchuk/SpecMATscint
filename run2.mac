@@ -1,0 +1,9 @@
+#
+/control/verbose 2
+#
+# change source
+#
+/gun/particle ion
+/gun/ion 55 137
+#
+/run/beamOn 40000
