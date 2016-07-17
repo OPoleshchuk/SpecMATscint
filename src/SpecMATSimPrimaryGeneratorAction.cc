@@ -26,7 +26,7 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
   fParticleGun  = new G4ParticleGun(n_particle);
   sciCryst = new SpecMATSimDetectorConstruction();
   
-  gammaEnergy = 50*keV;
+  gammaEnergy = 2900*keV;
   // default particle kinematic
   //
 
@@ -76,7 +76,10 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   //distribution uniform in solid angle
   //
   
-  fParticleGun->SetParticleEnergy(G4RandGauss::shoot(gammaEnergy, (30/2.355)*keV));
+  //Old not used resolution correction of generated gamma energy, new correction done in EventAction after gamma energy has been deposited in the crystal volume. 
+  //fParticleGun->SetParticleEnergy(G4RandGauss::shoot(gammaEnergy, (40/2.355)*keV));
+  
+  fParticleGun->SetParticleEnergy(gammaEnergy);
 
   G4double cosTheta = 2*G4UniformRand() - 1., phi = twopi*G4UniformRand();
   G4double sinTheta = std::sqrt(1. - cosTheta*cosTheta);

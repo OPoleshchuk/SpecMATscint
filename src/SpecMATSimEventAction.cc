@@ -18,6 +18,7 @@
 
 #include "Randomize.hh"
 #include <iomanip>
+#include <cmath>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -111,11 +112,12 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     G4double edep = *(itr->second);
     if (edep > eThreshold) nbOfFired++;
     crystMat = sciCryst->GetSciCrystMat();
-    G4cout << "\n" + crystMat->GetName() +  " Nb" << copyNb << ": " << edep/keV << " keV ";
-  
+    
+    //Resolution correction of registered gamma energy.  
     G4double absoEdep 
-    	= edep/keV; 
+    	=  G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
 
+    G4cout << "\n" + crystMat->GetName() +  " Nb" << copyNb << ": E " << edep/keV << " keV, coorected E "<< absoEdep << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV, -0.498))/100);
     // get analysis manager
     //
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();

@@ -61,9 +61,9 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   //****************************************************************************//
   // How many rings and crystals in the detector  
   
-  nbSegments = 4;
-  nbCrystInSegmentRow = 1;
-  nbCrystInSegmentColumn = 5;
+  nbSegments = 6;
+  nbCrystInSegmentRow = 3;
+  nbCrystInSegmentColumn = 3;
   
   dPhi = twopi/nbSegments;
   half_dPhi = 0.5*dPhi;
