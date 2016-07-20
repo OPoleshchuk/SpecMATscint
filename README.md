@@ -1,6 +1,6 @@
 # SpecMATscint
 
-<img src="https://cloud.githubusercontent.com/assets/17125100/16989384/4f1894c0-4e94-11e6-8c2f-a0df139420df.png" align="right">
+<img src="https://cloud.githubusercontent.com/assets/17125100/17002361/2d9b2c86-4ecb-11e6-9ad9-3ec505c16020.png" align="right">
 
 SpecMATscint is a simulation of a scintillator array for the SpecMAT detector in GEANT4.
 
