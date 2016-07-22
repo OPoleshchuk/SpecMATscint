@@ -21,13 +21,13 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
    sciCryst(0),
    fParticleGun(0)
 {
-  /*
+ 
   //################### Monoenergetic gamma source ############################//
   G4int n_particle = 1;
   fParticleGun  = new G4ParticleGun(n_particle);
   sciCryst = new SpecMATSimDetectorConstruction();
   
-  gammaEnergy = 15000*keV;
+  gammaEnergy = 1500*keV;
   // default particle kinematic
   //
 
@@ -35,8 +35,8 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
            = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
   fParticleGun->SetParticleDefinition(particle); 
   //################### Monoenergetic gamma source ############################//
-  */
-
+  
+  /*
   //#########################  Isotope  #######################################//
   G4int n_particle = 1;
   fParticleGun  = new G4ParticleGun(n_particle);
@@ -51,7 +51,7 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
   fParticleGun->SetParticleEnergy(10*MeV);
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
   //#########################  Isotope  #######################################//
-  
+  */
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -68,7 +68,7 @@ SpecMATSimPrimaryGeneratorAction::~SpecMATSimPrimaryGeneratorAction()
 
 void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-  /*
+  
   //################### Monoenergetic gamma source ############################//
 
   //this function is called at the begining of event
@@ -92,9 +92,9 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,0.*mm));
   fParticleGun->GeneratePrimaryVertex(anEvent);
   //################### Monoenergetic gamma source ############################//
-  */
   
-   
+  
+  /* 
   //#########################  Isotope  #######################################//
   G4ParticleDefinition* particle = fParticleGun->GetParticleDefinition();
   if (particle == G4Geantino::Geantino()) {
@@ -114,6 +114,7 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));           
   fParticleGun->GeneratePrimaryVertex(anEvent);
   //#########################  Isotope  #######################################// 
+  */
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

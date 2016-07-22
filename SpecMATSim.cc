@@ -12,6 +12,7 @@
 #include "SpecMATSimRunAction.hh"
 #include "SpecMATSimEventAction.hh"
 #include "SpecMATSimStackingAction.hh"
+#include "SpecMATSimSteppingAction.hh"
 
 #ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
@@ -35,7 +36,8 @@ int main(int argc,char** argv)
 
   // Set mandatory initialization classes
   //
-  runManager->SetUserInitialization(new SpecMATSimDetectorConstruction);
+    SpecMATSimDetectorConstruction* detConstruction = new SpecMATSimDetectorConstruction();
+    runManager->SetUserInitialization(detConstruction);
   //
   runManager->SetUserInitialization(new SpecMATSimPhysicsList);
     
@@ -46,9 +48,14 @@ int main(int argc,char** argv)
   SpecMATSimRunAction* runAction = new SpecMATSimRunAction();
   runManager->SetUserAction(runAction);
   //
-  runManager->SetUserAction(new SpecMATSimEventAction(runAction));
+  SpecMATSimEventAction* eventAction = new SpecMATSimEventAction(runAction);
+  runManager->SetUserAction(eventAction);
   //
-  runManager->SetUserAction(new SpecMATSimStackingAction);  
+  runManager->SetUserAction(new SpecMATSimStackingAction);
+
+  SpecMATSimSteppingAction* steppingAction
+    = new SpecMATSimSteppingAction(detConstruction, eventAction);
+  runManager->SetUserAction(steppingAction);
   
   // Initialize G4 kernel
   //

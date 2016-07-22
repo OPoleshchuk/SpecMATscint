@@ -87,6 +87,8 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateNtupleDColumn("Event");
   analysisManager->CreateNtupleDColumn("CrystNb");
   analysisManager->CreateNtupleDColumn("Edep");
+  analysisManager->CreateNtupleDColumn("fTrackLAbs");
+  analysisManager->CreateNtupleDColumn("fTrackLGap");
   analysisManager->FinishNtuple();
 }
 

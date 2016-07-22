@@ -21,6 +21,7 @@
 #include "G4SubtractionSolid.hh"
 #include "G4VSensitiveDetector.hh"
 
+
 // ###################################################################################
 
 SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
@@ -499,13 +500,22 @@ void SpecMATSimDetectorConstruction::CreateScorers()
   G4SDManager* SDman = G4SDManager::GetSDMpointer();
   SDman->SetVerboseLevel(1);
   
+  
   // declare crystal as a MultiFunctionalDetector scorer
-  //  
+  //
+    /*
+  G4String trackerChamberSDname = "test";//"ExN02/TrackerChamberSD";
+  SpecMATSimTrackerSD* aTrackerSD = new SpecMATSimTrackerSD( trackerChamberSDname );
+  SDman->AddNewDetector( aTrackerSD );
+  sciHousLog->SetSensitiveDetector( aTrackerSD );
+  */
+  
   G4MultiFunctionalDetector* cryst = new G4MultiFunctionalDetector("crystal");
   G4PSEnergyDeposit* primitiv = new G4PSEnergyDeposit("edep");
   cryst->RegisterPrimitive(primitiv);
   SDman->AddNewDetector(cryst);
   sciCrystLog->SetSensitiveDetector(cryst);
+  
 }
 
 // ###################################################################################

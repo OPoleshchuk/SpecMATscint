@@ -28,6 +28,9 @@ class SpecMATSimEventAction : public G4UserEventAction
     virtual void  BeginOfEventAction(const G4Event* );
     virtual void    EndOfEventAction(const G4Event* );
     
+    void AddAbs(G4double de, G4double dl);
+    void AddGap(G4double de, G4double dl);
+    
     void SetPrintModulo(G4int value);
   
   private:
@@ -42,12 +45,27 @@ class SpecMATSimEventAction : public G4UserEventAction
     G4int fCollID_cryst;
 	G4int fCollID_ring;
     
+    G4double  fEnergyAbs;
+    G4double  fEnergyGap;
+    G4double  fTrackLAbs;
+    G4double  fTrackLGap;
+    
     G4GenericMessenger*  fMessenger;
     G4Material* crystMat;
     G4int fPrintModulo;   
 };
 
 // inline functions
+
+inline void SpecMATSimEventAction::AddAbs(G4double de, G4double dl) {
+    fEnergyAbs += de;
+    fTrackLAbs += dl;
+}
+
+inline void SpecMATSimEventAction::AddGap(G4double de, G4double dl) {
+    fEnergyGap += de;
+    fTrackLGap += dl;
+}
 
 inline void SpecMATSimEventAction::SetPrintModulo(G4int value) {
   fPrintModulo = value;
