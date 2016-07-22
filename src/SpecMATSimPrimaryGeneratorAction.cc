@@ -12,6 +12,7 @@
 #include "G4Geantino.hh"
 #include "G4SystemOfUnits.hh"
 #include "Randomize.hh"
+#include <cmath>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -20,13 +21,13 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
    sciCryst(0),
    fParticleGun(0)
 {
-  	
+  /*
   //################### Monoenergetic gamma source ############################//
   G4int n_particle = 1;
   fParticleGun  = new G4ParticleGun(n_particle);
   sciCryst = new SpecMATSimDetectorConstruction();
   
-  gammaEnergy = 2900*keV;
+  gammaEnergy = 15000*keV;
   // default particle kinematic
   //
 
@@ -34,7 +35,8 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
            = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
   fParticleGun->SetParticleDefinition(particle); 
   //################### Monoenergetic gamma source ############################//
-  /*
+  */
+
   //################### Co-60 source ################################//
   G4int n_particle = 1;
   fParticleGun  = new G4ParticleGun(n_particle);
@@ -45,13 +47,13 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
 
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4ParticleDefinition* particle
-                    = particleTable->FindParticle("geantino");
+                    = particleTable->FindParticle("geantino");//geantino
   fParticleGun->SetParticleDefinition(particle);
-  fParticleGun->SetParticlePosition(G4ThreeVector(0.,0.,-25.*cm));
-  fParticleGun->SetParticleEnergy(10*MeV);    
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,1.,0.));
+  fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,-500.*mm));
+  fParticleGun->SetParticleEnergy(10*MeV);
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
   //################### Co-60 source ################################//
-  */
+  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -68,7 +70,7 @@ SpecMATSimPrimaryGeneratorAction::~SpecMATSimPrimaryGeneratorAction()
 
 void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
- 
+  /*
   //################### Monoenergetic gamma source ############################//
 
   //this function is called at the begining of event
@@ -92,17 +94,21 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,0.*mm));
   fParticleGun->GeneratePrimaryVertex(anEvent);
   //################### Monoenergetic gamma source ############################//
+  */
   
-  
-  /* 
+   
   //################### Co-60 source ################################//
   G4ParticleDefinition* particle = fParticleGun->GetParticleDefinition();
   if (particle == G4Geantino::Geantino()) {
     // Co60
     //
-    G4int Z = 27, A = 60;
+    G4int Z = 28, A = 60;
+    
+    // S32
+    //
+    //G4int Z = 16, A = 32;
     G4double ionCharge   = 0.*eplus;
-    G4double excitEnergy = 0.*MeV;
+    G4double excitEnergy = 2.*MeV;
     
     G4ParticleDefinition* ion
        = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
@@ -112,14 +118,14 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   
   }
   fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,0.*mm));
-  fParticleGun->SetParticleEnergy(0*MeV);    
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,0.));
+  fParticleGun->SetParticleEnergy(190*MeV);
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
              
   //create vertex
   //
   fParticleGun->GeneratePrimaryVertex(anEvent);
   //################### Co-60 source ################################//
-  */
+  
 }
 
 

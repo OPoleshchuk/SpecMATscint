@@ -34,9 +34,24 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   worldSizeXY = 60*cm;
   worldSizeZ  = 60*cm;
   
+  G4double z1, a1, fractionmass1, density1;
+    G4String name1, symbol1;
+      G4int ncomponents1;
+
+        a1 = 14.01*g/mole;
+	  G4Element* elN  = new G4Element(name1="Nitrogen",symbol1="N" , z1= 7., a1);
+
+	    a1 = 16.00*g/mole;
+	      G4Element* elO  = new G4Element(name1="Oxygen"  ,symbol1="O" , z1= 8., a1);
+
+	        density1 = 0.2E-5*mg/cm3;
+		  Air = new G4Material(name1="Air",density1,ncomponents1=2);
+		    Air->AddElement(elN, fractionmass1=70*perCent);
+		      Air->AddElement(elO, fractionmass1=30*perCent);
+
   // Define world material
   G4NistManager* nist = G4NistManager::Instance();
-  default_mat = nist->FindOrBuildMaterial("G4_AIR", false); 
+  default_mat = nist->FindOrBuildMaterial("G4_AIR", false);
   
   solidWorld =    
     new G4Box("World",                       //its name
@@ -44,7 +59,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
       
   logicWorld =                         
     new G4LogicalVolume(solidWorld,          //its solid
-                        default_mat,         //its material
+                        Air,         //its material
                         "World");            //its name
                                    
   physWorld = 
@@ -382,9 +397,9 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 			rotm.rotateY(90*deg); 
 			rotm.rotateZ(phi);
 			G4ThreeVector uz = G4ThreeVector(std::cos(phi),  std::sin(phi),0.);
-			segmentBoxLog = new G4LogicalVolume(segmentBox, 	     				//Housing solid shape
-												default_mat,              				//Housing material
-												"segmentBoxLog");         				//Housing logic volume name
+			segmentBoxLog = new G4LogicalVolume(segmentBox,
+							    Air,
+							    "segmentBoxLog");
 			G4ThreeVector positionInSegment = G4ThreeVector(-(nbCrystInSegmentRow*sciHousSizeX-sciHousSizeX), -(nbCrystInSegmentColumn*sciHousSizeY-sciHousSizeY), 0.);
 			for (G4int icrystRow = 0; icrystRow < nbCrystInSegmentColumn; icrystRow++) {
 				for (G4int icrystCol = 0; icrystCol < nbCrystInSegmentRow; icrystCol++) {
@@ -449,8 +464,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 				  iseg,                 //copy number
 				  fCheckOverlaps);       // checking overlaps
 	}			
-  
-  
+    
   // Print materials
   //G4cout << *(G4Material::GetMaterialTable()) << G4endl; 
   //

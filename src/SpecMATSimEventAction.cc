@@ -12,6 +12,7 @@
 #include "G4HCofThisEvent.hh"
 #include "G4GenericMessenger.hh"
 #include "G4THitsMap.hh"
+#include "G4THitsCollection.hh"
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4THitsCollection.hh"
@@ -73,7 +74,8 @@ G4double SpecMATSimEventAction::GetSum(G4THitsMap<G4double>* hitsMap) const
 void SpecMATSimEventAction::BeginOfEventAction(const G4Event* event )
 {
   G4int eventNb = event->GetEventID();
-  
+  G4cout << "\nEvent №" << eventNb << G4endl;
+    
   if (eventNb == 0) {
     G4SDManager* SDMan = G4SDManager::GetSDMpointer();  
     fCollID_cryst   = SDMan->GetCollectionID("crystal/edep");
@@ -113,11 +115,12 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     if (edep > eThreshold) nbOfFired++;
     crystMat = sciCryst->GetSciCrystMat();
     
-    //Resolution correction of registered gamma energy.  
-    G4double absoEdep 
-    	=  G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
-
-    G4cout << "\n" + crystMat->GetName() +  " Nb" << copyNb << ": E " << edep/keV << " keV, coorected E "<< absoEdep << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV, -0.498))/100);
+    //Resolution correction of registered gamma energy for CeBr3.  
+    G4double absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
+    
+    //Without resolution correction
+    //G4double absoEdep = edep/keV;
+    G4cout << crystMat->GetName() +  " Nb" << copyNb << ": E " << edep/keV << " keV, coorected E "<< absoEdep << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV, -0.498))/100) << G4endl;
     // get analysis manager
     //
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();

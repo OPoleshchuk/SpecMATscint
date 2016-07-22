@@ -80,7 +80,7 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   
   analysisManager->CreateH1(G4UIcommand::ConvertToString(crystNb),"Edep in crystal Nb" + G4UIcommand::ConvertToString(crystNb), 3201, 0., 3200*MeV);
   }
-  analysisManager->CreateH1("Total","Total Edep", 3201, 0., 3200*MeV);
+  analysisManager->CreateH1("Total","Total Edep", 15501, 0., 15500*MeV);
   // Creating ntuple
   //
   analysisManager->CreateNtuple("Total", "Total Edep");
