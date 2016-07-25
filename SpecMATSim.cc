@@ -54,7 +54,7 @@ int main(int argc,char** argv)
   runManager->SetUserAction(new SpecMATSimStackingAction);
 
   SpecMATSimSteppingAction* steppingAction
-    = new SpecMATSimSteppingAction(detConstruction, eventAction);
+    = new SpecMATSimSteppingAction();
   runManager->SetUserAction(steppingAction);
   
   // Initialize G4 kernel

@@ -26,8 +26,7 @@
 
 SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
 : G4VUserDetectorConstruction(),
-  fCheckOverlaps(true),
-  emField(0)
+  fCheckOverlaps(true)
 {
   //****************************************************************************//
   //********************************* World ************************************//
@@ -46,7 +45,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
 	    a1 = 16.00*g/mole;
 	      G4Element* elO  = new G4Element(name1="Oxygen"  ,symbol1="O" , z1= 8., a1);
 
-	        density1 = 0.2E-1*mg/cm3;
+	        density1 = 0.2E-5*mg/cm3;
 		  Air = new G4Material(name1="Air",density1,ncomponents1=2);
 		    Air->AddElement(elN, fractionmass1=70*perCent);
 		      Air->AddElement(elO, fractionmass1=30*perCent);
@@ -373,15 +372,13 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   sciHousVisAtt->SetVisibility(true);						//Pass this object to Visualization Manager for visualization
   sciHousLog->SetVisAttributes(sciHousVisAtt);					//Assignment of visualization attributes to the logical volume of the Housing
   
-  //electric and magnetic fields
-  emField = new SpecMATSimUniformEMField();
 }
 
 // ###################################################################################
 
 SpecMATSimDetectorConstruction::~SpecMATSimDetectorConstruction()
 {
-    delete emField;
+
 }
 
 // ###################################################################################
@@ -521,12 +518,6 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   return physWorld;
 }
 
-void SpecMATSimDetectorConstruction::UpdateEMField() {
-    //
-    // Setting the uniform EM field
-    //
-    emField->SetFieldValue(mField,eField);
-}
 // ###################################################################################
 
 void SpecMATSimDetectorConstruction::CreateScorers()
@@ -554,21 +545,3 @@ void SpecMATSimDetectorConstruction::CreateScorers()
 }
 
 // ###################################################################################
-
-void SpecMATSimDetectorConstruction::SetEleField(G4ThreeVector eVector){
-    //
-    // Setting the uniform electric field vector
-    //
-    //ATT to the units! There is no elec field unit defined in the program by default!!!
-    // I had problems defining the electric field units...
-    // Data is supposed to come in kV/cm from the messenger, but... what is the input unit
-    // for GEANT4 in the class G4ElectroMagneticField? Not clear to me...
-    eField = eVector;
-}
-
-void SpecMATSimDetectorConstruction::SetMagField(G4ThreeVector mVector){
-    //
-    // Setting the uniform magnetic field vector
-    //
-    mField = mVector;
-}

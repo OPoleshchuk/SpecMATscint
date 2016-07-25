@@ -9,7 +9,7 @@
 # Use these open statements to open selected visualization
 #
 # Use this open statement to create an OpenGL view:
-/vis/open OGL 600x600-0+0
+/vis/open OGL 1000x1000-0+0
 #
 # Use this open statement to create an OpenInventor view:
 #/vis/open OIX
@@ -35,7 +35,7 @@
 /vis/drawVolume
 #
 
-/vis/viewer/set/viewpointVector 0 0 -1
+/vis/viewer/set/viewpointVector 0 0 -2
 /vis/viewer/set/lightsVector 0 0 -1
 # Specify view angle:
 #/vis/viewer/set/viewpointThetaPhi 90. 180.
@@ -87,7 +87,7 @@
 
 /vis/viewer/set/style wireframe
 /vis/viewer/set/hiddenMarker true
-/vis/viewer/set/viewpointThetaPhi 120 150
+/vis/viewer/set/viewpointThetaPhi 150 150
 #
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true

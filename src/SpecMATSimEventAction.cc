@@ -119,12 +119,24 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     if (edep > eThreshold) nbOfFired++;
     crystMat = sciCryst->GetSciCrystMat();
     
-    //Resolution correction of registered gamma energy for CeBr3.  
-    G4double absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
-    
+    if (crystMat->GetName() == "CeBr3") {
+    //Resolution correction of registered gamma energy for CeBr3.   
+    absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
+    }
+    else if (crystMat->GetName() == "LaBr3") { 
+    //Resolution correction of registered gamma energy for LaBr3.   
+    absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(81*pow(edep/keV, -0.501))/100)/2.355));
+    }
+
+    else {
+    absoEdep = edep/keV;
+    }
+
     //Without resolution correction
     //G4double absoEdep = edep/keV;
-    G4cout << crystMat->GetName() +  " Nb" << copyNb << ": E " << edep/keV << " keV, coorected E "<< absoEdep << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
+    G4cout << "\n" << crystMat->GetName() +  " Nb" << copyNb << ": E " << edep/keV << " keV, Resolution Corrected E "<< absoEdep << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
+    
+    
     // get analysis manager
     //
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
@@ -132,19 +144,18 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     // fill histograms
     //  
     analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1, absoEdep);
-	analysisManager->FillH1(copyNb, absoEdep);
+    analysisManager->FillH1(copyNb, absoEdep);
 
     // fill ntuple
     //
-	analysisManager->FillNtupleDColumn(0, eventNb);
-	analysisManager->FillNtupleDColumn(1, copyNb);
-    analysisManager->FillNtupleDColumn(2, absoEdep);
-
-    
-    
-    //analysisManager->FillNtupleDColumn(4, fTrackLAbs);
-    //analysisManager->FillNtupleDColumn(5, fTrackLGap);
+    analysisManager->FillNtupleDColumn(0, eventNb);
+    analysisManager->FillNtupleDColumn(1, copyNb);
+    analysisManager->FillNtupleDColumn(2, absoEdep); 
     analysisManager->AddNtupleRow();
+    
+
+  
   }
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+

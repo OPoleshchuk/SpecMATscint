@@ -70,25 +70,39 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   
   G4String fileName = crystMatName+"_"+crystSizeX+"mmx"+crystSizeY+"mmx"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"crystals_"+"R"+circleR+"mm_"+gammaEnergyStr+"MeV"+".root";
   analysisManager->OpenFile(fileName);
-  analysisManager->SetFirstHistoId(1);
 
   // Creating histograms
   //
-  
+  analysisManager->SetFirstHistoId(1);
   G4int crystNb;
   for(crystNb = 1; crystNb <= (sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments()); crystNb++) { 
   
-  analysisManager->CreateH1(G4UIcommand::ConvertToString(crystNb),"Edep in crystal Nb" + G4UIcommand::ConvertToString(crystNb), 3201, 0., 3200*MeV);
+  analysisManager->CreateH1(G4UIcommand::ConvertToString(crystNb),"Edep in crystal Nb" + G4UIcommand::ConvertToString(crystNb), 15501, 0., 15500*MeV);
   }
   analysisManager->CreateH1("Total","Total Edep", 15501, 0., 15500*MeV);
   // Creating ntuple
   //
-  analysisManager->CreateNtuple("Total", "Total Edep");
+  //analysisManager->SetFirstNtupleId(0);
+  analysisManager->CreateNtuple("Total EventActon", "Total Edep");
   analysisManager->CreateNtupleDColumn("Event");
   analysisManager->CreateNtupleDColumn("CrystNb");
   analysisManager->CreateNtupleDColumn("Edep");
-  analysisManager->CreateNtupleDColumn("fTrackLAbs");
-  analysisManager->CreateNtupleDColumn("fTrackLGap");
+  //analysisManager->FinishNtuple(0);
+
+  //analysisManager->CreateNtuple("Total SteppingAction", "Total Edep");
+  analysisManager->CreateNtupleDColumn("Event1");
+  analysisManager->CreateNtupleDColumn("Step");
+  //analysisManager->CreateNtupleDColumn("Particle");
+  //analysisManager->CreateNtupleDColumn("Material");
+  analysisManager->CreateNtupleDColumn("CopyNb");
+  analysisManager->CreateNtupleDColumn("InitialPointX");
+  analysisManager->CreateNtupleDColumn("InitialPointY");
+  analysisManager->CreateNtupleDColumn("InitialPointZ");
+  analysisManager->CreateNtupleDColumn("FinalPointX");
+  analysisManager->CreateNtupleDColumn("FinalPointY");
+  analysisManager->CreateNtupleDColumn("FinalPointZ");
+  analysisManager->CreateNtupleDColumn("Edep1");
+  analysisManager->CreateNtupleDColumn("Time");
   analysisManager->FinishNtuple();
 }
 

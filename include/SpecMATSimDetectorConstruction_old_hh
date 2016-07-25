@@ -24,8 +24,6 @@
 #include "G4SubtractionSolid.hh"
 #include "G4VSensitiveDetector.hh"
 
-#include "SpecMATSimUniformEMField.hh"
-
 #include "globals.hh"
 
 class G4VPhysicalVolume;
@@ -142,12 +140,7 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4VisAttributes* sciHousVisAtt;
     
     G4bool  fCheckOverlaps;
-    
-    SpecMATSimUniformEMField* emField;
-    //electric and magnetic field
-    G4ThreeVector eField;
-    G4ThreeVector mField;
-    
+
   public:
     SpecMATSimDetectorConstruction();
     virtual ~SpecMATSimDetectorConstruction();
@@ -204,11 +197,6 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
 	
     void SetSciCrystMat (G4String);
     G4Material* GetSciCrystMat(){return sciCrystMat;}
-    
-    void UpdateEMField();
-    
-    void SetEleField(G4ThreeVector eVector);
-    void SetMagField(G4ThreeVector mVector);
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -45,11 +45,12 @@ class SpecMATSimEventAction : public G4UserEventAction
     G4int fCollID_cryst;
 	G4int fCollID_ring;
     
-    G4double  fEnergyAbs;
-    G4double  fEnergyGap;
-    G4double  fTrackLAbs;
-    G4double  fTrackLGap;
-    
+    G4double fEnergyAbs;
+    G4double fEnergyGap;
+    G4double fTrackLAbs;
+    G4double fTrackLGap;
+    G4double absoEdep;
+
     G4GenericMessenger*  fMessenger;
     G4Material* crystMat;
     G4int fPrintModulo;   
