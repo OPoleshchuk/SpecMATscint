@@ -42,13 +42,9 @@ target_link_libraries(SpecMATSim ${Geant4_LIBRARIES})
 # relies on these scripts being in the current working directory.
 #
 set(SPECMATSIM_SCRIPTS
-  debug.mac
   SpecMATSim.in
   SpecMATSim.out
-  init.mac
-  init_vis.mac
-  run1.mac
-  run2.mac
+  SpecMATSim.sh
   vis.mac
   )
 

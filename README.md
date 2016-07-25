@@ -2,7 +2,7 @@
 
 <img src="https://cloud.githubusercontent.com/assets/17125100/17013239/717b2170-4f1d-11e6-9bf0-72d171279fa0.png" align="right">
 
-SpecMATscint is a GEANT4 simulation of a scintillator array for the SpecMAT detector. This simulation is used to estimate gamma ray detection efficiency of the setup for different array shapes, dimensions and materials of the crystals. It generates a ROOT file as an output containing energy spectra obtained with each crystal in the array as well as a summed energy spectrum. To bring this model a bit closer to the real conditions crystals have been wrapped in a reflecting material and stored in an aluminum housing.
+SpecMATscint is a GEANT4 simulation of a scintillator array for the SpecMAT detector. This simulation is used to estimate gamma ray detection efficiency of the setup for different detector shapes and for different dimensions and materials of the crystals. As an output, it generates a ROOT file which contains energy spectra obtained from each crystal in the array as well as a summed energy spectrum. To bring this model a bit closer to the real conditions crystals in the simulation have been wrapped in a reflecting material and stored in an aluminum housing.
 
 ## How to Build and Run
 
@@ -21,13 +21,25 @@ SpecMATscint is a GEANT4 simulation of a scintillator array for the SpecMAT dete
  ```
 
 3. Run
- ```
- $ ./SpecMATsim
- ```
- ```
- Idle> /control/execute vis.mac    # visualization
- Idle> run/beamOn 1                # beam on
- ```
+  - Execute in the interactive mode:
+
+    ```
+    $ ./SpecMATsim
+    ```
+    ```
+    Idle> /control/execute vis.mac    # visualization
+    Idle> run/beamOn 1                # beam on
+    ```
+  - Execute in batch mode from a macro file
+
+    ```
+    $ ./SpecMATsim SpecMATsim.in > SpecMATsim.out
+    ```
+  - or run the script to execute in batch mode and have a progress bar
+
+    ```
+    $ ./SpecMATsim.sh
+    ```
 
 ## Requirements
 

@@ -1,8 +1,0 @@
-#
-/control/verbose 2
-/tracking/verbose 2
-#
-/run/beamOn 1
-#
-/tracking/verbose 0
-/run/beamOn 2000

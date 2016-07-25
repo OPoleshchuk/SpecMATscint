@@ -1,8 +1,4 @@
 
-        ############################################
-        !!! WARNING - FPE detection is activated !!!
-        ############################################
-
 *************************************************************
  Geant4 version Name: geant4-09-06-patch-04    (30-January-2015)
                       Copyright : Geant4 Collaboration
@@ -10,149 +6,244 @@
                             WWW : http://cern.ch/geant4
 *************************************************************
 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume crystal ... OK! 
-Checking overlaps for volume ring ... OK! 
-Checking overlaps for volume ring ... OK! 
-Checking overlaps for volume ring ... OK! 
-Checking overlaps for volume ring ... OK! 
-Checking overlaps for volume ring ... OK! 
-Checking overlaps for volume ring ... OK! 
-Checking overlaps for volume ring ... OK! 
-Checking overlaps for volume ring ... OK! 
-Checking overlaps for volume ring ... OK! 
-Checking overlaps for volume Detector ... OK! 
-Checking overlaps for volume Patient ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume Segment ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume Segment ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume Segment ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume Segment ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume Segment ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume sciCrystPl ... OK! 
+Checking overlaps for volume sciWindPl ... OK! 
+Checking overlaps for volume sciReflPl ... OK! 
+Checking overlaps for volume sciHousPl ... OK! 
+Checking overlaps for volume Segment ... OK! 
 
-***** Table : Nb of materials = 3 *****
-
- Material:  Lu2SiO5    density:  7.400 g/cm3   RadL:   1.143 cm   Nucl.Int.Length:  20.922 cm   Imean: 418.807 eV 
-   --->  Element: Lu (Lu)   Z = 71.0   N = 175.0   A = 174.97 g/mole
-         --->  Isotope: Lu175   Z = 71   N = 175   A = 174.94 g/mole   abundance:  97.41 %
-         --->  Isotope: Lu176   Z = 71   N = 176   A = 175.94 g/mole   abundance:   2.59 %
-          ElmMassFraction:  76.40 %  ElmAbundance  25.00 % 
-
-   --->  Element: Si (Si)   Z = 14.0   N =  28.1   A =  28.09 g/mole
-         --->  Isotope:  Si28   Z = 14   N =  28   A =  27.98 g/mole   abundance:  92.23 %
-         --->  Isotope:  Si29   Z = 14   N =  29   A =  28.98 g/mole   abundance:   4.68 %
-         --->  Isotope:  Si30   Z = 14   N =  30   A =  29.97 g/mole   abundance:   3.09 %
-          ElmMassFraction:   6.13 %  ElmAbundance  12.50 % 
-
-   --->  Element: O (O)   Z =  8.0   N =  16.0   A =  16.00 g/mole
-         --->  Isotope:   O16   Z =  8   N =  16   A =  15.99 g/mole   abundance:  99.76 %
-         --->  Isotope:   O17   Z =  8   N =  17   A =  17.00 g/mole   abundance:   0.04 %
-         --->  Isotope:   O18   Z =  8   N =  18   A =  18.00 g/mole   abundance:   0.20 %
-          ElmMassFraction:  17.47 %  ElmAbundance  62.50 % 
-
-
- Material:   G4_AIR    density:  1.205 mg/cm3  RadL: 303.921 m    Nucl.Int.Length: 710.261 m    Imean:  85.700 eV   temperature: 273.15 K  pressure:   1.00 atm
-   --->  Element: C (C)   Z =  6.0   N =  12.0   A =  12.01 g/mole
-         --->  Isotope:   C12   Z =  6   N =  12   A =  12.00 g/mole   abundance:  98.93 %
-         --->  Isotope:   C13   Z =  6   N =  13   A =  13.00 g/mole   abundance:   1.07 %
-          ElmMassFraction:   0.01 %  ElmAbundance   0.02 % 
-
-   --->  Element: N (N)   Z =  7.0   N =  14.0   A =  14.01 g/mole
-         --->  Isotope:   N14   Z =  7   N =  14   A =  14.00 g/mole   abundance:  99.63 %
-         --->  Isotope:   N15   Z =  7   N =  15   A =  15.00 g/mole   abundance:   0.37 %
-          ElmMassFraction:  75.53 %  ElmAbundance  78.44 % 
-
-   --->  Element: O (O)   Z =  8.0   N =  16.0   A =  16.00 g/mole
-         --->  Isotope:   O16   Z =  8   N =  16   A =  15.99 g/mole   abundance:  99.76 %
-         --->  Isotope:   O17   Z =  8   N =  17   A =  17.00 g/mole   abundance:   0.04 %
-         --->  Isotope:   O18   Z =  8   N =  18   A =  18.00 g/mole   abundance:   0.20 %
-          ElmMassFraction:  23.18 %  ElmAbundance  21.07 % 
-
-   --->  Element: Ar (Ar)   Z = 18.0   N =  39.9   A =  39.95 g/mole
-         --->  Isotope:  Ar36   Z = 18   N =  36   A =  35.97 g/mole   abundance:   0.34 %
-         --->  Isotope:  Ar38   Z = 18   N =  38   A =  37.96 g/mole   abundance:   0.06 %
-         --->  Isotope:  Ar40   Z = 18   N =  40   A =  39.96 g/mole   abundance:  99.60 %
-          ElmMassFraction:   1.28 %  ElmAbundance   0.47 % 
-
-
- Material: G4_BRAIN_ICRP    density:  1.040 g/cm3   RadL:  35.403 cm   Nucl.Int.Length:  72.293 cm   Imean:  73.300 eV 
-   --->  Element: H (H)   Z =  1.0   N =   1.0   A =   1.01 g/mole
-         --->  Isotope:    H1   Z =  1   N =   1   A =   1.01 g/mole   abundance:  99.99 %
-         --->  Isotope:    H2   Z =  1   N =   2   A =   2.01 g/mole   abundance:   0.01 %
-          ElmMassFraction:  10.70 %  ElmAbundance  64.44 % 
-
-   --->  Element: C (C)   Z =  6.0   N =  12.0   A =  12.01 g/mole
-         --->  Isotope:   C12   Z =  6   N =  12   A =  12.00 g/mole   abundance:  98.93 %
-         --->  Isotope:   C13   Z =  6   N =  13   A =  13.00 g/mole   abundance:   1.07 %
-          ElmMassFraction:  14.50 %  ElmAbundance   7.33 % 
-
-   --->  Element: N (N)   Z =  7.0   N =  14.0   A =  14.01 g/mole
-         --->  Isotope:   N14   Z =  7   N =  14   A =  14.00 g/mole   abundance:  99.63 %
-         --->  Isotope:   N15   Z =  7   N =  15   A =  15.00 g/mole   abundance:   0.37 %
-          ElmMassFraction:   2.20 %  ElmAbundance   0.95 % 
-
-   --->  Element: O (O)   Z =  8.0   N =  16.0   A =  16.00 g/mole
-         --->  Isotope:   O16   Z =  8   N =  16   A =  15.99 g/mole   abundance:  99.76 %
-         --->  Isotope:   O17   Z =  8   N =  17   A =  17.00 g/mole   abundance:   0.04 %
-         --->  Isotope:   O18   Z =  8   N =  18   A =  18.00 g/mole   abundance:   0.20 %
-          ElmMassFraction:  71.20 %  ElmAbundance  27.01 % 
-
-   --->  Element: Na (Na)   Z = 11.0   N =  23.0   A =  22.99 g/mole
-         --->  Isotope:  Na23   Z = 11   N =  23   A =  22.99 g/mole   abundance: 100.00 %
-          ElmMassFraction:   0.20 %  ElmAbundance   0.05 % 
-
-   --->  Element: P (P)   Z = 15.0   N =  31.0   A =  30.97 g/mole
-         --->  Isotope:   P31   Z = 15   N =  31   A =  30.97 g/mole   abundance: 100.00 %
-          ElmMassFraction:   0.40 %  ElmAbundance   0.08 % 
-
-   --->  Element: S (S)   Z = 16.0   N =  32.1   A =  32.07 g/mole
-         --->  Isotope:   S32   Z = 16   N =  32   A =  31.97 g/mole   abundance:  94.93 %
-         --->  Isotope:   S33   Z = 16   N =  33   A =  32.97 g/mole   abundance:   0.76 %
-         --->  Isotope:   S34   Z = 16   N =  34   A =  33.97 g/mole   abundance:   4.29 %
-         --->  Isotope:   S36   Z = 16   N =  36   A =  35.97 g/mole   abundance:   0.02 %
-          ElmMassFraction:   0.20 %  ElmAbundance   0.04 % 
-
-   --->  Element: Cl (Cl)   Z = 17.0   N =  35.5   A =  35.45 g/mole
-         --->  Isotope:  Cl35   Z = 17   N =  35   A =  34.97 g/mole   abundance:  75.78 %
-         --->  Isotope:  Cl37   Z = 17   N =  37   A =  36.97 g/mole   abundance:  24.22 %
-          ElmMassFraction:   0.30 %  ElmAbundance   0.05 % 
-
-   --->  Element: K (K)   Z = 19.0   N =  39.1   A =  39.10 g/mole
-         --->  Isotope:   K39   Z = 19   N =  39   A =  38.96 g/mole   abundance:  93.26 %
-         --->  Isotope:   K40   Z = 19   N =  40   A =  39.96 g/mole   abundance:   0.01 %
-         --->  Isotope:   K41   Z = 19   N =  41   A =  40.96 g/mole   abundance:   6.73 %
-          ElmMassFraction:   0.30 %  ElmAbundance   0.05 % 
-
-
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$
+$$$$ Crystal material: CeBr3
+$$$$ Single crystal dimensions: 38mmx38mmx38mm 
+$$$$ Dimensions of a single crystal housing: 46mmx46mmx42mm 
+$$$$ Number of segments in the array: 6 
+$$$$ Number of crystals in a segment row: 3 
+$$$$ Number of crystals in a segment column: 3 
+$$$$ Number of crystals in the array: 54 
+$$$$ Radius of a circle inscribed in the array: 119.512mm 
+$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 G4SDManager::AddNewCollection : the collection <crystal/edep> is registered at 1
 New sensitive detector <crystal> is registored at /
-G4SDManager::AddNewCollection : the collection <patient/dose> is registered at 2
-New sensitive detector <patient> is registored at /
 Visualization Manager instantiating with verbosity "warnings (3)"...
 Visualization Manager initialising...
 Registering graphics systems...
@@ -163,14 +254,9 @@ Current available graphics systems are:
   DAWNFILE (DAWNFILE)
   G4HepRep (HepRepXML)
   G4HepRepFile (HepRepFile)
-  OpenGLImmediateQt (OGLI, OGLIQt)
-  OpenGLImmediateX (OGLIX)
-  OpenGLImmediateXm (OGLIXm, OGLI_FALLBACK, OGLIQt_FALLBACK)
-  OpenGLStoredQt (OGL, OGLS, OGLSQt)
-  OpenGLStoredX (OGLSX)
-  OpenGLStoredXm (OGLSXm, OGL_FALLBACK, OGLS_FALLBACK, OGLSQt_FALLBACK)
+  OpenGLImmediateX (OGLI, OGLIX)
+  OpenGLStoredX (OGL, OGLS, OGLSX)
   RayTracer (RayTracer)
-  RayTracerX (RayTracerX)
   VRML1FILE (VRML1FILE)
   VRML2FILE (VRML2FILE)
   gMocrenFile (gMocrenFile)
@@ -200,15 +286,240 @@ Some /vis commands (optionally) take a string to specify colour.
 Available colours:
   black, blue, brown, cyan, gray, green, grey, magenta, red, white, yellow
 
-#
-/run/beamOn 10000
 ### Run 0 start.
+Using Root analysis manager
+
+Event №0
 
 ---> Begin of event: 0
 
+Event №1
+CeBr3 Nb6: E 636.182 keV, coorected E 613.389 keV, FWHM 27.5944
+
+Event №2
+
+Event №3
+CeBr3 Nb46: E 695.709 keV, coorected E 703.708 keV, FWHM 28.8617
+
+Event №4
+
+Event №5
+
+Event №6
+
+Event №7
+
+Event №8
+CeBr3 Nb51: E 1064.39 keV, coorected E 1072.69 keV, FWHM 35.7296
+
+Event №9
+
+Event №10
+CeBr3 Nb42: E 581.246 keV, coorected E 587.608 keV, FWHM 26.3714
+
+Event №11
+
+Event №12
+
+Event №13
+
+Event №14
+CeBr3 Nb4: E 229.324 keV, coorected E 230.714 keV, FWHM 16.5337
+
+Event №15
+
+Event №16
+
+Event №17
+
+Event №18
+CeBr3 Nb33: E 1967.33 keV, coorected E 2003.24 keV, FWHM 48.6352
+
+Event №19
+
+Event №20
+
+Event №21
+CeBr3 Nb15: E 1449.13 keV, coorected E 1462.29 keV, FWHM 41.7157
+
+Event №22
+
+Event №23
+CeBr3 Nb49: E 380.61 keV, coorected E 390.183 keV, FWHM 21.3218
+CeBr3 Nb50: E 1653.25 keV, coorected E 1636.74 keV, FWHM 44.5687
+
+Event №24
+
+Event №25
+
+Event №26
+
+Event №27
+
+Event №28
+CeBr3 Nb21: E 1808.5 keV, coorected E 1760.31 keV, FWHM 46.6228
+
+Event №29
+
+Event №30
+CeBr3 Nb46: E 820.597 keV, coorected E 814.088 keV, FWHM 31.3557
+
+Event №31
+
+Event №32
+
+Event №33
+
+Event №34
+
+Event №35
+
+Event №36
+CeBr3 Nb14: E 1680.85 keV, coorected E 1663.63 keV, FWHM 44.9407
+CeBr3 Nb18: E 256.594 keV, coorected E 262.529 keV, FWHM 17.4931
+
+Event №37
+
+Event №38
+
+Event №39
+
+Event №40
+CeBr3 Nb49: E 457.197 keV, coorected E 448.591 keV, FWHM 23.3774
+
+Event №41
+
+Event №42
+
+Event №43
+
+Event №44
+
+Event №45
+
+Event №46
+
+Event №47
+
+Event №48
+
+Event №49
+
+Event №50
+
+Event №51
+
+Event №52
+CeBr3 Nb10: E 1538.01 keV, coorected E 1526.57 keV, FWHM 42.981
+CeBr3 Nb13: E 476.241 keV, coorected E 470.311 keV, FWHM 23.8612
+
+Event №53
+
+Event №54
+
+Event №55
+CeBr3 Nb30: E 357.199 keV, coorected E 355.719 keV, FWHM 20.6531
+
+Event №56
+
+Event №57
+
+Event №58
+
+Event №59
+
+Event №60
+
+Event №61
+
+Event №62
+CeBr3 Nb49: E 792.059 keV, coorected E 799.203 keV, FWHM 30.8035
+
+Event №63
+
+Event №64
+CeBr3 Nb21: E 959.615 keV, coorected E 972.419 keV, FWHM 33.9185
+
+Event №65
+
+Event №66
+
+Event №67
+
+Event №68
+
+Event №69
+
+Event №70
+
+Event №71
+
+Event №72
+
+Event №73
+
+Event №74
+
+Event №75
+
+Event №76
+CeBr3 Nb38: E 1356.44 keV, coorected E 1364.88 keV, FWHM 40.3543
+CeBr3 Nb40: E 405.573 keV, coorected E 402.253 keV, FWHM 22.0128
+
+Event №77
+CeBr3 Nb34: E 91.4331 keV, coorected E 93.8073 keV, FWHM 10.4207
+
+Event №78
+
+Event №79
+
+Event №80
+CeBr3 Nb4: E 1524.89 keV, coorected E 1526.81 keV, FWHM 42.7966
+
+Event №81
+
+Event №82
+CeBr3 Nb33: E 48.7798 keV, coorected E 49.0657 keV, FWHM 7.60187
+
+Event №83
+CeBr3 Nb21: E 1974.75 keV, coorected E 1977.36 keV, FWHM 48.7272
+
+Event №84
+
+Event №85
+
+Event №86
+
+Event №87
+
+Event №88
+
+Event №89
+CeBr3 Nb20: E 235.119 keV, coorected E 232.725 keV, FWHM 16.7421
+
+Event №90
+
+Event №91
+CeBr3 Nb8: E 238.019 keV, coorected E 250.855 keV, FWHM 16.8455
+
+Event №92
+
+Event №93
+
+Event №94
+
+Event №95
+
+Event №96
+
+Event №97
+
+Event №98
+
+Event №99
+
 --------------------End of Run------------------------------
- The run was 10000 F18[0.0] Nb of 'good' e+ annihilations: 1253
- Total dose in patient : 308.128 picoGy 
+ The Run was 100 Co60[2100.0]
 ------------------------------------------------------------
 
 Graphics systems deleted.

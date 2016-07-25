@@ -1,4 +1,9 @@
+#/gun/particle gamma
+#/gun/energy 1500 keV
+
+/gun/particle ion
+## ion [Z] [A] [Charge of ion in in unit of e] [Excitation energy in keV]
+/gun/ion 28 60 0 2100
+/gun/energy 0 MeV
 #
-/control/verbose 2
-#
-/run/beamOn 10000
+/run/beamOn 1000
