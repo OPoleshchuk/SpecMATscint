@@ -81,7 +81,7 @@ while kill -0 $PID 2> /dev/null
         fi
     done
 #
-PUT 8 24; printf "SIMULATION DONE"
+PUT 8 24; printf "\033[0;32mSIMULATION DONE\033[0m"
 PUT 10 12
 echo -e ""
 NORM
