@@ -77,9 +77,7 @@ int main(int argc,char** argv)
       G4UIExecutive* ui = new G4UIExecutive(argc, argv);
 /*
 #ifdef G4VIS_USE
-      UImanager->ApplyCommand("/control/execute init_vis.mac"); 
-#else
-      UImanager->ApplyCommand("/control/execute init.mac"); 
+      UImanager->ApplyCommand("/control/execute vis.mac"); 
 #endif
 */
       ui->SessionStart();

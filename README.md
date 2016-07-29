@@ -20,7 +20,7 @@ SpecMATscint is a GEANT4 simulation of a scintillator array for the SpecMAT dete
  $ make -jN                        # "N" is the number of processes
  ```
 
-3. Run
+3. Run through one of the following options
   - Execute in the interactive mode:
 
     ```
@@ -45,3 +45,4 @@ SpecMATscint is a GEANT4 simulation of a scintillator array for the SpecMAT dete
 
 - [GEANT4 9.6] (http://geant4.web.cern.ch/geant4/support/source_archive.shtml)
 - [ROOT 5.34/34] (https://root.cern.ch/downloading-root)
+- [CMAKE] (https://cmake.org/download/)
