@@ -76,9 +76,9 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   //****************************************************************************//
   // How many rings and crystals in the detector
 
-  nbSegments = 4;
+  nbSegments = 6;
   nbCrystInSegmentRow = 3;
-  nbCrystInSegmentColumn = 3;
+  nbCrystInSegmentColumn = 4;
 
   dPhi = twopi/nbSegments;
   half_dPhi = 0.5*dPhi;
@@ -403,7 +403,8 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 			segmentBoxLog = new G4LogicalVolume(segmentBox,
 							    segment_mat,
 							    "segmentBoxLog");
-			G4ThreeVector positionInSegment = G4ThreeVector(-(nbCrystInSegmentRow*sciHousSizeX-sciHousSizeX), -(nbCrystInSegmentColumn*sciHousSizeY-sciHousSizeY), 0.);
+			G4ThreeVector positionInSegment = G4ThreeVector(-(nbCrystInSegmentRow*sciHousSizeX-sciHousSizeX), -(nbCrystInSegmentColumn*sciHousSizeY-sciHousSizeY), (sciHousSizeZ-sciCrystSizeZ-sciWindSizeZ));
+            //-(sciCrystPosZ - (sciReflWindThick/2 + sciHousWindThick/2)-sciWindPosZ)
 			for (G4int icrystRow = 0; icrystRow < nbCrystInSegmentColumn; icrystRow++) {
 				for (G4int icrystCol = 0; icrystCol < nbCrystInSegmentRow; icrystCol++) {
 						G4RotationMatrix rotm1  = G4RotationMatrix();
@@ -457,7 +458,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 				positionInSegment -= G4ThreeVector(nbCrystInSegmentRow*sciHousSizeX*2, 0., 0.);
 				positionInSegment += G4ThreeVector(0., sciHousSizeY*2, 0.);
 			}
-			G4ThreeVector positionSegment = (circleR1+sciHousSizeZ+sciWindSizeZ)*uz;
+			G4ThreeVector positionSegment = (circleR1+(sciHousSizeZ+sciWindSizeZ))*uz;
 			G4Transform3D transformSegment = G4Transform3D(rotm, positionSegment);
 			new G4PVPlacement(transformSegment, //position
 				  segmentBoxLog,             //its logical volume
