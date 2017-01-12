@@ -21,26 +21,26 @@ class SpecMATSimRunAction : public G4UserRunAction
 
     virtual void BeginOfRunAction(const G4Run*);
     virtual void EndOfRunAction(const G4Run*);
-  
+
     void CountEvents() { fGoodEvents++;};
 
     G4int fGoodEvents;
-  
+
   private:
-    SpecMATSimDetectorConstruction* sciCryst; 
+    SpecMATSimDetectorConstruction* sciCryst;
     SpecMATSimPrimaryGeneratorAction* gammaSource;
     G4Material* crystMat;
 
     G4String crystSizeX;
     G4String crystSizeY;
     G4String crystSizeZ;
-    G4String crystMatName; 
+    G4String crystMatName;
 
-    G4String gammaEnergyStr;
-    G4String crystSourceDist; 
+    G4String particleEnergy;
+    G4String particleName;
+    G4String crystSourceDist;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
-
