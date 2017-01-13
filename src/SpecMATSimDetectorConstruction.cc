@@ -6,6 +6,7 @@
 #include "G4NistManager.hh"
 #include "G4Box.hh"
 #include "G4Tubs.hh"
+#include "G4Polyhedra.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4RotationMatrix.hh"
@@ -74,11 +75,16 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   //****************************************************************************//
   //******************************* Detector Array *****************************//
   //****************************************************************************//
-  // How many rings and crystals in the detector
+  // How many segments and crystal rings in the detector
 
   nbSegments = 6;
   nbCrystInSegmentRow = 3;
   nbCrystInSegmentColumn = 4;
+
+  vacuumChamber = "yes"; //"yes"/"no"
+  vacuumFlangeSizeX = 300*mm;
+  vacuumFlangeSizeY = 150*mm;
+  vacuumFlangeSizeZ = 10*mm;
 
   dPhi = twopi/nbSegments;
   half_dPhi = 0.5*dPhi;
@@ -118,9 +124,9 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   sciCrystMat = CeBr3;
 
   // Position of the crystal
-  sciCrystPosX = 0 ;									//Position of the Crystal along the X axis
-  sciCrystPosY = 0 ;									//Position of the Crystal along the Y axis
-  sciCrystPosZ = 0 ; 			 						//Position of the Crystal along the Z axis
+  sciCrystPosX = 0;									//Position of the Crystal along the X axis
+  sciCrystPosY = 0;									//Position of the Crystal along the Y axis
+  sciCrystPosZ = 0; 			 						//Position of the Crystal along the Z axis
 
   sciCrystPos = G4ThreeVector(sciCrystPosX,
 		  	      sciCrystPosY,
@@ -361,10 +367,17 @@ G4double SpecMATSimDetectorConstruction::ComputeCircleR1()
     else if (nbSegments == 2) {
         circleR1 = 0;
     }
+    else if (vacuumChamber == "yes") {
+        if (vacuumFlangeSizeY>sciHousSizeY*nbCrystInSegmentColumn) {
+            circleR1 = vacuumFlangeSizeY/(tandPhi);
+        }
+        else {
+            circleR1 = sciHousSizeY*nbCrystInSegmentColumn/(tandPhi);
+        }
+    }
     else {
         circleR1 = sciHousSizeY*nbCrystInSegmentColumn/(tandPhi);
     }
-
     return circleR1;
 }
 
@@ -372,37 +385,77 @@ G4double SpecMATSimDetectorConstruction::ComputeCircleR1()
 
 G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 {
-
-
   //#####################################################################//
   //#### Positioning of scintillation crystals in the detector array ####//
   //#####################################################################//
 
   circleR1 = SpecMATSimDetectorConstruction::ComputeCircleR1();
 
+  //Define the vacuum chamber flange
+  if (vacuumChamber == "yes") {
+      G4VSolid* vacuumChamberBox = new G4Box("vacuumChamberBox",
+    				vacuumFlangeSizeX,
+    				vacuumFlangeSizeY,
+    				vacuumFlangeSizeZ);
+      vacuumChamberBoxLog = new G4LogicalVolume(vacuumChamberBox,
+                    Al_Alloy,
+                    "vacuumChamberBoxLog");
+
+      G4RotationMatrix rotSideFlnge  = G4RotationMatrix();
+      rotSideFlnge.rotateZ(dPhi/2);
+      G4ThreeVector positionSideFlange1 = G4ThreeVector(0, 0, vacuumFlangeSizeX);
+      G4Transform3D transformSideFlange1 = G4Transform3D(rotSideFlnge, positionSideFlange1);
+      G4ThreeVector positionSideFlange2 = G4ThreeVector(0, 0, -vacuumFlangeSizeX-2*vacuumFlangeSizeZ);
+      G4Transform3D transformSideFlange2 = G4Transform3D(rotSideFlnge, positionSideFlange2);
+      G4double vacuumChamberSideFlangeThickness[] = {0, 2*vacuumFlangeSizeZ};
+      G4double vacuumChamberSideFlangeInnerR[] = {0, 0};
+      G4double vacuumChamberSideFlangeOuterR[] = {0, circleR1};
+
+      G4VSolid* vacuumChamberSideFlange = new G4Polyhedra("vacuumChamberSideFlange",
+                     0,
+                     2*3.1415926535897932384626433,
+                     nbSegments,
+                     2,
+                     vacuumChamberSideFlangeThickness,
+                     vacuumChamberSideFlangeInnerR,
+                     vacuumChamberSideFlangeOuterR);
+      vacuumChamberSideFlangeLog = new G4LogicalVolume(vacuumChamberSideFlange,
+                    Al_Alloy,
+                    "vacuumChamberSideFlangeLog");
+      new G4PVPlacement(transformSideFlange1,
+                    vacuumChamberSideFlangeLog,                //its logical volume
+                    "VacuumChamberSideFlangeLog",              //its name
+                    logicWorld,                                //its mother  volume
+                    false,                                     //no boolean operation
+                    1,                                         //copy number
+                    fCheckOverlaps);                           // checking overlaps
+      new G4PVPlacement(transformSideFlange2,
+                    vacuumChamberSideFlangeLog,                //its logical volume
+                    "VacuumChamberSideFlangeLog",              //its name
+                    logicWorld,                                //its mother  volume
+                    false,                                     //no boolean operation
+                    2,                                         //copy number
+                    fCheckOverlaps);                           // checking overlaps
+  }
+
   // Define segment material
   G4NistManager* nist = G4NistManager::Instance();
   segment_mat = nist->FindOrBuildMaterial("G4_Galactic", false);
-
-  G4VSolid* segmentBox =
-	new G4Box("segmentBox",
+  G4VSolid* segmentBox = new G4Box("segmentBox",
 				sciHousSizeX*nbCrystInSegmentRow,
 				sciHousSizeY*nbCrystInSegmentColumn,
 				sciHousSizeZ+sciWindSizeZ);
-
-
+  segmentBoxLog = new G4LogicalVolume(segmentBox,
+                segment_mat,
+                "segmentBoxLog");
 
   G4int crysNb = 1;
 	for (G4int iseg = 0; iseg < nbSegments ; iseg++) {
-
 			G4double phi = iseg*dPhi;
 			G4RotationMatrix rotm  = G4RotationMatrix();
 			rotm.rotateY(90*deg);
 			rotm.rotateZ(phi);
 			G4ThreeVector uz = G4ThreeVector(std::cos(phi),  std::sin(phi),0.);
-			segmentBoxLog = new G4LogicalVolume(segmentBox,
-							    segment_mat,
-							    "segmentBoxLog");
 			G4ThreeVector positionInSegment = G4ThreeVector(-(nbCrystInSegmentRow*sciHousSizeX-sciHousSizeX), -(nbCrystInSegmentColumn*sciHousSizeY-sciHousSizeY), (sciHousSizeZ-sciCrystSizeZ-sciWindSizeZ));
             //-(sciCrystPosZ - (sciReflWindThick/2 + sciHousWindThick/2)-sciWindPosZ)
 			for (G4int icrystRow = 0; icrystRow < nbCrystInSegmentColumn; icrystRow++) {
@@ -458,15 +511,37 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 				positionInSegment -= G4ThreeVector(nbCrystInSegmentRow*sciHousSizeX*2, 0., 0.);
 				positionInSegment += G4ThreeVector(0., sciHousSizeY*2, 0.);
 			}
-			G4ThreeVector positionSegment = (circleR1+(sciHousSizeZ+sciWindSizeZ))*uz;
-			G4Transform3D transformSegment = G4Transform3D(rotm, positionSegment);
-			new G4PVPlacement(transformSegment, //position
-				  segmentBoxLog,             //its logical volume
-				  "Segment",                //its name
-				  logicWorld,         //its mother  volume
-				  false,                 //no boolean operation
-				  iseg,                 //copy number
-				  fCheckOverlaps);       // checking overlaps
+            if (vacuumChamber == "yes") {
+                G4ThreeVector positionVacuumChamber = (circleR1+vacuumFlangeSizeZ)*uz;
+    			G4Transform3D transformVacuumChamber = G4Transform3D(rotm, positionVacuumChamber);
+                new G4PVPlacement(transformVacuumChamber, //position
+    				  vacuumChamberBoxLog,                //its logical volume
+    				  "VacuumChamber",                    //its name
+    				  logicWorld,                         //its mother  volume
+    				  false,                              //no boolean operation
+    				  iseg,                               //copy number
+    				  fCheckOverlaps);                    // checking overlaps
+    			G4ThreeVector positionSegment = (circleR1+2*vacuumFlangeSizeZ+(sciHousSizeZ+sciWindSizeZ))*uz;
+    			G4Transform3D transformSegment = G4Transform3D(rotm, positionSegment);
+    			new G4PVPlacement(transformSegment, //position
+    				  segmentBoxLog,                //its logical volume
+    				  "Segment",                    //its name
+    				  logicWorld,                   //its mother  volume
+    				  false,                        //no boolean operation
+    				  iseg,                         //copy number
+    				  fCheckOverlaps);              // checking overlaps
+            }
+            else {
+                G4ThreeVector positionSegment = (circleR1+(sciHousSizeZ+sciWindSizeZ))*uz;
+    			G4Transform3D transformSegment = G4Transform3D(rotm, positionSegment);
+    			new G4PVPlacement(transformSegment, //position
+    				  segmentBoxLog,                //its logical volume
+    				  "Segment",                    //its name
+    				  logicWorld,                   //its mother  volume
+    				  false,                        //no boolean operation
+    				  iseg,                         //copy number
+    				  fCheckOverlaps);              // checking overlaps
+            }
 	}
 
   // Print materials
