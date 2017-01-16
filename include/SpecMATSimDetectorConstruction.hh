@@ -52,11 +52,11 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4double vacuumFlangeSizeX;
     G4double vacuumFlangeSizeY;
     G4double vacuumFlangeSizeZ;
+    G4double vacuumFlangeThickFrontOfScint;
 
     G4double dPhi;
     G4double half_dPhi;
     G4double tandPhi;
-
 
     G4double circleR1;
 
@@ -137,7 +137,7 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4LogicalVolume* sciReflLog;
     G4LogicalVolume* sciHousLog;
 
-    G4LogicalVolume* vacuumChamberBoxLog;
+    G4LogicalVolume* vacuumFlangeBoxLog;
     G4LogicalVolume* vacuumChamberSideFlangeLog;
     G4LogicalVolume* segmentBoxLog;
 
