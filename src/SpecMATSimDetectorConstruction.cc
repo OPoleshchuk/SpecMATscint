@@ -79,12 +79,12 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   // How many segments and crystal rings in the detector
 
   nbSegments = 6;
-  nbCrystInSegmentRow = 3;
-  nbCrystInSegmentColumn = 4;
+  nbCrystInSegmentRow = 3;        //# of rings
+  nbCrystInSegmentColumn = 2;     //# of crystals 
 
   vacuumChamber = "yes"; //"yes"/"no"
   vacuumFlangeSizeX = 300*mm;
-  vacuumFlangeSizeY = 150*mm;
+  vacuumFlangeSizeY = 69*mm;
   vacuumFlangeSizeZ = 10*mm;
   vacuumFlangeThickFrontOfScint = 1*mm;
 
@@ -436,7 +436,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
                      0,
                      2*3.1415926535897932384626433,
                      nbSegments,
-                     2,
+                     3,
                      vacuumChamberSideFlangeThickness,
                      vacuumChamberSideFlangeInnerR,
                      vacuumChamberSideFlangeOuterR);
@@ -570,6 +570,8 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   G4cout <<"$$$$"<<" Number of crystals in a segment column: "<<nbCrystInSegmentColumn<<" "<< G4endl;
   G4cout <<"$$$$"<<" Number of crystals in the array: "<<nbSegments*nbCrystInSegmentRow*nbCrystInSegmentColumn<<" "<< G4endl;
   G4cout <<"$$$$"<<" Radius of a circle inscribed in the array: "<<circleR1<<"mm "<< G4endl;
+  G4cout <<"$$$$"<<" Segment width: : "<<sciHousSizeY*nbCrystInSegmentColumn<<"mm "<< G4endl;
+  G4cout <<"$$$$"<<" Flange width: : "<<vacuumFlangeSizeY<<"mm "<< G4endl;
   G4cout <<"$$$$"<< G4endl;
   G4cout <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
   G4cout <<""<< G4endl;
