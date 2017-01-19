@@ -114,8 +114,7 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     G4double edep = *(itr->second);
     if (edep > eThreshold) nbOfFired++;
     crystMat = sciCryst->GetSciCrystMat();
-    G4cout << "??????????    " << copyNb << "    ?????????"  << G4endl;
-    
+
     //Resolution correction of registered gamma energy for CeBr3.
     G4double absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
 

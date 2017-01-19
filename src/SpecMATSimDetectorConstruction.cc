@@ -520,7 +520,6 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 										  false,                 //no boolean operation
 										  crysNb,                 //copy number
 										  fCheckOverlaps);       // checking overlaps
-                        G4cout << "!!!!!!!   " << crysNb << "   !!!!!!!"<< G4endl;
 						crysNb += 1;
 						positionInSegment += G4ThreeVector(sciHousSizeX*2, 0., 0.);
 				}
