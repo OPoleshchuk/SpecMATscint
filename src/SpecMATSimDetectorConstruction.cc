@@ -402,9 +402,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 				sciHousSizeX*nbCrystInSegmentRow,
 				sciHousSizeY*nbCrystInSegmentColumn,
 				sciHousSizeZ+sciWindSizeZ);
-  segmentBoxLog = new G4LogicalVolume(segmentBox,
-                segment_mat,
-                "segmentBoxLog");
+
 
   if (vacuumFlangeSizeY<sciHousSizeY*nbCrystInSegmentColumn) {
                 vacuumFlangeSizeY=sciHousSizeY*nbCrystInSegmentColumn;
@@ -471,6 +469,9 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 			rotm.rotateY(90*deg);
 			rotm.rotateZ(phi);
 			G4ThreeVector uz = G4ThreeVector(std::cos(phi),  std::sin(phi),0.);
+            segmentBoxLog = new G4LogicalVolume(segmentBox,
+                          segment_mat,
+                          "segmentBoxLog");
 			G4ThreeVector positionInSegment = G4ThreeVector(-(nbCrystInSegmentRow*sciHousSizeX-sciHousSizeX), -(nbCrystInSegmentColumn*sciHousSizeY-sciHousSizeY), (sciHousSizeZ-sciCrystSizeZ-sciWindSizeZ));
             //-(sciCrystPosZ - (sciReflWindThick/2 + sciHousWindThick/2)-sciWindPosZ)
 			for (G4int icrystRow = 0; icrystRow < nbCrystInSegmentColumn; icrystRow++) {
@@ -519,7 +520,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 										  false,                 //no boolean operation
 										  crysNb,                 //copy number
 										  fCheckOverlaps);       // checking overlaps
-
+                        G4cout << "!!!!!!!   " << crysNb << "   !!!!!!!"<< G4endl;
 						crysNb += 1;
 						positionInSegment += G4ThreeVector(sciHousSizeX*2, 0., 0.);
 				}
