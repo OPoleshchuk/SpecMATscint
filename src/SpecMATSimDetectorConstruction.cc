@@ -432,15 +432,15 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
       G4Transform3D transformSideFlange1 = G4Transform3D(rotSideFlnge, positionSideFlange1);
       G4ThreeVector positionSideFlange2 = G4ThreeVector(0, 0, -vacuumFlangeSizeX-2*vacuumFlangeSizeZ);
       G4Transform3D transformSideFlange2 = G4Transform3D(rotSideFlnge, positionSideFlange2);
-      G4double vacuumChamberSideFlangeThickness[] = {0, 2*vacuumFlangeSizeZ, 2*vacuumFlangeSizeZ};
-      G4double vacuumChamberSideFlangeInnerR[] = {0, 0, 0};
-      G4double vacuumChamberSideFlangeOuterR[] = {0, circleR1+2*vacuumFlangeSizeZ, circleR1+2*vacuumFlangeSizeZ};
+      G4double vacuumChamberSideFlangeThickness[] = {0, 2*vacuumFlangeSizeZ};
+      G4double vacuumChamberSideFlangeInnerR[] = {0, 0};
+      G4double vacuumChamberSideFlangeOuterR[] = {0, circleR1+2*vacuumFlangeSizeZ};
 
       G4VSolid* vacuumChamberSideFlange = new G4Polyhedra("vacuumChamberSideFlange",
                      0,
                      2*3.1415926535897932384626433,
                      nbSegments,
-                     3,
+                     2,
                      vacuumChamberSideFlangeThickness,
                      vacuumChamberSideFlangeInnerR,
                      vacuumChamberSideFlangeOuterR);
