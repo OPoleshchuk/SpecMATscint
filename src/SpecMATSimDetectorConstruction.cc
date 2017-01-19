@@ -80,7 +80,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
 
   nbSegments = 6;
   nbCrystInSegmentRow = 3;        //# of rings
-  nbCrystInSegmentColumn = 2;     //# of crystals 
+  nbCrystInSegmentColumn = 4;     //# of crystals
 
   vacuumChamber = "yes"; //"yes"/"no"
   vacuumFlangeSizeX = 300*mm;
@@ -367,7 +367,7 @@ G4double SpecMATSimDetectorConstruction::ComputeCircleR1()
         circleR1 = 0;
     }
     else if (nbSegments == 2) {
-        circleR1 = 0;
+        circleR1 = 100;
     }
     else {
         if (vacuumChamber == "yes") {
@@ -406,6 +406,10 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
                 segment_mat,
                 "segmentBoxLog");
 
+  if (vacuumFlangeSizeY<sciHousSizeY*nbCrystInSegmentColumn) {
+                vacuumFlangeSizeY=sciHousSizeY*nbCrystInSegmentColumn;
+  }
+
   //Define the vacuum chamber flange
   if (vacuumChamber == "yes") {
       G4VSolid* vacuumFlangeBox = new G4Box("vacuumFlangeBox",
@@ -428,7 +432,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
       G4Transform3D transformSideFlange1 = G4Transform3D(rotSideFlnge, positionSideFlange1);
       G4ThreeVector positionSideFlange2 = G4ThreeVector(0, 0, -vacuumFlangeSizeX-2*vacuumFlangeSizeZ);
       G4Transform3D transformSideFlange2 = G4Transform3D(rotSideFlnge, positionSideFlange2);
-      G4double vacuumChamberSideFlangeThickness[] = {0, 2*vacuumFlangeSizeZ, 0};
+      G4double vacuumChamberSideFlangeThickness[] = {0, 2*vacuumFlangeSizeZ, 2*vacuumFlangeSizeZ};
       G4double vacuumChamberSideFlangeInnerR[] = {0, 0, 0};
       G4double vacuumChamberSideFlangeOuterR[] = {0, circleR1+2*vacuumFlangeSizeZ, circleR1+2*vacuumFlangeSizeZ};
 
