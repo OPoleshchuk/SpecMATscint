@@ -24,11 +24,10 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 SpecMATSimEventAction::SpecMATSimEventAction(SpecMATSimRunAction* runAction)
- : G4UserEventAction(), 
+ : G4UserEventAction(),
    sciCryst(0),
    fRunAct(runAction),
    fCollID_cryst(0.),
-   fMessenger(0),
    fPrintModulo(1)
 {
   sciCryst = new SpecMATSimDetectorConstruction();
@@ -37,29 +36,29 @@ SpecMATSimEventAction::SpecMATSimEventAction(SpecMATSimRunAction* runAction)
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 SpecMATSimEventAction::~SpecMATSimEventAction()
-{ 
+{
 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4THitsMap<G4double>* 
+G4THitsMap<G4double>*
 SpecMATSimEventAction::GetHitsCollection(const G4String& hcName,
                                          const G4Event* event) const
 {
-  G4int hcID 
+  G4int hcID
     = G4SDManager::GetSDMpointer()->GetCollectionID(hcName);
-  G4THitsMap<G4double>* hitsCollection 
+  G4THitsMap<G4double>* hitsCollection
     = static_cast<G4THitsMap<G4double>*>(
         event->GetHCofThisEvent()->GetHC(hcID));
-  
+
   if ( ! hitsCollection ) {
     G4cerr << "Cannot access hitsCollection " << hcName << G4endl;
     exit(1);
-  }         
+  }
 
   return hitsCollection;
-}    
+}
 
 G4double SpecMATSimEventAction::GetSum(G4THitsMap<G4double>* hitsMap) const
 {
@@ -68,8 +67,8 @@ G4double SpecMATSimEventAction::GetSum(G4THitsMap<G4double>* hitsMap) const
   for ( it = hitsMap->GetMap()->begin(); it != hitsMap->GetMap()->end(); it++) {
     sumValue += *(it->second);
   }
-  return sumValue;  
-}  
+  return sumValue;
+}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void SpecMATSimEventAction::BeginOfEventAction(const G4Event* event )
@@ -77,17 +76,15 @@ void SpecMATSimEventAction::BeginOfEventAction(const G4Event* event )
   G4int eventNb = event->GetEventID();
   G4cout << "\n###########################################################" << G4endl;
   G4cout << "Event №" << eventNb << G4endl;
-  
-    
+
   if (eventNb == 0) {
-    G4SDManager* SDMan = G4SDManager::GetSDMpointer();  
+    G4SDManager* SDMan = G4SDManager::GetSDMpointer();
     fCollID_cryst   = SDMan->GetCollectionID("crystal/edep");
   }
-  
+
   if (eventNb%fPrintModulo == 0) {
     G4cout << "\n---> Begin of event: " << eventNb << G4endl;
   }
-    
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -97,34 +94,34 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
   G4int eventNb = event->GetEventID();
   //G4cout << "\n---> Begin of event: " << eventNb << G4endl;
   //Hits collections
-  //  
+  //
   G4HCofThisEvent* HCE = event->GetHCofThisEvent();
   if(!HCE) return;
-   
+
   //Energy in crystals : identify 'good events'
   //
   const G4double eThreshold = 0*eV;
   G4int nbOfFired = 0;
-   
-  G4THitsMap<G4double>* eventMapCryst = 
+
+  G4THitsMap<G4double>* eventMapCryst =
                      (G4THitsMap<G4double>*)(HCE->GetHC(fCollID_cryst));
-  //G4THitsMap<G4double>* eventMapRing = 
+  //G4THitsMap<G4double>* eventMapRing =
   //                   (G4THitsMap<G4double>*)(HCE->GetHC(fCollID_ring));
   std::map<G4int,G4double*>::iterator itr;
   //std::map<G4int,G4double*>::iterator itr2;
-  
+
   for (itr = eventMapCryst->GetMap()->begin(); itr != eventMapCryst->GetMap()->end(); itr++) {
     G4int copyNb  = (itr->first);
     G4double edep = *(itr->second);
     if (edep > eThreshold) nbOfFired++;
     crystMat = sciCryst->GetSciCrystMat();
-    
+
     if (crystMat->GetName() == "CeBr3") {
     //Resolution correction of registered gamma energy for CeBr3.   
     absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
     }
-    else if (crystMat->GetName() == "LaBr3") { 
-    //Resolution correction of registered gamma energy for LaBr3.   
+    else if (crystMat->GetName() == "LaBr3") {
+    //Resolution correction of registered gamma energy for LaBr3.
     absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(81*pow(edep/keV, -0.501))/100)/2.355));
     }
 
@@ -135,14 +132,13 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     //Without resolution correction
     //G4double absoEdep = edep/keV;
     G4cout << "\n" << crystMat->GetName() +  " Nb" << copyNb << ": E " << edep/keV << " keV, Resolution Corrected E "<< absoEdep << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
-    
-    
+
     // get analysis manager
     //
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
     // fill histograms
-    //  
+    //
     analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1, absoEdep);
     analysisManager->FillH1(copyNb, absoEdep);
 
@@ -150,12 +146,8 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     //
     analysisManager->FillNtupleDColumn(0, eventNb);
     analysisManager->FillNtupleDColumn(1, copyNb);
-    analysisManager->FillNtupleDColumn(2, absoEdep); 
+    analysisManager->FillNtupleDColumn(2, absoEdep);
     analysisManager->AddNtupleRow();
-    
-
-  
   }
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
