@@ -105,6 +105,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
 
   // Define Scintillation material and its compounds
 
+  /*
   // LaBr3 material
   La =
       new G4Element("Lanthanum",
@@ -127,8 +128,8 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   LaBr3->AddElement (Br, natoms=3);
 
   sciCrystMat = LaBr3;
+  */
 
-  /*
   // CeBr3 material
   Ce =
 	  new G4Element("Cerium",
@@ -150,7 +151,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   CeBr3->AddElement (Br, natoms=3);
 
   sciCrystMat = CeBr3;
-  */
+
   // Position of the crystal
   sciCrystPosX = 0;									//Position of the Crystal along the X axis
   sciCrystPosY = 0;									//Position of the Crystal along the Y axis
