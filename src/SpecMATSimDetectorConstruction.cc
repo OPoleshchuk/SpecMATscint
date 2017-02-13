@@ -103,7 +103,33 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   sciCrystSizeY = 19.*mm;
   sciCrystSizeZ = 19.*mm;
 
-  // Define CeBr3 material and its compounds
+  // Define Scintillation material and its compounds
+
+  // LaBr3 material
+  La =
+      new G4Element("Lanthanum",
+            "La",
+            z=57.,
+            a=138.9055*g/mole);
+
+  Br =
+      new G4Element("Bromine",
+            "Br",
+            z=35.,
+            a=79.904*g/mole);
+
+  density = 5.1*g/cm3;
+  LaBr3 =
+      new G4Material("LaBr3",
+             density,
+                 ncomponents=2);
+  LaBr3->AddElement (La, natoms=1);
+  LaBr3->AddElement (Br, natoms=3);
+
+  sciCrystMat = LaBr3;
+
+  /*
+  // CeBr3 material
   Ce =
 	  new G4Element("Cerium",
 		  	"Ce",
@@ -124,7 +150,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   CeBr3->AddElement (Br, natoms=3);
 
   sciCrystMat = CeBr3;
-
+  */
   // Position of the crystal
   sciCrystPosX = 0;									//Position of the Crystal along the X axis
   sciCrystPosY = 0;									//Position of the Crystal along the Y axis
