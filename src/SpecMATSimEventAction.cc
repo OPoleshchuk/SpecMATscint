@@ -27,8 +27,8 @@ SpecMATSimEventAction::SpecMATSimEventAction(SpecMATSimRunAction* runAction)
  : G4UserEventAction(),
    sciCryst(0),
    fRunAct(runAction),
-   fCollID_cryst(0),
-   fPrintModulo(10000000)
+   fCollID_cryst(0.),
+   fPrintModulo(1)
 {
   sciCryst = new SpecMATSimDetectorConstruction();
 }
@@ -74,7 +74,8 @@ G4double SpecMATSimEventAction::GetSum(G4THitsMap<G4double>* hitsMap) const
 void SpecMATSimEventAction::BeginOfEventAction(const G4Event* event )
 {
   G4int eventNb = event->GetEventID();
-  G4cout << "\nEvent №" << eventNb << G4endl;
+  G4cout << "\n###########################################################" << G4endl;
+  G4cout << "Event №" << eventNb << G4endl;
 
   if (eventNb == 0) {
     G4SDManager* SDMan = G4SDManager::GetSDMpointer();
@@ -95,7 +96,7 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
   //Hits collections
   //
   G4HCofThisEvent* HCE = event->GetHCofThisEvent();
-  if (!HCE) return;
+  if(!HCE) return;
 
   //Energy in crystals : identify 'good events'
   //
@@ -115,12 +116,23 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     if (edep > eThreshold) nbOfFired++;
     crystMat = sciCryst->GetSciCrystMat();
 
-    //Resolution correction of registered gamma energy for CeBr3.
-    G4double absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
+    if (crystMat->GetName() == "CeBr3") {
+    //Resolution correction of registered gamma energy for CeBr3.   
+    absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
+    }
+    else if (crystMat->GetName() == "LaBr3") {
+    //Resolution correction of registered gamma energy for LaBr3.
+    absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(81*pow(edep/keV, -0.501))/100)/2.355));
+    }
+
+    else {
+    absoEdep = edep/keV;
+    }
 
     //Without resolution correction
     //G4double absoEdep = edep/keV;
-    G4cout << crystMat->GetName() +  " Nb" << copyNb << ": E " << edep/keV << " keV, E with resol. correction "<< absoEdep << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV, -0.498))/100) << G4endl;
+    G4cout << "\n" << crystMat->GetName() +  " Nb" << copyNb << ": E " << edep/keV << " keV, Resolution Corrected E "<< absoEdep << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
+
     // get analysis manager
     //
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
@@ -128,12 +140,12 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     // fill histograms
     //
     analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1, absoEdep);
-	analysisManager->FillH1(copyNb, absoEdep);
+    analysisManager->FillH1(copyNb, absoEdep);
 
     // fill ntuple
     //
-	analysisManager->FillNtupleDColumn(0, eventNb);
-	analysisManager->FillNtupleDColumn(1, copyNb);
+    analysisManager->FillNtupleDColumn(0, eventNb);
+    analysisManager->FillNtupleDColumn(1, copyNb);
     analysisManager->FillNtupleDColumn(2, absoEdep);
     analysisManager->AddNtupleRow();
   }

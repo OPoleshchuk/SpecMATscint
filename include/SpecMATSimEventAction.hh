@@ -15,8 +15,8 @@ class SpecMATSimDetectorConstruction;
 
 /// Event action class
 ///
-/// In EndOfEventAction() there is collected information event per event 
-/// from Hits Collections, and accumulated statistic for 
+/// In EndOfEventAction() there is collected information event per event
+/// from Hits Collections, and accumulated statistic for
 /// SpecMATSimRunAction::EndOfRunAction().
 
 class SpecMATSimEventAction : public G4UserEventAction
@@ -27,24 +27,25 @@ class SpecMATSimEventAction : public G4UserEventAction
 
     virtual void  BeginOfEventAction(const G4Event* );
     virtual void    EndOfEventAction(const G4Event* );
-    
+
     void SetPrintModulo(G4int value);
-  
+
+    G4double absoEdep;
+
   private:
   // methods
     G4THitsMap<G4double>* GetHitsCollection(const G4String& hcName,
                                           const G4Event* event) const;
     G4double GetSum(G4THitsMap<G4double>* hitsMap) const;
     void PrintEventStatistics(G4double absoEdep) const;
-    SpecMATSimDetectorConstruction* sciCryst;    
+    SpecMATSimDetectorConstruction* sciCryst;
     SpecMATSimRunAction*  fRunAct;
-    
+
     G4int fCollID_cryst;
 	G4int fCollID_ring;
-    
-    G4GenericMessenger*  fMessenger;
+
     G4Material* crystMat;
-    G4int fPrintModulo;   
+    G4int fPrintModulo;
 };
 
 // inline functions
@@ -55,5 +56,3 @@ inline void SpecMATSimEventAction::SetPrintModulo(G4int value) {
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
-
-    
