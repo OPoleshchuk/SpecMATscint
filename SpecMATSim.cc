@@ -11,7 +11,7 @@
 #include "SpecMATSimPrimaryGeneratorAction.hh"
 #include "SpecMATSimRunAction.hh"
 #include "SpecMATSimEventAction.hh"
-#include "SpecMATSimStackingAction.hh"
+//#include "SpecMATSimStackingAction.hh"
 #include "SpecMATSimSteppingAction.hh"
 
 #ifdef G4VIS_USE
@@ -29,7 +29,7 @@ int main(int argc,char** argv)
   // Choose the Random engine
   //
   CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine);
-     
+
   // Construct the default run manager
   //
   G4RunManager * runManager = new G4RunManager;
@@ -40,7 +40,7 @@ int main(int argc,char** argv)
     runManager->SetUserInitialization(detConstruction);
   //
   runManager->SetUserInitialization(new SpecMATSimPhysicsList);
-    
+
   // Set user action classes
   //
   runManager->SetUserAction(new SpecMATSimPrimaryGeneratorAction);
@@ -51,16 +51,16 @@ int main(int argc,char** argv)
   SpecMATSimEventAction* eventAction = new SpecMATSimEventAction(runAction);
   runManager->SetUserAction(eventAction);
   //
-  runManager->SetUserAction(new SpecMATSimStackingAction);
+  //runManager->SetUserAction(new SpecMATSimStackingAction);
 
   SpecMATSimSteppingAction* steppingAction
     = new SpecMATSimSteppingAction();
   runManager->SetUserAction(steppingAction);
-  
+
   // Initialize G4 kernel
   //
   runManager->Initialize();
-  
+
 #ifdef G4VIS_USE
   // Initialize visualization
   G4VisManager* visManager = new G4VisExecutive;
@@ -84,9 +84,9 @@ int main(int argc,char** argv)
       G4UIExecutive* ui = new G4UIExecutive(argc, argv);
 /*
 #ifdef G4VIS_USE
-      UImanager->ApplyCommand("/control/execute init_vis.mac"); 
+      UImanager->ApplyCommand("/control/execute init_vis.mac");
 #else
-      UImanager->ApplyCommand("/control/execute init.mac"); 
+      UImanager->ApplyCommand("/control/execute init.mac");
 #endif
 */
       ui->SessionStart();
@@ -96,7 +96,7 @@ int main(int argc,char** argv)
 
   // Job termination
   // Free the store: user actions, physics_list and detector_description are
-  // owned and deleted by the run manager, so they should not be deleted 
+  // owned and deleted by the run manager, so they should not be deleted
   // in the main() program !
 
 #ifdef G4VIS_USE

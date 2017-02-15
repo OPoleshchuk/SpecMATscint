@@ -117,7 +117,7 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     crystMat = sciCryst->GetSciCrystMat();
 
     if (crystMat->GetName() == "CeBr3") {
-    //Resolution correction of registered gamma energy for CeBr3.   
+    //Resolution correction of registered gamma energy for CeBr3.
     absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
     }
     else if (crystMat->GetName() == "LaBr3") {

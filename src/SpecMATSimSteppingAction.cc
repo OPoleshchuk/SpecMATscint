@@ -44,12 +44,11 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
   G4ThreeVector momentumDirection = step->GetTrack()->GetMomentumDirection();
   G4bool firstStep = step->IsFirstStepInVolume();
 
-
   G4ThreeVector finalPoint = step->GetPostStepPoint()->GetPosition();
   G4double stepLength = step->GetStepLength();
   G4double edep = step->GetTotalEnergyDeposit();
   G4double time = step->GetPostStepPoint()->GetGlobalTime();
-  if (firstStep or (edep > 0)) {
+  if (firstStep) {
       initialPoint = step->GetPreStepPoint()->GetPosition();
   }
   else {
@@ -62,8 +61,6 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
   G4double finalPointX = crystPosition.getX();
   G4double finalPointY = crystPosition.getY();
   G4double finalPointZ = crystPosition.getZ();
-
-
 
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   if ((materialName == "CeBr3" || materialName == "LaBr3") && edep/keV > 0) {
@@ -82,8 +79,6 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
 
         analysisManager->FillNtupleDColumn(3, eventNb);
     	analysisManager->FillNtupleDColumn(4, stepNb);
-    	//analysisManager->FillNtupleSColumn(5, partName);
-    	//analysisManager->FillNtupleSColumn(6, materialName);
     	analysisManager->FillNtupleDColumn(5, crystNb);
     	analysisManager->FillNtupleDColumn(6, initialPointX);
     	analysisManager->FillNtupleDColumn(7, initialPointY);
