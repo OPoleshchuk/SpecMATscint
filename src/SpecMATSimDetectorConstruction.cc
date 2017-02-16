@@ -489,6 +489,9 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   }
 
   //Positioning of segments and crystals in the segment
+  G4ThreeVector testVector[72]; // = {G4ThreeVector(9.,8.,7.),G4ThreeVector(3.,5.,6.)}; //new  nbCrystInSegmentRow*nbCrystInSegmentColumn*nbSegments
+
+  G4int i = 0;    //new
   G4int crysNb = 1;
 	for (G4int iseg = 0; iseg < nbSegments ; iseg++) {
 			G4double phi = iseg*dPhi;
@@ -509,6 +512,8 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 						G4ThreeVector positionWind = (G4ThreeVector(0., 0., sciWindPosZ) + positionInSegment);
 						G4ThreeVector positionRefl = (G4ThreeVector(0., 0., sciReflPosZ) + positionInSegment);
 						G4ThreeVector positionHous = (G4ThreeVector(0., 0., sciHousPosZ) + positionInSegment);
+
+                        testVector[crysNb - 1] = positionCryst; //new
 
 						G4Transform3D transformCryst = G4Transform3D(rotm1,positionCryst);
 						G4Transform3D transformWind = G4Transform3D(rotm1,positionWind);
@@ -572,6 +577,9 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     				  false,                        //no boolean operation
     				  iseg,                         //copy number
     				  fCheckOverlaps);              // checking overlaps
+                for (i; i < crysNb; i++) {
+                    testVector[i] = (testVector[i] + positionSegment);          //new  *G4ThreeVector(0, 90*deg, phi)
+                }                                                               //new
             }
             else {
                 G4ThreeVector positionSegment = (circleR1+(sciHousSizeZ+sciWindSizeZ))*uz;
@@ -583,6 +591,9 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     				  false,                        //no boolean operation
     				  iseg,                         //copy number
     				  fCheckOverlaps);              // checking overlaps
+                for (i; i < crysNb; i++) {                                      //new
+                    testVector[i] = (testVector[i] + positionSegment);          //new  *G4ThreeVector(0, 90*deg, phi)
+                }                                                               //new
             }
 	}
 
@@ -606,6 +617,10 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   G4cout <<"$$$$"<< G4endl;
   G4cout <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
   G4cout <<""<< G4endl;
+  for (G4int i = 0; i < 72; i++) {
+      G4cout << "!!! " << "CrystNb" << i+1 << ": " << testVector[i] << " !!!" << G4endl; //new
+  }
+
   CreateScorers();
 
   //

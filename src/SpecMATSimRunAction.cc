@@ -101,10 +101,23 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateH1("Total","Total Edep", 15501, 0., 15500*MeV);
   // Creating ntuple
   //
+  //From EventAction
   analysisManager->CreateNtuple("Total", "Total Edep");
   analysisManager->CreateNtupleDColumn("Event");
   analysisManager->CreateNtupleDColumn("CrystNb");
   analysisManager->CreateNtupleDColumn("Edep");
+  //From SteppingAction
+  analysisManager->CreateNtupleDColumn("Event1");
+  analysisManager->CreateNtupleDColumn("Step");
+  analysisManager->CreateNtupleDColumn("CopyNb");
+  analysisManager->CreateNtupleDColumn("InitialPointX");
+  analysisManager->CreateNtupleDColumn("InitialPointY");
+  analysisManager->CreateNtupleDColumn("InitialPointZ");
+  analysisManager->CreateNtupleDColumn("FinalPointX");
+  analysisManager->CreateNtupleDColumn("FinalPointY");
+  analysisManager->CreateNtupleDColumn("FinalPointZ");
+  analysisManager->CreateNtupleDColumn("Edep1");
+  analysisManager->CreateNtupleDColumn("Time");
   analysisManager->FinishNtuple();
 }
 

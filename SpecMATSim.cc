@@ -47,12 +47,10 @@ int main(int argc,char** argv)
   runManager->SetUserAction(runAction);
   //
   runManager->SetUserAction(new SpecMATSimEventAction(runAction));
-  //
-  //runManager->SetUserAction(new SpecMATSimStackingAction);
 
-  SpecMATSimSteppingAction* steppingAction
-  = new SpecMATSimSteppingAction();
+  SpecMATSimSteppingAction* steppingAction = new SpecMATSimSteppingAction();
   runManager->SetUserAction(steppingAction);
+
   // Initialize G4 kernel
   //
   runManager->Initialize();
