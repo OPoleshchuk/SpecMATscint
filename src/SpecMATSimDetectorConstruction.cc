@@ -490,7 +490,14 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   }
 
   //Positioning of segments and crystals in the segment
-  G4ThreeVector testVector[45]; // = {G4ThreeVector(9.,8.,7.),G4ThreeVector(3.,5.,6.)}; //new  nbCrystInSegmentRow*nbCrystInSegmentColumn*nbSegments
+
+  G4int TotalCrystNb = nbCrystInSegmentRow*nbCrystInSegmentColumn*nbSegments;
+  //G4ThreeVector testVector[TotalCrystNb]; // = {G4ThreeVector(9.,8.,7.),G4ThreeVector(3.,5.,6.)}; //new  nbCrystInSegmentRow*nbCrystInSegmentColumn*nbSegments
+
+  G4ThreeVector *testVector = new G4ThreeVector[TotalCrystNb];
+  for (int i=0; i<TotalCrystNb; i++) {
+    testVector[i] = G4ThreeVector(0.,0.,0.);    // Initialize all elements to zero.
+  }
 
   G4int i = 0;    //new
   G4int crysNb = 1;
@@ -632,9 +639,12 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   G4cout <<"$$$$"<< G4endl;
   G4cout <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
   G4cout <<""<< G4endl;
-  for (G4int i = 0; i < 45; i++) {                                                          //new
+  for (G4int i = 0; i < TotalCrystNb; i++) {                                                          //new
       G4cout << "!!! " << "CrystNb" << i+1 << ": " << testVector[i] << " !!!" << G4endl;    //new
-  }                                                                                         //new
+  }
+                                                                                           //new
+  delete [] testVector;
+  testVector = NULL;
 
   CreateScorers();
 
