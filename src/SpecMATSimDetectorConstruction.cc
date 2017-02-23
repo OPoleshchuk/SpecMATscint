@@ -21,6 +21,7 @@
 #include "G4SystemOfUnits.hh"
 #include "G4SubtractionSolid.hh"
 #include "G4VSensitiveDetector.hh"
+#include <G4AffineTransform.hh>
 
 // ###################################################################################
 
@@ -41,12 +42,12 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
       G4int ncomponents1;
 
         a1 = 14.01*g/mole;
-	  G4Element* elN  = new G4Element(name1="Nitrogen",symbol1="N" , z1= 7., a1);
+	    G4Element* elN  = new G4Element(name1="Nitrogen",symbol1="N" , z1= 7., a1);
 
 	    a1 = 16.00*g/mole;
-	      G4Element* elO  = new G4Element(name1="Oxygen"  ,symbol1="O" , z1= 8., a1);
+	    G4Element* elO  = new G4Element(name1="Oxygen"  ,symbol1="O" , z1= 8., a1);
 
-	        density1 = 0.2E-5*mg/cm3;
+	    density1 = 0.2E-5*mg/cm3;
 		  Air = new G4Material(name1="Air",density1,ncomponents1=2);
 		    Air->AddElement(elN, fractionmass1=70*perCent);
 		      Air->AddElement(elO, fractionmass1=30*perCent);
@@ -78,13 +79,13 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   //****************************************************************************//
   // How many segments and crystal rings in the detector
 
-  nbSegments = 6;
+  nbSegments = 15;
   nbCrystInSegmentRow = 3;        //# of rings
-  nbCrystInSegmentColumn = 4;     //# of crystals
+  nbCrystInSegmentColumn = 1;     //# of crystals
 
   vacuumChamber = "yes"; //"yes"/"no"
-  vacuumFlangeSizeX = 300*mm;
-  vacuumFlangeSizeY = 69*mm;
+  vacuumFlangeSizeX = 150*mm;
+  vacuumFlangeSizeY = 29*mm;
   vacuumFlangeSizeZ = 10*mm;
   vacuumFlangeThickFrontOfScint = 1*mm;
 
@@ -99,9 +100,9 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   //***************** Scintillation crystal ****************//
   //--------------------------------------------------------//
   // Dimensions of the crystal
-  sciCrystSizeX = 19.*mm;								//Size and position of all components depends on Crystal size and position.
-  sciCrystSizeY = 19.*mm;
-  sciCrystSizeZ = 19.*mm;
+  sciCrystSizeX = 24.*mm;								//Size and position of all components depends on Crystal size and position.
+  sciCrystSizeY = 24.*mm;
+  sciCrystSizeZ = 24.*mm;
 
   // Define Scintillation material and its compounds
 
@@ -187,7 +188,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   // Thickness of reflector walls
   sciReflWallThickX = 0.5*mm;
   sciReflWallThickY = 0.5*mm;
-  sciReflWindThick = 1.2*mm;
+  sciReflWindThick = 0.5*mm;
 
   // Outer dimensions of the reflector relative to the crystal size
   sciReflSizeX = sciCrystSizeX + sciReflWallThickX;
@@ -255,9 +256,9 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   //******************** Aluminum Housing ******************//
   //--------------------------------------------------------//
   // Dimensions of Housing (half-side)
-  sciHousWallThickX = 3.5*mm;
-  sciHousWallThickY = 3.5*mm;
-  sciHousWindThick = 0.8*mm;
+  sciHousWallThickX = 3.0*mm;
+  sciHousWallThickY = 3.0*mm;
+  sciHousWindThick = 1.0*mm;
 
 
   // Outer dimensions of the housing relative to the crystal size and to the thickness of the reflector
@@ -489,7 +490,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   }
 
   //Positioning of segments and crystals in the segment
-  G4ThreeVector testVector[72]; // = {G4ThreeVector(9.,8.,7.),G4ThreeVector(3.,5.,6.)}; //new  nbCrystInSegmentRow*nbCrystInSegmentColumn*nbSegments
+  G4ThreeVector testVector[45]; // = {G4ThreeVector(9.,8.,7.),G4ThreeVector(3.,5.,6.)}; //new  nbCrystInSegmentRow*nbCrystInSegmentColumn*nbSegments
 
   G4int i = 0;    //new
   G4int crysNb = 1;
@@ -514,6 +515,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 						G4ThreeVector positionHous = (G4ThreeVector(0., 0., sciHousPosZ) + positionInSegment);
 
                         testVector[crysNb - 1] = positionCryst; //new
+                        G4cout << "!!! " << "CrystNb" << crysNb << ": " << testVector[crysNb - 1] << " !!!" << G4endl; //new
 
 						G4Transform3D transformCryst = G4Transform3D(rotm1,positionCryst);
 						G4Transform3D transformWind = G4Transform3D(rotm1,positionWind);
@@ -558,6 +560,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 				positionInSegment -= G4ThreeVector(nbCrystInSegmentRow*sciHousSizeX*2, 0., 0.);
 				positionInSegment += G4ThreeVector(0., sciHousSizeY*2, 0.);
 			}
+            //segment and flange position
             if (vacuumChamber == "yes") {
                 G4ThreeVector positionVacuumFlange = (circleR1+vacuumFlangeSizeZ)*uz;
     			G4Transform3D transformVacuumFlange = G4Transform3D(rotm, positionVacuumFlange);
@@ -577,10 +580,19 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     				  false,                        //no boolean operation
     				  iseg,                         //copy number
     				  fCheckOverlaps);              // checking overlaps
-                for (i; i < crysNb; i++) {
-                    testVector[i] = (testVector[i] + positionSegment);          //new  *G4ThreeVector(0, 90*deg, phi)
-                }                                                               //new
+
+                for (i; i < crysNb-1; i++) {
+                    G4cout << i << G4endl;
+                    G4cout << crysNb-1 << G4endl;
+                    G4AffineTransform TransformCrystPos;
+                    TransformCrystPos.SetNetRotation(rotm);
+                    TransformCrystPos.SetNetTranslation(positionSegment);
+                    testVector[i] = TransformCrystPos.TransformPoint(testVector[i]);          //new
+                    G4cout << testVector[i] << G4endl;
+                }                                                                             //new
+                G4cout << i << G4endl;
             }
+            //segment position
             else {
                 G4ThreeVector positionSegment = (circleR1+(sciHousSizeZ+sciWindSizeZ))*uz;
     			G4Transform3D transformSegment = G4Transform3D(rotm, positionSegment);
@@ -591,8 +603,11 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     				  false,                        //no boolean operation
     				  iseg,                         //copy number
     				  fCheckOverlaps);              // checking overlaps
-                for (i; i < crysNb; i++) {                                      //new
-                    testVector[i] = (testVector[i] + positionSegment);          //new  *G4ThreeVector(0, 90*deg, phi)
+                for (i; i < crysNb-1; i++) {                                      //new
+                    G4AffineTransform TransformCrystPos;
+                    TransformCrystPos.SetNetRotation(rotm);
+                    TransformCrystPos.SetNetTranslation(positionSegment);
+                    testVector[i] = TransformCrystPos.TransformPoint(testVector[i]);
                 }                                                               //new
             }
 	}
@@ -617,9 +632,9 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   G4cout <<"$$$$"<< G4endl;
   G4cout <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
   G4cout <<""<< G4endl;
-  for (G4int i = 0; i < 72; i++) {
-      G4cout << "!!! " << "CrystNb" << i+1 << ": " << testVector[i] << " !!!" << G4endl; //new
-  }
+  for (G4int i = 0; i < 45; i++) {                                                          //new
+      G4cout << "!!! " << "CrystNb" << i+1 << ": " << testVector[i] << " !!!" << G4endl;    //new
+  }                                                                                         //new
 
   CreateScorers();
 

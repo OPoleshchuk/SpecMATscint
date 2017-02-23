@@ -7,7 +7,7 @@
 #include "SpecMATSimAnalysis.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4UnitsTable.hh"
-
+//#include "G4TouchableHandle.hh"
 #include "G4Step.hh"
 #include "G4Event.hh"
 #include "G4RunManager.hh"
@@ -48,7 +48,12 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
   G4double stepLength = step->GetStepLength();
   G4double edep = step->GetTotalEnergyDeposit();
   G4double time = step->GetPostStepPoint()->GetGlobalTime();
-
+  /*
+  G4TouchableHandle theTouchable = step->GetPreStepPoint()->GetTouchableHandle();
+  G4ThreeVector origin(0.,0.,0.);
+  G4ThreeVector globalOrigin = theTouchable->GetHistory()->GetTopTransform().Inverse().TransformPoint(origin);
+  G4cout << "crystNb: " << crystNb << " " << globalOrigin << G4endl;
+  */
 
   G4double initialPointX = initialPoint.getX();
   G4double initialPointY = initialPoint.getY();
