@@ -113,8 +113,13 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4Material* LaBr3;
     G4Material* sciCrystMat;
     G4Material* Quartz;
+    G4Material* sciWindMat;
     G4Material* TiO2;
+    G4Material* sciReflMat;
     G4Material* Al_Alloy;
+    G4Material* sciHousMat;
+    G4Material* vacuumFlangeMat;
+    G4Material* vacuumSideFlangeMat;
     G4Material* Air;
     G4Material* segment_mat;
 
