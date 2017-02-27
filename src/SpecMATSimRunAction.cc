@@ -47,24 +47,25 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   //inform the runManager to save random number seed
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
 
-  // Create analysis manager
+  // Creates analysis manager
   // The choice of analysis technology is done via selection of a namespace
   // in SpecMATSimAnalysis.hh
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   G4cout << "Using " << analysisManager->GetType()
          << " analysis manager" << G4endl;
 
-  // Create directories
+  // Creates directories
+  //
   analysisManager->SetHistoDirectoryName("histograms");
   analysisManager->SetNtupleDirectoryName("ntuple");
-  // Open an output file
+
+  // Creates the file name
   //
   crystMat = sciCryst->GetSciCrystMat();
   crystMatName = crystMat->GetName();
   crystSizeX = G4UIcommand::ConvertToString(sciCryst->GetSciCrystSizeX()*2);
   crystSizeY = G4UIcommand::ConvertToString(sciCryst->GetSciCrystSizeY()*2);
   crystSizeZ = G4UIcommand::ConvertToString(sciCryst->GetSciCrystSizeZ()*2);
-
 
   G4String source =gammaSource->GetSource();
   if (source=="gamma") {
@@ -87,36 +88,41 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   G4String circleR = G4UIcommand::ConvertToString(sciCryst->ComputeCircleR1());
 
   G4String fileName = crystMatName+"_"+crystSizeX+"mmx"+crystSizeY+"mmx"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"crystals_"+"R"+circleR+"mm_"+particleName+particleEnergy+"MeV"+".root";
+
+  // Open the file
+  //
   analysisManager->OpenFile(fileName);
   analysisManager->SetFirstHistoId(1);
 
   // Creating histograms
   //
-
   G4int crystNb;
   for(crystNb = 1; crystNb <= (sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments()); crystNb++) {
-
   analysisManager->CreateH1(G4UIcommand::ConvertToString(crystNb),"Edep in crystal Nb" + G4UIcommand::ConvertToString(crystNb), 15501, 0., 15500*MeV);
   }
-  analysisManager->CreateH1("Total","Total Edep", 15501, 0., 15500*MeV);
+  analysisManager->CreateH1("Total", "Total Edep", 15501, 0., 15500*MeV);
+
   // Creating ntuple
   //
   //From EventAction
   analysisManager->CreateNtuple("Total", "Total Edep");
   analysisManager->CreateNtupleDColumn("Event");
   analysisManager->CreateNtupleDColumn("CrystNb");
-  analysisManager->CreateNtupleDColumn("Edep");
+  analysisManager->CreateNtupleDColumn("EdepRes");
+  analysisManager->CreateNtupleDColumn("EdepNoRes");
   //From SteppingAction
-  analysisManager->CreateNtupleDColumn("Event1");
+  analysisManager->CreateNtupleDColumn("EventSA");
   analysisManager->CreateNtupleDColumn("Step");
   analysisManager->CreateNtupleDColumn("CopyNb");
+  analysisManager->CreateNtupleDColumn("materialID"); // 1 - scintillator; 0 - smth else
+  analysisManager->CreateNtupleDColumn("particleID");
   analysisManager->CreateNtupleDColumn("InitialPointX");
   analysisManager->CreateNtupleDColumn("InitialPointY");
   analysisManager->CreateNtupleDColumn("InitialPointZ");
   analysisManager->CreateNtupleDColumn("FinalPointX");
   analysisManager->CreateNtupleDColumn("FinalPointY");
   analysisManager->CreateNtupleDColumn("FinalPointZ");
-  analysisManager->CreateNtupleDColumn("Edep1");
+  analysisManager->CreateNtupleDColumn("EdepSA");
   analysisManager->CreateNtupleDColumn("Time");
   analysisManager->FinishNtuple();
 }
