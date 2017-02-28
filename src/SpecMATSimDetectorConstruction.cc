@@ -85,11 +85,11 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
 
   vacuumChamber = "yes"; //"yes"/"no"
   vacuumFlangeSizeX = 150*mm;
-  vacuumFlangeSizeY = 29*mm;
+  vacuumFlangeSizeY = 19*mm;
   vacuumFlangeSizeZ = 10*mm;
-  vacuumFlangeThickFrontOfScint = 1*mm;
+  vacuumFlangeThickFrontOfScint = 2*mm;
 
-  insulationTube = "yes";
+  insulationTube = "yes"; //"yes"/"no"
   insulationTubeThickness = 10*mm;
 
   dPhi = twopi/nbSegments;
@@ -380,6 +380,25 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   sciWindVisAtt->SetVisibility(true);							//Pass this object to Visualization Manager for visualization
   sciWindVisAtt->SetForceWireframe(true);						//I believe that it might make Window transparent
   sciWindLog->SetVisAttributes(sciWindVisAtt);						//Assignment of visualization attributes to the logical volume of the Window
+
+  //--------------------------------------------------------//
+  //******************* Flange material ********************//
+  //--------------------------------------------------------//
+  vacuumFlangeMat = Al_Alloy;
+  //--------------------------------------------------------//
+  //****************** Insulator material ******************//
+  //--------------------------------------------------------//
+  // Define insulation tube material
+
+  density = 3.95*g/cm3;
+  Ceramic_Al2O3 =
+          new G4Material("Ceramic_Al2O3",
+             density,
+             ncomponents=2);
+  Ceramic_Al2O3->AddElement (Al, natoms=2);
+  Ceramic_Al2O3->AddElement (O, natoms=3);
+
+  insulationTubeMat = Ceramic_Al2O3;
 }
 
 // ###################################################################################
@@ -445,7 +464,6 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 
   //Define the vacuum chamber flange
   if (vacuumChamber == "yes") {
-      vacuumFlangeMat = Al_Alloy;
       G4VSolid* vacuumFlangeBox = new G4Box("vacuumFlangeBox",
     				vacuumFlangeSizeX,
     				vacuumFlangeSizeY,
@@ -502,27 +520,16 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   //And its stopping power should be simulated
   //
   if (vacuumChamber == "yes" && insulationTube == "yes") {
-      // Define insulation tube material
-
-      density = 3.95*g/cm3;
-      Ceramic_Al2O3 =
-              new G4Material("Ceramic_Al2O3",
-    			 density,
-    			 ncomponents=2);
-      Ceramic_Al2O3->AddElement (Al, natoms=2);
-      Ceramic_Al2O3->AddElement (O, natoms=3);
-
-      insulationTubeMat = Ceramic_Al2O3;
       //Geometry of the insulation Tube
-      G4double insulationTubeInnerRadius = circleR1-insulationTubeThickness;
-      G4double insulationTubeOuterRadius = circleR1;
-      G4VSolid* insulationTube = new G4Tubs("insulationTube",
+      insulationTubeInnerRadius = circleR1-insulationTubeThickness;
+      insulationTubeOuterRadius = circleR1;
+      G4VSolid* insulationTubeSolid = new G4Tubs("insulationTubeSolid",
     				insulationTubeInnerRadius,
                     insulationTubeOuterRadius,
     				vacuumFlangeSizeX,
     				0*deg,
                     360*deg);
-      insulationTubeLog = new G4LogicalVolume(insulationTube,
+      insulationTubeLog = new G4LogicalVolume(insulationTubeSolid,
                     insulationTubeMat,
                     "insulationTubeLog");
       new G4PVPlacement(0,
@@ -712,6 +719,13 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   G4cout <<"$$$$"<<" Flange width: "<<vacuumFlangeSizeY*2<<"mm "<< G4endl;
   G4cout <<"$$$$"<<" Flange thickness: "<<vacuumFlangeSizeZ*2<<"mm "<< G4endl;
   G4cout <<"$$$$"<<" Flange thickness in front of the window: "<<vacuumFlangeThickFrontOfScint<<"mm "<< G4endl;
+  }
+  G4cout <<"$$$$"<< G4endl;
+  if (vacuumChamber == "yes" && insulationTube == "yes") {
+  G4cout <<"$$$$"<<" Insulator material: "<<insulationTubeMat->GetName()<< G4endl;
+  G4cout <<"$$$$"<<" Insulator thickness: "<<insulationTubeThickness<<"mm "<< G4endl;
+  G4cout <<"$$$$"<<" Insulator tube outer radius: "<<insulationTubeOuterRadius<<"mm "<< G4endl;
+  G4cout <<"$$$$"<<" Insulator tube inner radius: "<<insulationTubeInnerRadius<<"mm "<< G4endl;
   }
   G4cout <<"$$$$"<< G4endl;
   G4cout <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;

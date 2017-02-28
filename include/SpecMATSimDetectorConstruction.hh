@@ -56,6 +56,8 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
 
     G4String insulationTube;
     G4double insulationTubeThickness;
+    G4double insulationTubeInnerRadius;
+    G4double insulationTubeOuterRadius;
 
     G4double dPhi;
     G4double half_dPhi;
@@ -220,6 +222,17 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
 
     void SetSciCrystMat (G4String);
     G4Material* GetSciCrystMat(){return sciCrystMat;}
+
+    void SetVacuumChamber (G4String);
+    G4String GetVacuumChamber(){return vacuumChamber;}
+    void SetVacuumFlangeMat (G4String);
+    G4Material* GetVacuumFlangeMat(){return vacuumFlangeMat;}
+
+    void SetInsulationTube (G4String);
+    G4String GetInsulationTube(){return insulationTube;}
+    void SetInsulationTubeMat (G4String);
+    G4Material* GetInsulationTubeMat(){return insulationTubeMat;}
+
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

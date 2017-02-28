@@ -87,7 +87,26 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   G4String Columns = G4UIcommand::ConvertToString(sciCryst->GetNbCrystInSegmentRow());
   G4String circleR = G4UIcommand::ConvertToString(sciCryst->ComputeCircleR1());
 
-  G4String fileName = crystMatName+"_"+crystSizeX+"mmx"+crystSizeY+"mmx"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"crystals_"+"R"+circleR+"mm_"+particleName+particleEnergy+"MeV"+".root";
+  chamber = sciCryst->GetVacuumChamber();
+  insulator = sciCryst->GetInsulationTube();
+
+  if (chamber == "yes") {
+      chamberName = "Flan_";
+      flangeMatName = sciCryst->GetVacuumFlangeMat()->GetName();
+  } else {
+      chamberName = "";
+      flangeMatName = "";
+  }
+
+  if ((chamber == "yes") && (insulator == "yes")) {
+      insulatorName = "Ins_";
+      insulatorMatName = sciCryst->GetInsulationTubeMat()->GetName();
+  } else {
+      insulatorName = "";
+      insulatorMatName = "";
+  }
+
+  G4String fileName = crystMatName+"_"+crystSizeX+"mmx"+crystSizeY+"mmx"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"crystals_"+"R"+circleR+"mm_"+particleName+particleEnergy+"MeV_"+chamberName+flangeMatName+insulatorName+insulatorMatName+".root";
 
   // Open the file
   //

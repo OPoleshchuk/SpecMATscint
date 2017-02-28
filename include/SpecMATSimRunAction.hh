@@ -39,6 +39,13 @@ class SpecMATSimRunAction : public G4UserRunAction
     G4String particleEnergy;
     G4String particleName;
     G4String crystSourceDist;
+
+    G4String chamber;
+    G4String insulator;
+    G4String chamberName;
+    G4String insulatorName;
+    G4String flangeMatName;
+    G4String insulatorMatName;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
