@@ -89,6 +89,9 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   vacuumFlangeSizeZ = 10*mm;
   vacuumFlangeThickFrontOfScint = 1*mm;
 
+  insulationTube = "yes";
+  insulationTubeThickness = 10*mm;
+
   dPhi = twopi/nbSegments;
   half_dPhi = 0.5*dPhi;
   tandPhi = std::tan(half_dPhi);
@@ -493,6 +496,49 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
                     false,                                     //no boolean operation
                     2,                                         //copy number
                     fCheckOverlaps);                           // checking overlaps
+  }
+
+  //Defines insulation tube between the field cage and the vacuum chamber which might be used for preventing sparks in the real setup
+  //And its stopping power should be simulated
+  //
+  if (vacuumChamber == "yes" && insulationTube == "yes") {
+      // Define insulation tube material
+
+      density = 3.95*g/cm3;
+      Ceramic_Al2O3 =
+              new G4Material("Ceramic_Al2O3",
+    			 density,
+    			 ncomponents=2);
+      Ceramic_Al2O3->AddElement (Al, natoms=2);
+      Ceramic_Al2O3->AddElement (O, natoms=3);
+
+      insulationTubeMat = Ceramic_Al2O3;
+      //Geometry of the insulation Tube
+      G4double insulationTubeInnerRadius = circleR1-insulationTubeThickness;
+      G4double insulationTubeOuterRadius = circleR1;
+      G4VSolid* insulationTube = new G4Tubs("insulationTube",
+    				insulationTubeInnerRadius,
+                    insulationTubeOuterRadius,
+    				vacuumFlangeSizeX,
+    				0*deg,
+                    360*deg);
+      insulationTubeLog = new G4LogicalVolume(insulationTube,
+                    insulationTubeMat,
+                    "insulationTubeLog");
+      new G4PVPlacement(0,
+                    G4ThreeVector(0,0,0),
+                    insulationTubeLog,                //its logical volume
+                    "insulationTubePhys",              //its name
+                    logicWorld,                                //its mother  volume
+                    false,                                     //no boolean operation
+                    1,                                         //copy number
+                    fCheckOverlaps);                           // checking overlaps
+      // Visualization attributes for the insulation tube
+      insulationTubeVisAtt =
+  	    new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));					//Instantiation of visualization attributes with cyan colour
+      insulationTubeVisAtt->SetVisibility(true);							//Pass this object to Visualization Manager for visualization
+      insulationTubeVisAtt->SetForceWireframe(true);						//I believe that it might make Window transparent
+      insulationTubeLog->SetVisAttributes(insulationTubeVisAtt);						//Assignment of visualization attributes to the logical volume of the Window
   }
 
   //Positioning of segments and crystals in the segment

@@ -54,6 +54,9 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4double vacuumFlangeSizeZ;
     G4double vacuumFlangeThickFrontOfScint;
 
+    G4String insulationTube;
+    G4double insulationTubeThickness;
+
     G4double dPhi;
     G4double half_dPhi;
     G4double tandPhi;
@@ -120,6 +123,8 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4Material* sciHousMat;
     G4Material* vacuumFlangeMat;
     G4Material* vacuumSideFlangeMat;
+    G4Material* Ceramic_Al2O3;
+    G4Material* insulationTubeMat;
     G4Material* Air;
     G4Material* segment_mat;
 
@@ -146,6 +151,7 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
 
     G4LogicalVolume* vacuumFlangeBoxLog;
     G4LogicalVolume* vacuumChamberSideFlangeLog;
+    G4LogicalVolume* insulationTubeLog;
     G4LogicalVolume* segmentBoxLog;
 
     G4VPhysicalVolume* physWorld;
@@ -154,6 +160,7 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4VisAttributes* sciWindVisAtt;
     G4VisAttributes* sciReflVisAtt;
     G4VisAttributes* sciHousVisAtt;
+    G4VisAttributes* insulationTubeVisAtt;
 
     G4bool  fCheckOverlaps;
 
