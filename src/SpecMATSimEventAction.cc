@@ -56,7 +56,6 @@ SpecMATSimEventAction::GetHitsCollection(const G4String& hcName,
     G4cerr << "Cannot access hitsCollection " << hcName << G4endl;
     exit(1);
   }
-
   return hitsCollection;
 }
 
@@ -92,7 +91,6 @@ void SpecMATSimEventAction::BeginOfEventAction(const G4Event* event )
 void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
 {
   G4int eventNb = event->GetEventID();
-  //G4cout << "\n---> Begin of event: " << eventNb << G4endl;
   //Hits collections
   //
   G4HCofThisEvent* HCE = event->GetHCofThisEvent();
@@ -105,10 +103,8 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
 
   G4THitsMap<G4double>* eventMapCryst =
                      (G4THitsMap<G4double>*)(HCE->GetHC(fCollID_cryst));
-  //G4THitsMap<G4double>* eventMapRing =
-  //                   (G4THitsMap<G4double>*)(HCE->GetHC(fCollID_ring));
+
   std::map<G4int,G4double*>::iterator itr;
-  //std::map<G4int,G4double*>::iterator itr2;
 
   for (itr = eventMapCryst->GetMap()->begin(); itr != eventMapCryst->GetMap()->end(); itr++) {
     G4int copyNb  = (itr->first);
@@ -128,8 +124,6 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     absoEdep = edep/keV;
     }
 
-    //Without resolution correction
-    //G4double absoEdep = edep/keV;
     G4cout << "\n" << crystMat->GetName() +  " Nb" << copyNb << ": E " << edep/keV << " keV, Resolution Corrected E "<< absoEdep << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
 
     // get analysis manager

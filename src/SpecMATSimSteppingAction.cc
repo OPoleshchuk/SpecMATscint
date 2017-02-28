@@ -71,12 +71,12 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
   G4double finalPointY = finalPoint.getY();
   G4double finalPointZ = finalPoint.getZ();
 
-  G4double stepLength = step->GetStepLength();
+  //G4double stepLength = step->GetStepLength();
 
   G4double edep = step->GetTotalEnergyDeposit();
 
   G4double timeing = step->GetPostStepPoint()->GetGlobalTime();
-
+  /*
   G4cout << "\nEVENT #" << eventNb << G4endl;
   G4cout << "STEP #" << stepNb << G4endl;
   G4cout << "crystNb: " << crystNb << G4endl;
@@ -90,7 +90,7 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
   G4cout << "length: " << stepLength/mm << "mm" << G4endl;
   G4cout << "edep: " << edep/keV << "keV" << G4endl;
   G4cout << "time: "<< timeing << G4endl;
-
+  */
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   analysisManager->FillNtupleDColumn(4, eventNb);
