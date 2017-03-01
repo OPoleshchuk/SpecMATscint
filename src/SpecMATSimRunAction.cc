@@ -130,6 +130,7 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateNtupleDColumn("EdepRes");
   analysisManager->CreateNtupleDColumn("EdepNoRes");
   //From SteppingAction
+  /*
   analysisManager->CreateNtupleDColumn("EventSA");
   analysisManager->CreateNtupleDColumn("Step");
   analysisManager->CreateNtupleDColumn("CopyNb");
@@ -143,6 +144,7 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateNtupleDColumn("FinalPointZ");
   analysisManager->CreateNtupleDColumn("EdepSA");
   analysisManager->CreateNtupleDColumn("Time");
+  */
   analysisManager->FinishNtuple();
 }
 

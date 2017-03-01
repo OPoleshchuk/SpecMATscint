@@ -27,8 +27,10 @@ SpecMATSimSteppingAction::~SpecMATSimSteppingAction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+
 void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
 {
+  /*
   // Collects energy and track data step by step
   G4RunManager* theRunManager = G4RunManager::GetRunManager();
 
@@ -76,7 +78,9 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
   G4double edep = step->GetTotalEnergyDeposit();
 
   G4double timeing = step->GetPostStepPoint()->GetGlobalTime();
-  /*
+  */
+
+  /* //Uncomment this to print all this information after each step
   G4cout << "\nEVENT #" << eventNb << G4endl;
   G4cout << "STEP #" << stepNb << G4endl;
   G4cout << "crystNb: " << crystNb << G4endl;
@@ -91,6 +95,7 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
   G4cout << "edep: " << edep/keV << "keV" << G4endl;
   G4cout << "time: "<< timeing << G4endl;
   */
+  /* //Uncomment this part and similar part in SteppingAction.cc to have all this information in the outpu file
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   analysisManager->FillNtupleDColumn(4, eventNb);
@@ -107,6 +112,7 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
   analysisManager->FillNtupleDColumn(15, edep/keV);
   analysisManager->FillNtupleDColumn(16, timeing);
   analysisManager->AddNtupleRow();
+  */
 
 }
 
