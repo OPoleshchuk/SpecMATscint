@@ -389,7 +389,9 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   //****************** Insulator material ******************//
   //--------------------------------------------------------//
   // Define insulation tube material
-
+  G4NistManager* nist = G4NistManager::Instance();
+  insulationTubeMat = nist->FindOrBuildMaterial("G4_ALUMINUM_OXIDE", false);
+  /*
   density = 3.95*g/cm3;
   Ceramic_Al2O3 =
           new G4Material("Ceramic_Al2O3",
@@ -399,6 +401,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   Ceramic_Al2O3->AddElement (O, natoms=3);
 
   insulationTubeMat = Ceramic_Al2O3;
+  */
 }
 
 // ###################################################################################
@@ -449,7 +452,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 
   circleR1 = SpecMATSimDetectorConstruction::ComputeCircleR1();
 
-  // Define segment which will conain crystals
+  // Define segment which will contain crystals
   G4NistManager* nist = G4NistManager::Instance();
   segment_mat = nist->FindOrBuildMaterial("G4_Galactic", false);
   G4VSolid* segmentBox = new G4Box("segmentBox",
