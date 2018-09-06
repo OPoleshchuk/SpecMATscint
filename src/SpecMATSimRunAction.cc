@@ -98,15 +98,16 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
       flangeMatName = "";
   }
 
-  if ((chamber == "yes") && (insulator == "yes")) {
+  if (/*(chamber == "yes") &&*/ (insulator == "yes")) {
       insulatorName = "Ins_";
       insulatorMatName = sciCryst->GetInsulationTubeMat()->GetName();
   } else {
       insulatorName = "";
       insulatorMatName = "";
   }
+  G4String Gap = G4UIcommand::ConvertToString(sciCryst->GetGap());
 
-  G4String fileName = crystMatName+"_"+crystSizeX+"mmx"+crystSizeY+"mmx"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"crystals_"+"R"+circleR+"mm_"+particleName+particleEnergy+"MeV_"+chamberName+flangeMatName+insulatorName+insulatorMatName+".root";
+  G4String fileName = crystMatName+"_"+crystSizeX+"mmx"+crystSizeY+"mmx"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"crystals_"+"R"+circleR+"mm_"+particleName+particleEnergy+"MeV_"+chamberName+flangeMatName+insulatorName+insulatorMatName+"_gap_"+Gap+".root";
 
   // Open the file
   //
@@ -130,6 +131,7 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateNtupleDColumn("EdepRes");
   analysisManager->CreateNtupleDColumn("EdepNoRes");
   //From SteppingAction
+  /*
   analysisManager->CreateNtupleDColumn("EventSA");
   analysisManager->CreateNtupleDColumn("Step");
   analysisManager->CreateNtupleDColumn("CopyNb");
@@ -143,6 +145,7 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateNtupleDColumn("FinalPointZ");
   analysisManager->CreateNtupleDColumn("EdepSA");
   analysisManager->CreateNtupleDColumn("Time");
+  */
   analysisManager->FinishNtuple();
 }
 

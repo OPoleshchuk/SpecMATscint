@@ -43,6 +43,7 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
 
     G4double worldSizeXY;
     G4double worldSizeZ;
+	G4double gap;
 
     G4int nbSegments;
     G4int nbCrystInSegmentRow;
@@ -112,6 +113,8 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4Element* Si;
     G4Element* Ti;
     G4Element* Al;
+	G4Element* C;
+	G4Element* H;
 
     G4Material* default_mat;
     G4Material* CeBr3;
@@ -125,10 +128,13 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4Material* sciHousMat;
     G4Material* vacuumFlangeMat;
     G4Material* vacuumSideFlangeMat;
-    G4Material* Ceramic_Al2O3;
+    G4Material* Polypropylen_C3H6;
     G4Material* insulationTubeMat;
     G4Material* Air;
     G4Material* segment_mat;
+	G4Material* Steel_316L;
+
+    G4NistManager* nist;
 
     G4ThreeVector sciCrystPos;
     G4ThreeVector sciWindPos;
@@ -233,6 +239,8 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     void SetInsulationTubeMat (G4String);
     G4Material* GetInsulationTubeMat(){return insulationTubeMat;}
 
+	void SetGap(G4double val){gap = val;}
+    G4double GetGap(void){return gap;}
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

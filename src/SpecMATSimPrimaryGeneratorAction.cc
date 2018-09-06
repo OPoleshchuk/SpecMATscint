@@ -13,6 +13,8 @@
 #include "G4SystemOfUnits.hh"
 #include "Randomize.hh"
 #include <stdlib.h>
+#include <iostream>
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
@@ -27,7 +29,7 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
   n_particle = 1;
   fParticleGun  = new G4ParticleGun(n_particle);
   sciCryst = new SpecMATSimDetectorConstruction();
-  gammaEnergy = 1000*keV;
+  gammaEnergy=11000*keV;
 
   //################### Isotope source ################################//
   Z = 27;
@@ -66,8 +68,12 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
       G4double ux = sinTheta*std::cos(phi),
                uy = sinTheta*std::sin(phi),
                uz = cosTheta;
+
+	  //G4int randomNum = G4UniformRand()*201 - 100;
+      G4int randomNum = G4UniformRand()*131 - 65;
+	  G4cout << randomNum << G4endl;
       fParticleGun->SetParticleMomentumDirection(G4ThreeVector(ux,uy,uz));
-      fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,0.*mm));
+      fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm)); //randomNum*mm
       fParticleGun->GeneratePrimaryVertex(anEvent);
   } else {
       //################### Isotope source ################################//
