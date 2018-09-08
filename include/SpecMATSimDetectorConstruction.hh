@@ -70,6 +70,14 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4double sciCrystSizeY;
     G4double sciCrystSizeZ;
 
+    G4double ComptSuppSizeX;
+    G4double ComptSuppSizeY;
+    G4double ComptSuppSizeZ;
+
+    G4double ComptSuppPosX;									//Position of the Crystal along the X axis
+    G4double ComptSuppPosY;									//Position of the Crystal along the Y axis
+    G4double ComptSuppPosZ;
+
     G4double sciCrystPosX;
     G4double sciCrystPosY;
     G4double sciCrystPosZ;
@@ -120,6 +128,7 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4Material* CeBr3;
     G4Material* LaBr3;
     G4Material* sciCrystMat;
+    G4Material* ComptSuppMat;
     G4Material* Quartz;
     G4Material* sciWindMat;
     G4Material* TiO2;
@@ -137,12 +146,14 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4NistManager* nist;
 
     G4ThreeVector sciCrystPos;
+    G4ThreeVector ComptSuppPos;
     G4ThreeVector sciWindPos;
     G4ThreeVector sciReflPos;
 
 
     G4VSolid* solidWorld;
     G4VSolid* sciCrystSolid;
+    G4VSolid* ComptSuppSolid;
     G4VSolid* sciWindSolid;
     G4VSolid* reflBoxSolid;
     G4VSolid* sciReflSolid;
@@ -153,6 +164,7 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
 
     G4LogicalVolume* logicWorld;
     G4LogicalVolume* sciCrystLog;
+    G4LogicalVolume* ComptSuppLog;
     G4LogicalVolume* sciWindLog;
     G4LogicalVolume* sciReflLog;
     G4LogicalVolume* sciHousLog;
@@ -165,6 +177,7 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4VPhysicalVolume* physWorld;
 
     G4VisAttributes* sciCrystVisAtt;
+    G4VisAttributes* ComptSuppVisAtt;
     G4VisAttributes* sciWindVisAtt;
     G4VisAttributes* sciReflVisAtt;
     G4VisAttributes* sciHousVisAtt;

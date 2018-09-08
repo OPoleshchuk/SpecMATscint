@@ -5,6 +5,7 @@
 
 #include "G4NistManager.hh"
 #include "G4Box.hh"
+#include "G4Trap.hh"
 #include "G4Tubs.hh"
 #include "G4Polyhedra.hh"
 #include "G4LogicalVolume.hh"
@@ -479,6 +480,60 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
 
   insulationTubeMat = Polypropylen_C3H6;
   */
+
+  //--------------------------------------------------------//
+  //****************** Compton Suppressor ******************//
+  //--------------------------------------------------------//
+
+  ComptSuppMat = LaBr3;
+
+  ComptSuppSizeX = 24.*mm;								//Size and position of all components depends on Crystal size and position.
+  ComptSuppSizeY = 24.*mm;
+  ComptSuppSizeZ = sciHousSizeX*3*mm + (gap/2)*2*mm;
+
+  // Position of the Compton Suppressor
+  ComptSuppPosX = 0;									//Position of the Compton Suppressor along the X axis
+  ComptSuppPosY = 0;									//Position of the Compton Suppressor along the Y axis
+  ComptSuppPosZ = -300; 			 						//Position of the Compton Suppressor along the Z axis
+
+  G4ThreeVector ComptSuppPos = G4ThreeVector(ComptSuppPosX,
+		  			    ComptSuppPosY,
+					    ComptSuppPosZ);
+
+  ComptSuppPos = G4ThreeVector(ComptSuppPosX,
+		  	      ComptSuppPosY,
+			      ComptSuppPosZ);
+  // Define box for Compton Suppressor
+  ComptSuppSolid =
+	  new G4Trap("ComptSuppSolid",
+		    ComptSuppSizeZ,
+		    ComptSuppSizeX,
+            ComptSuppSizeY,
+		    1);
+
+  // Define Logical Volume for Compton Suppressor
+  ComptSuppLog =
+	  new G4LogicalVolume(ComptSuppSolid,
+			      ComptSuppMat,
+			      "ComptSupp");
+      new G4PVPlacement(0,                       				//no rotation
+                    	    ComptSuppPos,         				//at sciCrystPos
+                    	    ComptSuppLog,                			//Crystal logical volume
+                    	    "ComptSuppPl",              				//Crystal positioning name
+                    	    logicWorld,              				//its mother  volume
+                    	    false,                   				//no boolean operation
+                    	    0,                       				//copy number
+                    	    fCheckOverlaps);          				//overlaps checking
+
+
+  // Visualization attributes for the Compton Suppressor logical volume
+  ComptSuppVisAtt =
+	  new G4VisAttributes(G4Colour(0.0, 0.0, 1.0));					//Instantiation of visualization attributes with blue colour
+  ComptSuppVisAtt->SetVisibility(true);							    //Pass this object to Visualization Manager for visualization
+  ComptSuppVisAtt->SetForceSolid(true);
+  //ComptSuppVisAtt->SetForceWireframe(true);						//I still believe that it might make Crystal transparent
+  ComptSuppLog->SetVisAttributes(ComptSuppVisAtt);					//Assignment of visualization attributes to the logical volume of the Crystal
+
 }
 
 // ###################################################################################
@@ -838,6 +893,12 @@ void SpecMATSimDetectorConstruction::CreateScorers()
   cryst->RegisterPrimitive(primitiv);
   SDman->AddNewDetector(cryst);
   sciCrystLog->SetSensitiveDetector(cryst);
+
+  G4MultiFunctionalDetector* ComptSupp = new G4MultiFunctionalDetector("ComptSupp");
+  G4PSEnergyDeposit* ComptSuppPrimitiv = new G4PSEnergyDeposit("edep");
+  ComptSupp->RegisterPrimitive(ComptSuppPrimitiv);
+  SDman->AddNewDetector(ComptSupp);
+  ComptSuppLog->SetSensitiveDetector(ComptSupp);
 }
 
 // ###################################################################################
