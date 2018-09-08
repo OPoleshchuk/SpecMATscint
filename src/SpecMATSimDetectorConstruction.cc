@@ -53,7 +53,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
 		      Air->AddElement(elO, fractionmass1=30*perCent);
 
   // Define world material
-  G4NistManager* nist = G4NistManager::Instance();
+  nist = G4NistManager::Instance();
   default_mat = nist->FindOrBuildMaterial("G4_AIR", false);
 
   solidWorld =
@@ -81,16 +81,17 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
 
   nbSegments = 15;
   nbCrystInSegmentRow = 3;        //# of rings
-  nbCrystInSegmentColumn = 1;     //# of crystals
+  nbCrystInSegmentColumn = 1;     //# of crystals in a segment
 
-  vacuumChamber = "yes"; //"yes"/"no"
+  vacuumChamber = "no"; //"yes"/"no"
   vacuumFlangeSizeX = 150*mm;
-  vacuumFlangeSizeY = 19*mm;
-  vacuumFlangeSizeZ = 10*mm;
-  vacuumFlangeThickFrontOfScint = 2*mm;
+  vacuumFlangeSizeY = 29*mm;
+  vacuumFlangeSizeZ = 3*mm;
+  vacuumFlangeThickFrontOfScint = 3*mm;
+  gap=3*mm;
 
-  insulationTube = "yes"; //"yes"/"no"
-  insulationTubeThickness = 10*mm;
+  insulationTube = "no"; //"yes"/"no"
+  insulationTubeThickness = 3*mm;
 
   dPhi = twopi/nbSegments;
   half_dPhi = 0.5*dPhi;
@@ -182,7 +183,8 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   sciCrystVisAtt =
 	  new G4VisAttributes(G4Colour(0.0, 0.0, 1.0));					//Instantiation of visualization attributes with blue colour
   sciCrystVisAtt->SetVisibility(true);							//Pass this object to Visualization Manager for visualization
-  sciCrystVisAtt->SetForceWireframe(true);						//I still believe that it might make Crystal transparent
+  sciCrystVisAtt->SetForceSolid(true);
+  //sciCrystVisAtt->SetForceWireframe(true);						//I still believe that it might make Crystal transparent
   sciCrystLog->SetVisAttributes(sciCrystVisAtt);					//Assignment of visualization attributes to the logical volume of the Crystal
 
   //--------------------------------------------------------//
@@ -384,23 +386,98 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   //--------------------------------------------------------//
   //******************* Flange material ********************//
   //--------------------------------------------------------//
-  vacuumFlangeMat = Al_Alloy;
+  vacuumFlangeMat = nist->FindOrBuildMaterial("G4_Al", false);//Al_Alloy;
+  C =
+	  new G4Element("Carbon",
+		  	"C",
+			z=6.,
+			a=12.011*g/mole);
+  /*
+  G4Element* Mg =
+	  new G4Element("Manganese",
+		  	"Mg",
+			z=25.,
+			a=54.938044*g/mole);
+
+  G4Element* Cr =
+	  new G4Element("Chromium",
+		  	"Cr",
+			z=24.,
+			a=51.9961*g/mole);
+  G4Element* Ni =
+	  new G4Element("Nickel",
+		  	"Ni",
+			z=28.,
+			a=58.6934*g/mole);
+  G4Element* Mo =
+	  new G4Element("Molybdenum",
+		  	"Mo",
+			z=42.,
+			a=95.95*g/mole);
+  G4Element* P =
+	  new G4Element("Phosphorus",
+		  	"P",
+			z=15.,
+			a=30.973761998*g/mole);
+  G4Element* S =
+	  new G4Element("Sulfur",
+		  	"S",
+			z=16.,
+			a=32.06*g/mole);
+  G4Element* N =
+	  new G4Element("Nitrogen",
+		  	"N",
+			z=7.,
+			a=14.007*g/mole);
+  G4Element* Fe =
+	  new G4Element("Iron",
+		  	"Fe",
+			z=26.,
+			a=55.845*g/mole);
+
+  density = 8.027*g/cm3;
+
+  Steel_316L =
+          new G4Material("Steel_316L",
+             density,
+             ncomponents=10);
+  G4double fractionmass;
+  Steel_316L->AddElement (C, fractionmass=0.030*perCent);
+  Steel_316L->AddElement (Mg, fractionmass=2*perCent);
+  Steel_316L->AddElement (Si, fractionmass=0.75*perCent);
+  Steel_316L->AddElement (Cr, fractionmass=18*perCent);
+  Steel_316L->AddElement (Ni, fractionmass=14*perCent);
+  Steel_316L->AddElement (Mo, fractionmass=3*perCent);
+  Steel_316L->AddElement (P, fractionmass=0.045*perCent);
+  Steel_316L->AddElement (S, fractionmass=0.030*perCent);
+  Steel_316L->AddElement (N, fractionmass=0.1*perCent);
+  Steel_316L->AddElement (Fe, fractionmass=62.045*perCent);
+  vacuumFlangeMat = Steel_316L;
+  */
+
+
   //--------------------------------------------------------//
   //****************** Insulator material ******************//
   //--------------------------------------------------------//
   // Define insulation tube material
-  G4NistManager* nist = G4NistManager::Instance();
-  insulationTubeMat = nist->FindOrBuildMaterial("G4_ALUMINUM_OXIDE", false);
+  insulationTubeMat = nist->FindOrBuildMaterial("G4_Al", false);
   /*
-  density = 3.95*g/cm3;
-  Ceramic_Al2O3 =
-          new G4Material("Ceramic_Al2O3",
+  H =
+	  new G4Element("Hidrogen",
+		  	"H",
+			z=1.,
+			a=1.008*g/mole);
+
+  density = 0.946*g/cm3;
+
+  Polypropylen_C3H6 =
+          new G4Material("Polypropylen_C3H6",
              density,
              ncomponents=2);
-  Ceramic_Al2O3->AddElement (Al, natoms=2);
-  Ceramic_Al2O3->AddElement (O, natoms=3);
+  Polypropylen_C3H6->AddElement (C, natoms=3);
+  Polypropylen_C3H6->AddElement (H, natoms=6);
 
-  insulationTubeMat = Ceramic_Al2O3;
+  insulationTubeMat = Polypropylen_C3H6;
   */
 }
 
@@ -421,7 +498,7 @@ void SpecMATSimDetectorConstruction::DefineMaterials()
 G4double SpecMATSimDetectorConstruction::ComputeCircleR1()
 {
     if (nbSegments == 1) {
-        circleR1 = 0;
+        circleR1 = 150;
     }
     else if (nbSegments == 2) {
         circleR1 = 100;
@@ -452,11 +529,11 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 
   circleR1 = SpecMATSimDetectorConstruction::ComputeCircleR1();
 
-  // Define segment which will contain crystals
-  G4NistManager* nist = G4NistManager::Instance();
+  // Define segment which will conain crystals
+  nist = G4NistManager::Instance();
   segment_mat = nist->FindOrBuildMaterial("G4_Galactic", false);
   G4VSolid* segmentBox = new G4Box("segmentBox",
-				sciHousSizeX*nbCrystInSegmentRow,
+				sciHousSizeX*nbCrystInSegmentRow+gap*(nbCrystInSegmentRow-1)/2,
 				sciHousSizeY*nbCrystInSegmentColumn,
 				sciHousSizeZ+sciWindSizeZ);
 
@@ -522,7 +599,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   //Defines insulation tube between the field cage and the vacuum chamber which might be used for preventing sparks in the real setup
   //And its stopping power should be simulated
   //
-  if (vacuumChamber == "yes" && insulationTube == "yes") {
+  if (/*vacuumChamber == "yes" &&*/ insulationTube == "yes") {
       //Geometry of the insulation Tube
       insulationTubeInnerRadius = circleR1-insulationTubeThickness;
       insulationTubeOuterRadius = circleR1;
@@ -577,7 +654,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
             segmentBoxLog = new G4LogicalVolume(segmentBox,
                           segment_mat,
                           "segmentBoxLog");
-			G4ThreeVector positionInSegment = G4ThreeVector(-(nbCrystInSegmentRow*sciHousSizeX-sciHousSizeX), -(nbCrystInSegmentColumn*sciHousSizeY-sciHousSizeY), (sciHousSizeZ-sciCrystSizeZ-sciWindSizeZ));
+			G4ThreeVector positionInSegment = G4ThreeVector(-(nbCrystInSegmentRow*sciHousSizeX+gap*(nbCrystInSegmentRow-1)/2-sciHousSizeX), -(nbCrystInSegmentColumn*sciHousSizeY-sciHousSizeY), (sciHousSizeZ-sciCrystSizeZ-sciWindSizeZ));
 			for (G4int icrystRow = 0; icrystRow < nbCrystInSegmentColumn; icrystRow++) {
 				for (G4int icrystCol = 0; icrystCol < nbCrystInSegmentRow; icrystCol++) {
 						G4RotationMatrix rotm1  = G4RotationMatrix();
@@ -627,9 +704,9 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 										  crysNb,
 										  fCheckOverlaps);
 						crysNb += 1;
-						positionInSegment += G4ThreeVector(sciHousSizeX*2, 0., 0.);
+						positionInSegment += G4ThreeVector(sciHousSizeX*2+gap, 0., 0.);
 				}
-				positionInSegment -= G4ThreeVector(nbCrystInSegmentRow*sciHousSizeX*2, 0., 0.);
+				positionInSegment -= G4ThreeVector(nbCrystInSegmentRow*sciHousSizeX*2+gap*(nbCrystInSegmentRow), 0., 0.);
 				positionInSegment += G4ThreeVector(0., sciHousSizeY*2, 0.);
 			}
             //segment and flange positioning
@@ -724,7 +801,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   G4cout <<"$$$$"<<" Flange thickness in front of the window: "<<vacuumFlangeThickFrontOfScint<<"mm "<< G4endl;
   }
   G4cout <<"$$$$"<< G4endl;
-  if (vacuumChamber == "yes" && insulationTube == "yes") {
+  if (/*vacuumChamber == "yes" &&*/ insulationTube == "yes") {
   G4cout <<"$$$$"<<" Insulator material: "<<insulationTubeMat->GetName()<< G4endl;
   G4cout <<"$$$$"<<" Insulator thickness: "<<insulationTubeThickness<<"mm "<< G4endl;
   G4cout <<"$$$$"<<" Insulator tube outer radius: "<<insulationTubeOuterRadius<<"mm "<< G4endl;

@@ -94,8 +94,7 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
   G4cout << "length: " << stepLength/mm << "mm" << G4endl;
   G4cout << "edep: " << edep/keV << "keV" << G4endl;
   G4cout << "time: "<< timeing << G4endl;
-  */
-  /* //Uncomment this part and similar part in SteppingAction.cc to have all this information in the outpu file
+
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   analysisManager->FillNtupleDColumn(4, eventNb);
@@ -113,7 +112,6 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
   analysisManager->FillNtupleDColumn(16, timeing);
   analysisManager->AddNtupleRow();
   */
-
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

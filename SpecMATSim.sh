@@ -1,4 +1,32 @@
 #!/bin/bash
+iterator=5000
+while [ $iterator -le 10000 ]
+do
+ba="gammaEnergy="
+ca=$iterator
+
+ea=$ba$ca
+
+if [ $iterator -lt 200 ]
+then
+	((iterator=iterator+10))
+elif [ $iterator -ge 200 ] && [ $iterator -lt 1000 ]
+then
+	((iterator=iterator+100))
+elif [ $iterator -ge 1000 ]
+then
+	((iterator=iterator+1000))
+fi
+
+
+cb=$iterator
+eb=$ba$cb
+
+ga="s/$ea/$eb/g"
+
+sed -i "s/$ea/$eb/g" /mnt/ksf2/H1/user/u0107893/linux/SpecMATscint/src/SpecMATSimPrimaryGeneratorAction.cc
+
+make -j4
 ./SpecMATSim SpecMATSim.in > SpecMATSim.out &
 PID=$!
 # Note: From http://stackoverflow.com/questions/12199631/convert-seconds-to-hours-minutes-seconds
@@ -57,7 +85,7 @@ function showBar {
 # Start Script
 clear
 HIDECURSOR
-echo -e ""
+echo -e $ga
 echo -e ""
 DRAW    #magic starts here - must use caps in draw mode
 echo -e "           PLEASE WAIT WHILE SIMULATION IS RUNNING"
@@ -111,3 +139,4 @@ NORM
 #        sleep 0.1
 #  done
 #done
+done
