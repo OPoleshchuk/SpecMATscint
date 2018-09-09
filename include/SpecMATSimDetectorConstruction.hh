@@ -176,6 +176,7 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
 
     G4VPhysicalVolume* physWorld;
 
+    G4VisAttributes* worldVisAtt;
     G4VisAttributes* sciCrystVisAtt;
     G4VisAttributes* ComptSuppVisAtt;
     G4VisAttributes* sciWindVisAtt;

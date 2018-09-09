@@ -35,8 +35,8 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   //****************************************************************************//
   // Dimensions of world
   // half-size
-  worldSizeXY = 60*cm;
-  worldSizeZ  = 60*cm;
+  worldSizeXY = 40*cm;
+  worldSizeZ  = 40*cm;
 
   G4double z1, a1, fractionmass1, density1;
     G4String name1, symbol1;
@@ -75,7 +75,14 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
                       false,                 //no boolean operation
                       0,                     //copy number
                       fCheckOverlaps);       // checking overlaps
-  //****************************************************************************//
+
+  worldVisAtt =
+	  new G4VisAttributes();					//Instantiation of visualization attributes with blue colour
+  worldVisAtt->SetVisibility(false);							//Pass this object to Visualization Manager for visualization
+
+  //sciCrystVisAtt->SetForceWireframe(true);						//I still believe that it might make Crystal transparent
+  logicWorld->SetVisAttributes(worldVisAtt);
+//****************************************************************************//
   //******************************* Detector Array *****************************//
   //****************************************************************************//
   // How many segments and crystal rings in the detector
@@ -487,8 +494,8 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
 
   ComptSuppMat = LaBr3;
 
-  ComptSuppSizeX = 24.*mm;								//Size and position of all components depends on Crystal size and position.
-  ComptSuppSizeY = 24.*mm;
+  ComptSuppSizeX = 29.869*mm;								//Size and position of all components depends on Crystal size and position.
+  ComptSuppSizeY = (112.295/2)*mm;
   ComptSuppSizeZ = sciHousSizeX*3*mm + (gap/2)*2*mm;
 
   // Position of the Compton Suppressor
@@ -506,10 +513,17 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   // Define box for Compton Suppressor
   ComptSuppSolid =
 	  new G4Trap("ComptSuppSolid",
-		    ComptSuppSizeZ,
-		    ComptSuppSizeX,
-            ComptSuppSizeY,
-		    1);
+		    ComptSuppSizeZ*2,
+		    ComptSuppSizeY*2,
+            ComptSuppSizeX*2,
+		    1*2);
+      /*new G4Trap("ComptSuppSolid",
+        	ComptSuppSizeY,
+            ComptSuppSizeX,
+            ComptSuppSizeZ,
+        	0,
+            0,
+        	78);*/
 
   // Define Logical Volume for Compton Suppressor
   ComptSuppLog =
