@@ -561,8 +561,8 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   if (ComptSupp == "yes") {
       ComptSuppMat = LaBr3;
 
-      ComptSuppSizeX = 29.869*mm;								//Size and position of all components depends on Crystal size and position.
-      ComptSuppSizeY = (112.295/2)*mm;
+      ComptSuppSizeX = 24.*mm;								//Size and position of all components depends on Crystal size and position.
+      ComptSuppSizeY = 108.*mm;
       ComptSuppSizeZ = sciHousSizeX*3*mm + (gap/2)*2*mm;
 
       // Position of the Compton Suppressor
@@ -579,45 +579,45 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     			      ComptSuppPosZ);
       // Define box for Compton Suppressor
       ComptSuppSolid =
-    	  /*new G4Trap("ComptSuppSolid",
+    	  new G4Trap("ComptSuppSolid",
     		    ComptSuppSizeZ*2,
-    		    ComptSuppSizeY*2,
-                ComptSuppSizeX,
-    		    1*2);*/
+    		    108,
+                24,
+    		    1.06278);
           /*new G4Trap("ComptSuppSolid",
-            	ComptSuppSizeY,
-                ComptSuppSizeX,
+            	1,
+                ComptSuppSizeY,
                 ComptSuppSizeZ,
             	10,
                 10,
-            	78);*/
-        new G4Trap("ComptSuppSolid",
+            	90);*/
+        /*new G4Trap("ComptSuppSolid",
   		    ComptSuppSizeZ,
-            12,
-            12,
+            90,
+            90,
             ComptSuppSizeY,
             ComptSuppSizeX,
             ComptSuppSizeX,
-            90,
+            12,
   		    ComptSuppSizeY,
             1,
             1,
-  		    90);
+  		    12);*/
 
-        G4RotationMatrix ComptSuppRotm  = G4RotationMatrix();     //** rotation matrix for positioning ComptSupp
+        G4RotationMatrix ComptSuppRotmUp  = G4RotationMatrix();     //** rotation matrix for positioning ComptSupp
         //rotm.rotateY(90*deg);                            //** rotation matrix for positioning ComptSupp
-        ComptSuppRotm.rotateZ(90*deg);                               //** rotation matrix for positioning ComptSupp
+        ComptSuppRotmUp.rotateZ(90*deg+dPhi/2);                               //** rotation matrix for positioning ComptSupp
 
-        G4ThreeVector positionComptSupp = G4ThreeVector(0., 0., -300.);
+        G4ThreeVector positionComptSuppUp = G4ThreeVector(59*std::cos(dPhi/2)+circleR1, 6+59*std::sin(dPhi/2)+27.5, 0);
 
-        G4Transform3D transformComptSupp = G4Transform3D(ComptSuppRotm,positionComptSupp);
+        G4Transform3D transformComptSuppUp = G4Transform3D(ComptSuppRotmUp,positionComptSuppUp);
 
       // Define Logical Volume for Compton Suppressor
       ComptSuppLog =
     	  new G4LogicalVolume(ComptSuppSolid,
     			      ComptSuppMat,
     			      "ComptSupp");
-          new G4PVPlacement(    transformComptSupp,         				//at sciCrystPos
+          new G4PVPlacement(    transformComptSuppUp,         				//at sciCrystPos
                         	    ComptSuppLog,                			//Crystal logical volume
                         	    "ComptSuppPl",              				//Crystal positioning name
                         	    logicWorld,              				//its mother  volume
@@ -628,7 +628,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 
       // Visualization attributes for the Compton Suppressor logical volume
       ComptSuppVisAtt =
-    	  new G4VisAttributes(G4Colour(0.0, 0.0, 1.0));					//Instantiation of visualization attributes with blue colour
+    	  new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));					//Instantiation of visualization attributes with blue colour
       ComptSuppVisAtt->SetVisibility(true);							    //Pass this object to Visualization Manager for visualization
       ComptSuppVisAtt->SetForceSolid(true);
       //ComptSuppVisAtt->SetForceWireframe(true);						//I still believe that it might make Crystal transparent
