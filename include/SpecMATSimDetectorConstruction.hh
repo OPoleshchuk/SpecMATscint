@@ -166,7 +166,8 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
 
     G4LogicalVolume* logicWorld;
     G4LogicalVolume* sciCrystLog;
-    G4LogicalVolume* ComptSuppLog;
+    G4LogicalVolume* ComptSuppLogUp;
+    G4LogicalVolume* ComptSuppLogDown;
     G4LogicalVolume* sciWindLog;
     G4LogicalVolume* sciReflLog;
     G4LogicalVolume* sciHousLog;
@@ -180,7 +181,8 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
 
     G4VisAttributes* worldVisAtt;
     G4VisAttributes* sciCrystVisAtt;
-    G4VisAttributes* ComptSuppVisAtt;
+    G4VisAttributes* ComptSuppVisAttUp;
+    G4VisAttributes* ComptSuppVisAttDown;
     G4VisAttributes* sciWindVisAtt;
     G4VisAttributes* sciReflVisAtt;
     G4VisAttributes* sciHousVisAtt;
