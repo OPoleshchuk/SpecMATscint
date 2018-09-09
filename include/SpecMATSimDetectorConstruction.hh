@@ -60,6 +60,8 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4double insulationTubeInnerRadius;
     G4double insulationTubeOuterRadius;
 
+    G4String ComptSupp;
+
     G4double dPhi;
     G4double half_dPhi;
     G4double tandPhi;
