@@ -38,10 +38,10 @@
 /vis/viewer/set/viewpointVector 0 0 -1
 /vis/viewer/set/lightsVector 0 0 -1
 # Specify view angle:
-/vis/viewer/set/viewpointThetaPhi 180. 0.
+#/vis/viewer/set/viewpointThetaPhi 180. 0.
 #
 # Specify zoom value:
-/vis/viewer/zoom 2
+/vis/viewer/zoom 1
 #
 # Specify style (surface, wireframe, auxiliary edges,...)
 #/vis/viewer/set/style wireframe
@@ -49,7 +49,7 @@
 #/vis/viewer/set/lineSegmentsPerCircle 100
 #
 # Draw coordinate axes:
-/vis/scene/add/axes 0 0 0 0.25 m
+/vis/scene/add/axes 0 0 0 0.1 m
 #
 # Draw smooth trajectories at end of event, showing trajectory points
 # as markers 2 pixels wide:
@@ -87,7 +87,7 @@
 
 /vis/viewer/set/style wireframe
 /vis/viewer/set/hiddenMarker true
-#/vis/viewer/set/viewpointThetaPhi 120 150
+/vis/viewer/set/viewpointThetaPhi 120 150
 #
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true
