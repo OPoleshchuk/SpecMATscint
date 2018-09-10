@@ -31,6 +31,9 @@ class SpecMATSimEventAction : public G4UserEventAction
     void SetPrintModulo(G4int value);
 
     G4double absoEdep;
+    G4double edepComptSuppRes;
+
+
 
   private:
   // methods
@@ -47,6 +50,12 @@ class SpecMATSimEventAction : public G4UserEventAction
 
     G4Material* crystMat;
     G4int fPrintModulo;
+
+    G4int copyNbComptSupp;
+    G4double edepComptSupp;
+
+    G4int copyNb;
+    G4double edep;
 };
 
 // inline functions

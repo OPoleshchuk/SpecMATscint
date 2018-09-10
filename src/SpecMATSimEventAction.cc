@@ -109,8 +109,8 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
   std::map<G4int,G4double*>::iterator itr;
 
   for (itr = eventMapCryst->GetMap()->begin(); itr != eventMapCryst->GetMap()->end(); itr++) {
-    G4int copyNb  = (itr->first);
-    G4double edep = *(itr->second);
+    copyNb  = (itr->first);
+    edep = *(itr->second);
     if (edep > eThreshold) nbOfFired++;
     crystMat = sciCryst->GetSciCrystMat();
 
@@ -145,31 +145,21 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
 
 
 
-
+    G4int nbOfFiredComptSupp = 0;
     G4THitsMap<G4double>* eventMapComptSupp =
                        (G4THitsMap<G4double>*)(HCE->GetHC(fCollID_ComptSupp));
 
     std::map<G4int,G4double*>::iterator itr;
 
     for (itr = eventMapComptSupp->GetMap()->begin(); itr != eventMapComptSupp->GetMap()->end(); itr++) {
-      G4int copyNbComptSupp  = (itr->first);
-      G4double edepComptSupp = *(itr->second);
-      if (edep > eThreshold) nbOfFired++;
-      crystMat = sciCryst->GetSciCrystMat();
+      copyNbComptSupp  = (itr->first);
+      edepComptSupp = *(itr->second);
+      if (edepComptSupp > eThreshold) nbOfFiredComptSupp++;
 
-      if (crystMat->GetName() == "CeBr3") {
-      //Resolution correction of registered gamma energy for CeBr3.
-      edepComptSupp = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
-      }
-      else if (crystMat->GetName() == "LaBr3") {
-      //Resolution correction of registered gamma energy for LaBr3.
-      edepComptSupp = G4RandGauss::shoot(edep/keV, (((edep/keV)*(81*pow(edep/keV, -0.501))/100)/2.355));
-      }
-      else {
-      edepComptSupp = edep/keV;
-      }
+      edepComptSuppRes = G4RandGauss::shoot(edepComptSupp/keV, (((edepComptSupp/keV)*(108*pow(edepComptSupp/keV, -0.498))/100)/2.355));
 
-      G4cout << "\n" << crystMat->GetName() +  " Nb" << copyNbComptSupp << ": E " << edep/keV << " keV, Resolution Corrected E "<< edepComptSupp << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
+
+      G4cout << "\n" << "ComptSupp Nb" << copyNbComptSupp << ": E " << edepComptSupp/keV << " keV, Resolution Corrected E "<< edepComptSuppRes << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
 
       // get analysis manager
       //
@@ -179,7 +169,7 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
       //
 
       if (copyNbComptSupp > (99)) {
-          analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1+copyNbComptSupp-100, edepComptSupp);
+          analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1+copyNbComptSupp-100, edepComptSuppRes);
       }
     }
     // fill ntuple
@@ -188,6 +178,9 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     analysisManager->FillNtupleDColumn(1, copyNb);
     analysisManager->FillNtupleDColumn(2, absoEdep);
     analysisManager->FillNtupleDColumn(3, edep/keV);
+    analysisManager->FillNtupleDColumn(4, copyNbComptSupp);
+    analysisManager->FillNtupleDColumn(5, edepComptSuppRes);
+    analysisManager->FillNtupleDColumn(6, edepComptSupp/keV);
     analysisManager->AddNtupleRow();
   }
 }
