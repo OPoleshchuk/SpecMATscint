@@ -101,7 +101,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   insulationTube = "no"; //"yes"/"no"
   insulationTubeThickness = 3*mm;
 
-  ComptSupp = "yes";
+  ComptSupp = "no";
 
   dPhi = twopi/nbSegments;
   half_dPhi = 0.5*dPhi;
@@ -620,25 +620,32 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
                   ComptSuppSolidBoxDown,
                   transformComptSuppBoxDown);
 
-    G4RotationMatrix ComptSuppTrapRotm  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
-    ComptSuppTrapRotm.rotateZ(dPhi/2);                                      //** rotation matrix for positioning ComptSupp
-
-    G4ThreeVector positionComptSuppTrap = G4ThreeVector((117/2+circleR1/std::cos(dPhi/2))*std::cos(dPhi/2), (117/2+circleR1/std::cos(dPhi/2))*std::sin(dPhi/2), 0);
-
-    G4Transform3D transformComptSuppTrap = G4Transform3D(ComptSuppTrapRotm,positionComptSuppTrap);
+    G4double rotationAngle=dPhi/2;
 
     ComptSuppTrapLog =
          new G4LogicalVolume(ComptSuppSolidBoxWithoutDown,
                      ComptSuppMat,
                      "ComptSuppTrap");
 
-         new G4PVPlacement(transformComptSuppTrap,
-                           ComptSuppTrapLog,                	//Crystal logical volume
-                           "ComptSuppTrapPl",              	    //Crystal positioning name
-                           logicWorld,              				//its mother  volume
-                           false,                   				//no boolean operation
-                           0,                       				//copy number
-                           fCheckOverlaps);          				//overlaps checking  */
+         for (G4int i = 0; i < nbSegments; i++) {
+
+             G4RotationMatrix ComptSuppTrapRotm  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
+             ComptSuppTrapRotm.rotateZ(rotationAngle);                                      //** rotation matrix for positioning ComptSupp
+
+             G4ThreeVector positionComptSuppTrap = G4ThreeVector((117/2+circleR1/std::cos(dPhi/2))*std::cos(rotationAngle), (117/2+circleR1/std::cos(dPhi/2))*std::sin(rotationAngle), 0);
+
+             G4Transform3D transformComptSuppTrap = G4Transform3D(ComptSuppTrapRotm,positionComptSuppTrap);
+
+             new G4PVPlacement(transformComptSuppTrap,
+                               ComptSuppTrapLog,                	//Crystal logical volume
+                               "ComptSuppTrapPl",              	    //Crystal positioning name
+                               logicWorld,              				//its mother  volume
+                               false,                   				//no boolean operation
+                               i,                       				//copy number
+                               fCheckOverlaps);          				//overlaps checking  */
+             rotationAngle += dPhi;
+         }
+
 
 
       // Visualization attributes for the Compton Suppressor logical volume
@@ -949,12 +956,13 @@ void SpecMATSimDetectorConstruction::CreateScorers()
   SDman->AddNewDetector(cryst);
   sciCrystLog->SetSensitiveDetector(cryst);
 
-
-  G4MultiFunctionalDetector* ComptSupp = new G4MultiFunctionalDetector("ComptSupp");
-  G4PSEnergyDeposit* ComptSuppPrimitiv = new G4PSEnergyDeposit("edep");
-  ComptSupp->RegisterPrimitive(ComptSuppPrimitiv);
-  SDman->AddNewDetector(ComptSupp);
-  ComptSuppTrapLog->SetSensitiveDetector(ComptSupp);
+  if (ComptSupp == "yes") {
+      G4MultiFunctionalDetector* ComptSupp = new G4MultiFunctionalDetector("ComptSupp");
+      G4PSEnergyDeposit* ComptSuppPrimitiv = new G4PSEnergyDeposit("edep");
+      ComptSupp->RegisterPrimitive(ComptSuppPrimitiv);
+      SDman->AddNewDetector(ComptSupp);
+      ComptSuppTrapLog->SetSensitiveDetector(ComptSupp);
+  }
 }
 
 // ###################################################################################
