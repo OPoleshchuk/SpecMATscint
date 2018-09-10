@@ -577,14 +577,14 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
         	  new G4Box("ComptSuppSolid",
         		    117/2,
         		    30,
-                    ComptSuppSizeZ/2);
+                    ComptSuppSizeZ);
 
 
     ComptSuppSolidBoxUp =
             new G4Box("ComptSuppSolidUp",
                   200,
                   30*std::cos(dPhi/2),
-                  ComptSuppSizeZ);
+                  2*ComptSuppSizeZ);
 
     G4RotationMatrix ComptSuppRotmBoxUp  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
     ComptSuppRotmBoxUp.rotateZ(dPhi/2);                                      //** rotation matrix for positioning ComptSupp
@@ -598,7 +598,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
           new G4Box("ComptSuppSolidDown",
                 200,
                 30*std::cos(dPhi/2),
-                ComptSuppSizeZ);
+                2*ComptSuppSizeZ);
 
     G4RotationMatrix ComptSuppRotmBoxDown  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
     ComptSuppRotmBoxDown.rotateZ(-dPhi/2);                               //** rotation matrix for positioning ComptSupp
@@ -623,17 +623,18 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     G4RotationMatrix ComptSuppTrapRotm  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
     ComptSuppTrapRotm.rotateZ(dPhi/2);                                      //** rotation matrix for positioning ComptSupp
 
-    G4ThreeVector positionComptSuppTrap = G4ThreeVector((117/2)*std::cos(dPhi/2)+circleR1, (117/2)*std::sin(dPhi/2)+27.5, 0);
+    G4ThreeVector positionComptSuppTrap = G4ThreeVector((117/2+circleR1/std::cos(dPhi/2))*std::cos(dPhi/2), (117/2+circleR1/std::cos(dPhi/2))*std::sin(dPhi/2), 0);
 
     G4Transform3D transformComptSuppTrap = G4Transform3D(ComptSuppTrapRotm,positionComptSuppTrap);
 
     ComptSuppTrapLog =
          new G4LogicalVolume(ComptSuppSolidBoxWithoutDown,
                      ComptSuppMat,
-                     "ComptSuppBox");
+                     "ComptSuppTrap");
+
          new G4PVPlacement(transformComptSuppTrap,
                            ComptSuppTrapLog,                	//Crystal logical volume
-                           "ComptSuppBoxDownPl",              	    //Crystal positioning name
+                           "ComptSuppTrapPl",              	    //Crystal positioning name
                            logicWorld,              				//its mother  volume
                            false,                   				//no boolean operation
                            0,                       				//copy number
