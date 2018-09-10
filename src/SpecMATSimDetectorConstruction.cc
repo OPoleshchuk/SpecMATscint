@@ -568,99 +568,86 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
       // Position of the Compton Suppressor
       ComptSuppPosX = 0;									//Position of the Compton Suppressor along the X axis
       ComptSuppPosY = 0;									//Position of the Compton Suppressor along the Y axis
-      ComptSuppPosZ = -300; 			 						//Position of the Compton Suppressor along the Z axis
+      ComptSuppPosZ = -300; 			 					//Position of the Compton Suppressor along the Z axis
 
       G4ThreeVector ComptSuppPos = G4ThreeVector(ComptSuppPosX,
     		  			    ComptSuppPosY,
     					    ComptSuppPosZ);
-
-      ComptSuppPos = G4ThreeVector(ComptSuppPosX,
-    		  	      ComptSuppPosY,
-    			      ComptSuppPosZ);
-      // Define box for Compton Suppressor
-      ComptSuppSolid =
-    	  new G4Trap("ComptSuppSolid",
-    		    ComptSuppSizeZ*2,
-    		    108,
-                24,
-    		    1.06278);
-          /*new G4Trap("ComptSuppSolid",
-            	1,
-                ComptSuppSizeY,
-                ComptSuppSizeZ,
-            	10,
-                10,
-            	90);*/
-        /*new G4Trap("ComptSuppSolid",
-  		    ComptSuppSizeZ,
-            90,
-            90,
-            ComptSuppSizeY,
-            ComptSuppSizeX,
-            ComptSuppSizeX,
-            12,
-  		    ComptSuppSizeY,
-            1,
-            1,
-  		    12);*/
-        // For the upper segment of the Compton Suppressor
-        G4RotationMatrix ComptSuppRotmUp  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
-        //rotm.rotateY(90*deg);                                               //** rotation matrix for positioning ComptSupp
-        ComptSuppRotmUp.rotateZ(90*deg+dPhi/2);                               //** rotation matrix for positioning ComptSupp
-
-        G4ThreeVector positionComptSuppUp = G4ThreeVector((59)*std::cos(dPhi/2)+circleR1-6*std::sin(dPhi/2), -6+27.5+24*std::cos(dPhi/2)+0.5105, 0);
-
-        G4Transform3D transformComptSuppUp = G4Transform3D(ComptSuppRotmUp,positionComptSuppUp);
-
-        // Define Logical Volume for upper part of Compton Suppressor
-        ComptSuppLogUp =
-      	  new G4LogicalVolume(ComptSuppSolid,
-      			      ComptSuppMat,
-      			      "ComptSuppUp");
-          new G4PVPlacement(transformComptSuppUp,         			//at sciCrystPos
-                      	    ComptSuppLogUp,                			//Crystal logical volume
-                      	    "ComptSuppUpPl",              			//Crystal positioning name
-                      	    logicWorld,              				//its mother  volume
-                      	    false,                   				//no boolean operation
-                      	    0,                       				//copy number
-                      	    fCheckOverlaps);          				//overlaps checking
+      ComptSuppSolidBox =
+        	  new G4Box("ComptSuppSolid",
+        		    117/2,
+        		    30,
+                    ComptSuppSizeZ/2);
 
 
-        // For the bottom segment of the Compton Suppressor
-        G4RotationMatrix ComptSuppRotmDown  = G4RotationMatrix();     //** rotation matrix for positioning ComptSupp
-        ComptSuppRotmDown.rotateY(180*deg);                                       //** rotation matrix for positioning ComptSupp
-        ComptSuppRotmDown.rotateZ(90*deg+dPhi/2);                     //** rotation matrix for positioning ComptSupp
+    ComptSuppSolidBoxUp =
+            new G4Box("ComptSuppSolidUp",
+                  200,
+                  30*std::cos(dPhi/2),
+                  ComptSuppSizeZ);
 
-        G4ThreeVector positionComptSuppDown = G4ThreeVector((59+circleR1)*std::cos(dPhi/2)+6*std::sin(dPhi/2), 6+27.5+0.5105, 0);
+    G4RotationMatrix ComptSuppRotmBoxUp  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
+    ComptSuppRotmBoxUp.rotateZ(dPhi/2);                                      //** rotation matrix for positioning ComptSupp
 
-        G4Transform3D transformComptSuppDown = G4Transform3D(ComptSuppRotmDown,positionComptSuppDown);
+    G4ThreeVector positionComptSuppBoxUp = G4ThreeVector(-117/2, 30, 0);
 
-        ComptSuppLogDown =
-      	  new G4LogicalVolume(ComptSuppSolid,
-      			      ComptSuppMat,
-      			      "ComptSuppDown");
-          new G4PVPlacement(transformComptSuppDown,         		//at sciCrystPos
-                      	    ComptSuppLogDown,                		//Crystal logical volume
-                      	    "ComptSuppDownPl",              		//Crystal positioning name
-                      	    logicWorld,              				//its mother  volume
-                      	    false,                   				//no boolean operation
-                      	    0,                       				//copy number
-                      	    fCheckOverlaps);          				//overlaps checking
+    G4Transform3D transformComptSuppBoxUp = G4Transform3D(ComptSuppRotmBoxUp,positionComptSuppBoxUp);
 
+
+    ComptSuppSolidBoxDown =
+          new G4Box("ComptSuppSolidDown",
+                200,
+                30*std::cos(dPhi/2),
+                ComptSuppSizeZ);
+
+    G4RotationMatrix ComptSuppRotmBoxDown  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
+    ComptSuppRotmBoxDown.rotateZ(-dPhi/2);                               //** rotation matrix for positioning ComptSupp
+
+    G4ThreeVector positionComptSuppBoxDown = G4ThreeVector(-117/2, -30, 0);
+
+    G4Transform3D transformComptSuppBoxDown = G4Transform3D(ComptSuppRotmBoxDown,positionComptSuppBoxDown);
+
+
+    G4VSolid* ComptSuppSolidBoxWithoutUp =
+        new G4SubtractionSolid("ComptSuppSolidBoxWithoutUp",
+                   ComptSuppSolidBox,
+                   ComptSuppSolidBoxUp,
+                   transformComptSuppBoxUp);
+
+    G4VSolid* ComptSuppSolidBoxWithoutDown =
+       new G4SubtractionSolid("ComptSuppSolidBoxWithoutDown",
+                  ComptSuppSolidBoxWithoutUp,
+                  ComptSuppSolidBoxDown,
+                  transformComptSuppBoxDown);
+
+    G4RotationMatrix ComptSuppTrapRotm  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
+    ComptSuppTrapRotm.rotateZ(dPhi/2);                                      //** rotation matrix for positioning ComptSupp
+
+    G4ThreeVector positionComptSuppTrap = G4ThreeVector((117/2)*std::cos(dPhi/2)+circleR1, (117/2)*std::sin(dPhi/2)+27.5, 0);
+
+    G4Transform3D transformComptSuppTrap = G4Transform3D(ComptSuppTrapRotm,positionComptSuppTrap);
+
+    ComptSuppTrapLog =
+         new G4LogicalVolume(ComptSuppSolidBoxWithoutDown,
+                     ComptSuppMat,
+                     "ComptSuppBox");
+         new G4PVPlacement(transformComptSuppTrap,
+                           ComptSuppTrapLog,                	//Crystal logical volume
+                           "ComptSuppBoxDownPl",              	    //Crystal positioning name
+                           logicWorld,              				//its mother  volume
+                           false,                   				//no boolean operation
+                           0,                       				//copy number
+                           fCheckOverlaps);          				//overlaps checking  */
 
 
       // Visualization attributes for the Compton Suppressor logical volume
-      ComptSuppVisAttUp =
+      ComptSuppVisAtt =
     	  new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));					//Instantiation of visualization attributes with blue colour
-      ComptSuppVisAttUp->SetVisibility(true);							    //Pass this object to Visualization Manager for visualization
-      ComptSuppVisAttUp->SetForceSolid(true);
-      //ComptSuppVisAtt->SetForceWireframe(true);						//I still believe that it might make Crystal transparent
-      ComptSuppLogUp->SetVisAttributes(ComptSuppVisAttUp);					//Assignment of visualization attributes to the logical volume of the Crystal
-      ComptSuppVisAttDown =
-    	  new G4VisAttributes(G4Colour(1.0, 1.0, 0.0));					//Instantiation of visualization attributes with blue colour
-      ComptSuppVisAttDown->SetVisibility(true);							    //Pass this object to Visualization Manager for visualization
-      ComptSuppVisAttDown->SetForceSolid(true);
-      ComptSuppLogDown->SetVisAttributes(ComptSuppVisAttDown);
+      ComptSuppVisAtt->SetVisibility(true);							    //Pass this object to Visualization Manager for visualization
+      ComptSuppVisAtt->SetForceSolid(true);
+
+      ComptSuppTrapLog->SetVisAttributes(ComptSuppVisAtt);					//Assignment of visualization attributes to the logical volume of the Crystal
+
   }
 
 
@@ -961,12 +948,12 @@ void SpecMATSimDetectorConstruction::CreateScorers()
   SDman->AddNewDetector(cryst);
   sciCrystLog->SetSensitiveDetector(cryst);
 
+
   G4MultiFunctionalDetector* ComptSupp = new G4MultiFunctionalDetector("ComptSupp");
   G4PSEnergyDeposit* ComptSuppPrimitiv = new G4PSEnergyDeposit("edep");
   ComptSupp->RegisterPrimitive(ComptSuppPrimitiv);
   SDman->AddNewDetector(ComptSupp);
-  ComptSuppLogUp->SetSensitiveDetector(ComptSupp);
-  ComptSuppLogDown->SetSensitiveDetector(ComptSupp);
+  ComptSuppTrapLog->SetSensitiveDetector(ComptSupp);
 }
 
 // ###################################################################################
