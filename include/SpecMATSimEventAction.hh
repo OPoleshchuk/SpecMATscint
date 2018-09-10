@@ -42,6 +42,7 @@ class SpecMATSimEventAction : public G4UserEventAction
     SpecMATSimRunAction*  fRunAct;
 
     G4int fCollID_cryst;
+    G4int fCollID_ComptSupp;
 	G4int fCollID_ring;
 
     G4Material* crystMat;

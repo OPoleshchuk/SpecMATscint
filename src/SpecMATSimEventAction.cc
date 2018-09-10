@@ -28,6 +28,7 @@ SpecMATSimEventAction::SpecMATSimEventAction(SpecMATSimRunAction* runAction)
    sciCryst(0),
    fRunAct(runAction),
    fCollID_cryst(0.),
+   fCollID_ComptSupp(0.),
    fPrintModulo(1)
 {
   sciCryst = new SpecMATSimDetectorConstruction();
@@ -79,6 +80,7 @@ void SpecMATSimEventAction::BeginOfEventAction(const G4Event* event )
   if (eventNb == 0) {
     G4SDManager* SDMan = G4SDManager::GetSDMpointer();
     fCollID_cryst   = SDMan->GetCollectionID("crystal/edep");
+    fCollID_ComptSupp = +SDMan->GetCollectionID("ComptSupp/edep");
   }
 
   if (eventNb%fPrintModulo == 0) {
@@ -132,9 +134,54 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
 
     // fill histograms
     //
+    if (copyNb <= ((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1)) {
     analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1, absoEdep);
     analysisManager->FillH1(copyNb, absoEdep);
+    }
 
+
+
+
+
+
+
+
+    G4THitsMap<G4double>* eventMapComptSupp =
+                       (G4THitsMap<G4double>*)(HCE->GetHC(fCollID_ComptSupp));
+
+    std::map<G4int,G4double*>::iterator itr;
+
+    for (itr = eventMapComptSupp->GetMap()->begin(); itr != eventMapComptSupp->GetMap()->end(); itr++) {
+      G4int copyNbComptSupp  = (itr->first);
+      G4double edepComptSupp = *(itr->second);
+      if (edep > eThreshold) nbOfFired++;
+      crystMat = sciCryst->GetSciCrystMat();
+
+      if (crystMat->GetName() == "CeBr3") {
+      //Resolution correction of registered gamma energy for CeBr3.
+      edepComptSupp = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
+      }
+      else if (crystMat->GetName() == "LaBr3") {
+      //Resolution correction of registered gamma energy for LaBr3.
+      edepComptSupp = G4RandGauss::shoot(edep/keV, (((edep/keV)*(81*pow(edep/keV, -0.501))/100)/2.355));
+      }
+      else {
+      edepComptSupp = edep/keV;
+      }
+
+      G4cout << "\n" << crystMat->GetName() +  " Nb" << copyNbComptSupp << ": E " << edep/keV << " keV, Resolution Corrected E "<< edepComptSupp << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
+
+      // get analysis manager
+      //
+      G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
+      // fill histograms
+      //
+
+      if (copyNbComptSupp > (99)) {
+          analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1+copyNbComptSupp-100, edepComptSupp);
+      }
+    }
     // fill ntuple
     //
     analysisManager->FillNtupleDColumn(0, eventNb);

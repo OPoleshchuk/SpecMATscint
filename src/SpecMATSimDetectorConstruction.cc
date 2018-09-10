@@ -82,7 +82,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
 
   //sciCrystVisAtt->SetForceWireframe(true);						//I still believe that it might make Crystal transparent
   logicWorld->SetVisAttributes(worldVisAtt);
-//****************************************************************************//
+  //****************************************************************************//
   //******************************* Detector Array *****************************//
   //****************************************************************************//
   // How many segments and crystal rings in the detector
