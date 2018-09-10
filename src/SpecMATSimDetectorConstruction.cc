@@ -101,7 +101,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   insulationTube = "no"; //"yes"/"no"
   insulationTubeThickness = 3*mm;
 
-  ComptSupp = "no";
+  ComptSupp = "yes";  //"yes"/"no"
 
   dPhi = twopi/nbSegments;
   half_dPhi = 0.5*dPhi;
@@ -559,7 +559,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   //****************** Compton Suppressor ******************//
   //--------------------------------------------------------//
   if (ComptSupp == "yes") {
-      ComptSuppMat = LaBr3;
+      ComptSuppMat = CeBr3;
 
       ComptSuppSizeX = 24.*mm;								//Size and position of all components depends on Crystal size and position.
       ComptSuppSizeY = 108.*mm;
@@ -641,7 +641,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
                                "ComptSuppTrapPl",              	    //Crystal positioning name
                                logicWorld,              				//its mother  volume
                                false,                   				//no boolean operation
-                               i,                       				//copy number
+                               100+i,                       				//copy number
                                fCheckOverlaps);          				//overlaps checking  */
              rotationAngle += dPhi;
          }

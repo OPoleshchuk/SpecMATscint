@@ -121,7 +121,10 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateH1(G4UIcommand::ConvertToString(crystNb),"Edep in crystal Nb" + G4UIcommand::ConvertToString(crystNb), 15501, 0., 15500*MeV);
   }
   analysisManager->CreateH1("Total", "Total Edep", 15501, 0., 15500*MeV);
-
+  G4int segmentNb;
+  for(segmentNb = 1; segmentNb <= (sciCryst->GetNbSegments()); segmentNb++) {
+  analysisManager->CreateH1(G4UIcommand::ConvertToString(100+segmentNb),"Edep in ComptSupp Nb" + G4UIcommand::ConvertToString(100+segmentNb), 15501, 0., 15500*MeV);
+  }
   // Creating ntuple
   //
   //From EventAction
