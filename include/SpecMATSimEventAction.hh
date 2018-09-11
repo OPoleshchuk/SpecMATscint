@@ -47,6 +47,9 @@ class SpecMATSimEventAction : public G4UserEventAction
     G4int fCollID_cryst;
     G4int fCollID_ComptSupp;
 	G4int fCollID_ring;
+    G4int eventNb;
+    G4int nbOfFired;
+    G4int nbOfFiredComptSupp;
 
     G4Material* crystMat;
     G4int fPrintModulo;
@@ -56,6 +59,8 @@ class SpecMATSimEventAction : public G4UserEventAction
 
     G4int copyNb;
     G4double edep;
+
+    
 };
 
 // inline functions

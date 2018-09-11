@@ -82,17 +82,20 @@ void SpecMATSimEventAction::BeginOfEventAction(const G4Event* event )
     fCollID_cryst   = SDMan->GetCollectionID("crystal/edep");
     fCollID_ComptSupp = +SDMan->GetCollectionID("ComptSupp/edep");
   }
-
+/*
   if (eventNb%fPrintModulo == 0) {
     G4cout << "\n---> Begin of event: " << eventNb << G4endl;
   }
+*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
 {
-  G4int eventNb = event->GetEventID();
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  eventNb = event->GetEventID();
+  analysisManager->FillNtupleDColumn(0, eventNb);
   //Hits collections
   //
   G4HCofThisEvent* HCE = event->GetHCofThisEvent();
@@ -101,7 +104,7 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
   //Energy in crystals : identify 'good events'
   //
   const G4double eThreshold = 0*eV;
-  G4int nbOfFired = 0;
+  nbOfFired = 0;
 
   G4THitsMap<G4double>* eventMapCryst =
                      (G4THitsMap<G4double>*)(HCE->GetHC(fCollID_cryst));
@@ -115,45 +118,49 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     crystMat = sciCryst->GetSciCrystMat();
 
     if (crystMat->GetName() == "CeBr3") {
-    //Resolution correction of registered gamma energy for CeBr3.
-    absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
+        //Resolution correction of registered gamma energy for CeBr3.
+        absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
     }
     else if (crystMat->GetName() == "LaBr3") {
-    //Resolution correction of registered gamma energy for LaBr3.
-    absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(81*pow(edep/keV, -0.501))/100)/2.355));
+        //Resolution correction of registered gamma energy for LaBr3.
+        absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(81*pow(edep/keV, -0.501))/100)/2.355));
     }
     else {
-    absoEdep = edep/keV;
+        absoEdep = edep/keV;
     }
 
     G4cout << "\n" << crystMat->GetName() +  " Nb" << copyNb << ": E " << edep/keV << " keV, Resolution Corrected E "<< absoEdep << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
 
     // get analysis manager
     //
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
     // fill histograms
     //
     if (copyNb <= ((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1)) {
-    analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1, absoEdep);
-    analysisManager->FillH1(copyNb, absoEdep);
+        analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1, absoEdep);
+        analysisManager->FillH1(copyNb, absoEdep);
+
+
+        analysisManager->FillNtupleDColumn(1, copyNb);
+        analysisManager->FillNtupleDColumn(2, absoEdep);
+        analysisManager->FillNtupleDColumn(3, edep/keV);
     }
+  }
 
 
 
 
 
 
-
-    G4int nbOfFiredComptSupp = 0;
+    nbOfFiredComptSupp = 0;
     G4THitsMap<G4double>* eventMapComptSupp =
                        (G4THitsMap<G4double>*)(HCE->GetHC(fCollID_ComptSupp));
 
-    std::map<G4int,G4double*>::iterator itr;
+    std::map<G4int,G4double*>::iterator itr2;
 
-    for (itr = eventMapComptSupp->GetMap()->begin(); itr != eventMapComptSupp->GetMap()->end(); itr++) {
-      copyNbComptSupp  = (itr->first);
-      edepComptSupp = *(itr->second);
+    for (itr2 = eventMapComptSupp->GetMap()->begin(); itr2 != eventMapComptSupp->GetMap()->end(); itr2++) {
+      copyNbComptSupp  = (itr2->first);
+      edepComptSupp = *(itr2->second);
       if (edepComptSupp > eThreshold) nbOfFiredComptSupp++;
 
       edepComptSuppRes = G4RandGauss::shoot(edepComptSupp/keV, (((edepComptSupp/keV)*(108*pow(edepComptSupp/keV, -0.498))/100)/2.355));
@@ -163,25 +170,25 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
 
       // get analysis manager
       //
-      G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
 
       // fill histograms
       //
 
       if (copyNbComptSupp > (99)) {
           analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1+copyNbComptSupp-100, edepComptSuppRes);
+
+
+          analysisManager->FillNtupleDColumn(4, copyNbComptSupp);
+          analysisManager->FillNtupleDColumn(5, edepComptSuppRes);
+          analysisManager->FillNtupleDColumn(6, edepComptSupp/keV);
+
       }
     }
-    // fill ntuple
-    //
-    analysisManager->FillNtupleDColumn(0, eventNb);
-    analysisManager->FillNtupleDColumn(1, copyNb);
-    analysisManager->FillNtupleDColumn(2, absoEdep);
-    analysisManager->FillNtupleDColumn(3, edep/keV);
-    analysisManager->FillNtupleDColumn(4, copyNbComptSupp);
-    analysisManager->FillNtupleDColumn(5, edepComptSuppRes);
-    analysisManager->FillNtupleDColumn(6, edepComptSupp/keV);
     analysisManager->AddNtupleRow();
-  }
+
+
+
+
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
