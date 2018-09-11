@@ -133,7 +133,7 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateNtupleDColumn("CrystNb");
   analysisManager->CreateNtupleDColumn("EdepRes");
   analysisManager->CreateNtupleDColumn("EdepNoRes");
-
+  analysisManager->CreateNtupleDColumn("EventCS");
   analysisManager->CreateNtupleDColumn("ComptSuppNb");
   analysisManager->CreateNtupleDColumn("EdepComptSuppRes");
   analysisManager->CreateNtupleDColumn("EdepComptSuppNoRes");

@@ -129,7 +129,7 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
         absoEdep = edep/keV;
     }
 
-    G4cout << "\n" << crystMat->GetName() +  " Nb" << copyNb << ": E " << edep/keV << " keV, Resolution Corrected E "<< absoEdep << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
+    //G4cout << "\n" << crystMat->GetName() +  " Nb" << copyNb << ": E " << edep/keV << " keV, Resolution Corrected E "<< absoEdep << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
 
     // get analysis manager
     //
@@ -140,10 +140,11 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
         analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1, absoEdep);
         analysisManager->FillH1(copyNb, absoEdep);
 
-
+        analysisManager->FillNtupleDColumn(0, eventNb);
         analysisManager->FillNtupleDColumn(1, copyNb);
         analysisManager->FillNtupleDColumn(2, absoEdep);
         analysisManager->FillNtupleDColumn(3, edep/keV);
+        analysisManager->AddNtupleRow();
     }
   }
 
@@ -166,7 +167,7 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
       edepComptSuppRes = G4RandGauss::shoot(edepComptSupp/keV, (((edepComptSupp/keV)*(108*pow(edepComptSupp/keV, -0.498))/100)/2.355));
 
 
-      G4cout << "\n" << "ComptSupp Nb" << copyNbComptSupp << ": E " << edepComptSupp/keV << " keV, Resolution Corrected E "<< edepComptSuppRes << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
+      //G4cout << "\n" << "ComptSupp Nb" << copyNbComptSupp << ": E " << edepComptSupp/keV << " keV, Resolution Corrected E "<< edepComptSuppRes << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
 
       // get analysis manager
       //
@@ -178,14 +179,16 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
       if (copyNbComptSupp > (99)) {
           analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1+copyNbComptSupp-100, edepComptSuppRes);
 
-
-          analysisManager->FillNtupleDColumn(4, copyNbComptSupp);
-          analysisManager->FillNtupleDColumn(5, edepComptSuppRes);
-          analysisManager->FillNtupleDColumn(6, edepComptSupp/keV);
+          analysisManager->FillNtupleDColumn(0, eventNb);
+          analysisManager->FillNtupleDColumn(4, eventNb);
+          analysisManager->FillNtupleDColumn(5, copyNbComptSupp);
+          analysisManager->FillNtupleDColumn(6, edepComptSuppRes);
+          analysisManager->FillNtupleDColumn(7, edepComptSupp/keV);
+          analysisManager->AddNtupleRow();
 
       }
     }
-    analysisManager->AddNtupleRow();
+
 
 
 
