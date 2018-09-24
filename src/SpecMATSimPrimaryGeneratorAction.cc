@@ -22,8 +22,8 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
    sciCryst(0),
    fParticleGun(0)
 {
-  source = "gamma";
-  //source = "ion";
+  //source = "gamma";
+  source = "ion";
 
   //################### Monoenergetic gamma source ############################//
   n_particle = 1;
@@ -81,9 +81,12 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
              = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
       fParticleGun->SetParticleDefinition(ion);
       fParticleGun->SetParticleCharge(ionCharge);
-      fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,0.*mm));
+      G4int randomNum = G4UniformRand()*131 - 65;
+	  G4cout << randomNum << G4endl;
+      fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm));
       fParticleGun->SetParticleEnergy(ionEnergy);
-      fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.));
+
+      fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,0.));
       fParticleGun->GeneratePrimaryVertex(anEvent);
   }
 
