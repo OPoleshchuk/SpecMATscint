@@ -164,7 +164,7 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
       edepComptSupp = *(itr2->second);
       if (edepComptSupp > eThreshold) nbOfFiredComptSupp++;
 
-      edepComptSuppRes = G4RandGauss::shoot(edepComptSupp/keV, (((edepComptSupp/keV)*(108*pow(edepComptSupp/keV, -0.498))/100)/2.355));
+      edepComptSuppRes = G4RandGauss::shoot(edepComptSupp/keV, (((edepComptSupp/keV)*(398*pow(edepComptSupp/keV, -0.584))/100)/2.355));
 
 
       //G4cout << "\n" << "ComptSupp Nb" << copyNbComptSupp << ": E " << edepComptSupp/keV << " keV, Resolution Corrected E "<< edepComptSuppRes << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;

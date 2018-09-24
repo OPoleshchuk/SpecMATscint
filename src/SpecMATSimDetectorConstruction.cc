@@ -559,7 +559,32 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   //****************** Compton Suppressor ******************//
   //--------------------------------------------------------//
   if (ComptSupp == "yes") {
-      ComptSuppMat = CeBr3;
+      Bi =
+    	  new G4Element("Bismuth",
+    		  	"Bi",
+    			z=83.,
+    			a=208.98*g/mole);
+      Ge =
+    	  new G4Element("Germanium",
+    		  	"Ge",
+    			z=32.,
+    			a=72.63*g/mole);
+    O =
+    	  new G4Element("Oxygen",
+    		  	"O",
+    			z=8.,
+    			a=15.99*g/mole);
+
+      density = 7.13*g/cm3;
+      BGO =
+    	  new G4Material("BGO",
+    		  	 density,
+    		         ncomponents=3);
+      BGO->AddElement (Bi, natoms=4);
+      BGO->AddElement (Ge, natoms=3);
+      BGO->AddElement (O, natoms=12);
+
+      ComptSuppMat = BGO;
 
       ComptSuppSizeX = 24.*mm;								//Size and position of all components depends on Crystal size and position.
       ComptSuppSizeY = 108.*mm;

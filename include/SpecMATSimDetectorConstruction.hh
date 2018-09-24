@@ -125,10 +125,13 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4Element* Al;
 	G4Element* C;
 	G4Element* H;
+    G4Element* Bi;
+    G4Element* Ge;
 
     G4Material* default_mat;
     G4Material* CeBr3;
     G4Material* LaBr3;
+    G4Material* BGO;
     G4Material* sciCrystMat;
     G4Material* ComptSuppMat;
     G4Material* Quartz;
