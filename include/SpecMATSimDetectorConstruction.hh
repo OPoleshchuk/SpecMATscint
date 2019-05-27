@@ -40,10 +40,11 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
 
     G4double a, z, density;
     G4int natoms, ncomponents;
+    G4double fractionmass;
 
     G4double worldSizeXY;
     G4double worldSizeZ;
-	G4double gap;
+    G4double gap;
 
     G4int nbSegments;
     G4int nbCrystInSegmentRow;
@@ -123,10 +124,11 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4Element* Si;
     G4Element* Ti;
     G4Element* Al;
-	G4Element* C;
-	G4Element* H;
+    G4Element* C;
+    G4Element* H;
     G4Element* Bi;
     G4Element* Ge;
+    G4Element* N;
 
     G4Material* default_mat;
     G4Material* CeBr3;
@@ -146,7 +148,7 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4Material* insulationTubeMat;
     G4Material* Air;
     G4Material* segment_mat;
-	G4Material* Steel_316L;
+    G4Material* Steel_316L;
 
     G4NistManager* nist;
 
@@ -154,6 +156,7 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4ThreeVector ComptSuppPos;
     G4ThreeVector sciWindPos;
     G4ThreeVector sciReflPos;
+    G4ThreeVector sciHousPos;
 
 
     G4VSolid* solidWorld;
@@ -268,7 +271,7 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     void SetInsulationTubeMat (G4String);
     G4Material* GetInsulationTubeMat(){return insulationTubeMat;}
 
-	void SetGap(G4double val){gap = val;}
+    void SetGap(G4double val){gap = val;}
     G4double GetGap(void){return gap;}
 };
 

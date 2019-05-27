@@ -36,20 +36,15 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   worldSizeXY = 40*cm;
   worldSizeZ  = 40*cm;
 
-  G4double z1, a1, fractionmass1, density1;
-  G4String name1, symbol1;
-  G4int ncomponents1;
-
-  a1 = 14.01*g/mole;
-	G4Element* elN  = new G4Element(name1="Nitrogen",symbol1="N" , z1= 7., a1);
-
-	a1 = 16.00*g/mole;
-	G4Element* elO  = new G4Element(name1="Oxygen"  ,symbol1="O" , z1= 8., a1);
-
-	density1 = 0.2E-5*mg/cm3;
-	Air = new G4Material(name1="Air",density1,ncomponents1=2);
-  Air->AddElement(elN, fractionmass1=70*perCent);
-	Air->AddElement(elO, fractionmass1=30*perCent);
+  //G4double z1, a1, fractionmass1, density1;
+  //G4String name1, symbol1;
+  //G4int ncomponents1;
+	N  = new G4Element("Nitrogen", "N", z=7., a=14.01*g/mole);
+	O  = new G4Element("Oxygen", "O", z=8., a=16.00*g/mole);
+	density = 0.2E-5*mg/cm3;
+	Air = new G4Material("Air", density, ncomponents=2);
+  Air->AddElement(N, fractionmass=70*perCent);
+	Air->AddElement(O, fractionmass=30*perCent);
 
   // Define world material
   nist = G4NistManager::Instance();
@@ -103,21 +98,19 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
 
   // Define Scintillation material and its compounds
 
-  /*
+
   // LaBr3 material
   La = new G4Element("Lanthanum", "La", z=57., a=138.9055*g/mole);
   Br = new G4Element("Bromine", "Br", z=35., a=79.904*g/mole);
+
   density = 5.1*g/cm3;
   LaBr3 = new G4Material("LaBr3", density, ncomponents=2);
   LaBr3->AddElement (La, natoms=1);
   LaBr3->AddElement (Br, natoms=3);
 
-  sciCrystMat = LaBr3;
-  */
-
   // CeBr3 material
   Ce = new G4Element("Cerium", "Ce", z=58., a=140.116*g/mole);
-  Br = new G4Element("Bromine", "Br", z=35., a=79.904*g/mole);
+
   density = 5.1*g/cm3;
   CeBr3 = new G4Material("CeBr3", density, ncomponents=2);
   CeBr3->AddElement (Ce, natoms=1);
@@ -131,12 +124,8 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   sciCrystPosZ = 0; 			 					//Position of the Crystal along the Z axis
 
   sciCrystPos = G4ThreeVector(sciCrystPosX, sciCrystPosY, sciCrystPosZ);
-
-  // Define box for Crystal
-  sciCrystSolid = new G4Box("sciCrystSolid", sciCrystSizeX, sciCrystSizeY, sciCrystSizeZ);
-
-  // Define Logical Volume for Crystal
-  sciCrystLog = new G4LogicalVolume(sciCrystSolid, sciCrystMat, "crystal");
+  sciCrystSolid = new G4Box("sciCrystSolid", sciCrystSizeX, sciCrystSizeY, sciCrystSizeZ); // Define box for Crystal
+  sciCrystLog = new G4LogicalVolume(sciCrystSolid, sciCrystMat, "crystal"); // Define Logical Volume for Crystal
 
   // Visualization attributes for the Crystal logical volume
   sciCrystVisAtt = new G4VisAttributes(G4Colour(0.0, 0.0, 1.0));					//Instantiation of visualization attributes with blue colour
@@ -159,22 +148,10 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   sciReflSizeZ = sciCrystSizeZ + sciReflWindThick/2;
 
   // Define Reflector (white powder TiO2) material and its compounds
-  Ti =
-	  new G4Element("Titanium",
-			"Ti",
-			z=22.,
-			a=47.9*g/mole);
-  O = 											//Define object for an element
-      new G4Element("Oxygen", 							//Name of the element
-            "O", 								//Symbol of the element
-            z=8., 								//Atomic number of the element
-            a=15.9994*g/mole);						//Molar mass of the element
+  Ti = new G4Element("Titanium", "Ti", z=22., a=47.9*g/mole);
 
   density = 4.23*g/cm3;
-  TiO2 =
-	  new G4Material("TiO2",
-			 density,
-			 ncomponents=2);
+  TiO2 = new G4Material("TiO2", density, ncomponents=2);
   TiO2->AddElement (Ti, natoms=1);
   TiO2->AddElement (O, natoms=2);
 
@@ -185,35 +162,13 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   sciReflPosY = sciCrystPosY;
   sciReflPosZ = sciCrystPosZ - sciReflWindThick/2;					//Position of the Reflector relative to the Al Housing along the Z axis
 
-  sciReflPos = G4ThreeVector(sciReflPosX,
-		  	     sciReflPosY,
-			     sciReflPosZ);
-
-  // Define box for Reflector
-  reflBoxSolid =
-	  new G4Box("reflBoxSolid",
-		    sciReflSizeX,
-		    sciReflSizeY,
-		    sciReflSizeZ);
-
-  // Subtracts Crystal box from Reflector box
-  sciReflSolid =
-	  new G4SubtractionSolid("sciReflSolid",
-		  		 reflBoxSolid,
-				 sciCrystSolid,
-				 0,
-				 G4ThreeVector(sciCrystPosX, sciCrystPosY, sciReflWindThick/2));
-
-
-  // Define Logical Volume for Reflector//
-  sciReflLog =
-	  new G4LogicalVolume(sciReflSolid,
-			      sciReflMat,
-			      "sciReflLog");
+  sciReflPos = G4ThreeVector(sciReflPosX, sciReflPosY, sciReflPosZ);
+  reflBoxSolid = new G4Box("reflBoxSolid", sciReflSizeX, sciReflSizeY, sciReflSizeZ); // Define box for Reflector
+  sciReflSolid = new G4SubtractionSolid("sciReflSolid", reflBoxSolid, sciCrystSolid, 0, G4ThreeVector(sciCrystPosX, sciCrystPosY, sciReflWindThick/2)); // Subtracts Crystal box from Reflector box
+  sciReflLog = new G4LogicalVolume(sciReflSolid, sciReflMat, "sciReflLog"); // Define Logical Volume for Reflector//
 
   // Visualization attributes for the Reflector logical volume
-  sciReflVisAtt =
-	  new G4VisAttributes(G4Colour(1.0, 1.0, 0.0));					//Instantiation of visualization attributes with yellow colour
+  sciReflVisAtt = new G4VisAttributes(G4Colour(1.0, 1.0, 0.0));					//Instantiation of visualization attributes with yellow colour
   sciReflVisAtt->SetVisibility(true);							//Pass this object to Visualization Manager for visualization
   sciReflLog->SetVisAttributes(sciReflVisAtt);						//Assignment of visualization attributes to the logical volume of the Reflector
 
@@ -232,17 +187,10 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   sciHousSizeZ = sciCrystSizeZ + sciReflWindThick/2 + sciHousWindThick/2;
 
   // Define Housing material and its compounds
-  Al =
-	  new G4Element("Aluminum",
-			"Al",
-			z=13.,
-			a=26.98*g/mole);
+  Al = new G4Element("Aluminum", "Al", z=13.,	a=26.98*g/mole);
 
   density = 2.7*g/cm3;
-  Al_Alloy =
-          new G4Material("Aluminum_",
-			 density,
-			 ncomponents=1);
+  Al_Alloy = new G4Material("Aluminum_", density, ncomponents=1);
   Al_Alloy->AddElement (Al, natoms=1);
 
   sciHousMat = Al_Alloy;
@@ -252,30 +200,12 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   sciHousPosY = sciCrystPosY;
   sciHousPosZ = sciCrystPosZ - (sciReflWindThick/2 + sciHousWindThick/2);
 
-  G4ThreeVector sciHousPos = G4ThreeVector(sciHousPosX,
-		  			   sciHousPosY,
-					   sciHousPosZ);
+  sciHousPos = G4ThreeVector(sciHousPosX, sciHousPosY, sciHousPosZ);
 
-  // Define box for Housing
-  housBoxASolid =
-	  new G4Box("housBoxASolid",
-	  	    sciHousSizeX,
-		    sciHousSizeY,
-		    sciHousSizeZ);
 
-  // Subtracts Reflector box from Housing box
-  sciHousSolid =
-	  new G4SubtractionSolid("housBoxBSolid",
-	  			 housBoxASolid,
-				 reflBoxSolid,
-				 0,
-				 G4ThreeVector(sciReflPosX, sciReflPosY, sciHousWindThick/2));
-
-  // Define Logical Volume for Housing
-  sciHousLog =
-  	  new G4LogicalVolume(sciHousSolid, 	     						//Housing solid shape
-			      sciHousMat,              						//Housing material
-			      "sciCaseLog");         						//Housing logic volume name
+  housBoxASolid = new G4Box("housBoxASolid", sciHousSizeX, sciHousSizeY, sciHousSizeZ); // Define box for Housing
+  sciHousSolid = new G4SubtractionSolid("housBoxBSolid", housBoxASolid, reflBoxSolid, 0, G4ThreeVector(sciReflPosX, sciReflPosY, sciHousWindThick/2)); // Subtracts Reflector box from Housing box
+  sciHousLog = new G4LogicalVolume(sciHousSolid, sciHousMat, "sciCaseLog");	//Housing logic volume name
 
   // Visualization attributes for the Housing logical volume
   sciHousVisAtt =
@@ -399,7 +329,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
           new G4Material("Steel_316L",
              density,
              ncomponents=10);
-  G4double fractionmass;
+
   Steel_316L->AddElement (C, fractionmass=0.030*perCent);
   Steel_316L->AddElement (Mg, fractionmass=2*perCent);
   Steel_316L->AddElement (Si, fractionmass=0.75*perCent);
