@@ -26,9 +26,7 @@
 
 // ###################################################################################
 
-SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
-: G4VUserDetectorConstruction(),
-  fCheckOverlaps(true)
+SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetectorConstruction(),fCheckOverlaps(true)
 {
   //****************************************************************************//
   //********************************* World ************************************//
@@ -39,69 +37,59 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction()
   worldSizeZ  = 40*cm;
 
   G4double z1, a1, fractionmass1, density1;
-    G4String name1, symbol1;
-      G4int ncomponents1;
+  G4String name1, symbol1;
+  G4int ncomponents1;
 
-        a1 = 14.01*g/mole;
-	    G4Element* elN  = new G4Element(name1="Nitrogen",symbol1="N" , z1= 7., a1);
+  a1 = 14.01*g/mole;
+	G4Element* elN  = new G4Element(name1="Nitrogen",symbol1="N" , z1= 7., a1);
 
-	    a1 = 16.00*g/mole;
-	    G4Element* elO  = new G4Element(name1="Oxygen"  ,symbol1="O" , z1= 8., a1);
+	a1 = 16.00*g/mole;
+	G4Element* elO  = new G4Element(name1="Oxygen"  ,symbol1="O" , z1= 8., a1);
 
-	    density1 = 0.2E-5*mg/cm3;
-		  Air = new G4Material(name1="Air",density1,ncomponents1=2);
-		    Air->AddElement(elN, fractionmass1=70*perCent);
-		      Air->AddElement(elO, fractionmass1=30*perCent);
+	density1 = 0.2E-5*mg/cm3;
+	Air = new G4Material(name1="Air",density1,ncomponents1=2);
+  Air->AddElement(elN, fractionmass1=70*perCent);
+	Air->AddElement(elO, fractionmass1=30*perCent);
 
   // Define world material
   nist = G4NistManager::Instance();
   default_mat = nist->FindOrBuildMaterial("G4_AIR", false);
 
-  solidWorld =
-    new G4Box("World",                       //its name
-       worldSizeXY, worldSizeXY, worldSizeZ); //its size
+  solidWorld = new G4Box("World", worldSizeXY, worldSizeXY, worldSizeZ);  //Worls size
 
-  logicWorld =
-    new G4LogicalVolume(solidWorld,          //its solid
-                        Air,         //its material
-                        "World");            //its name
+  logicWorld = new G4LogicalVolume(solidWorld, Air, "World");             //World material and id name
 
-  physWorld =
-    new G4PVPlacement(0,                     //no rotation
-                      G4ThreeVector(),       //at (0,0,0)
-                      logicWorld,            //its logical volume
-                      "World",               //its name
-                      0,                     //its mother  volume
-                      false,                 //no boolean operation
-                      0,                     //copy number
-                      fCheckOverlaps);       // checking overlaps
+  physWorld = new G4PVPlacement(0, G4ThreeVector(), logicWorld, "World", 0, false, 0, fCheckOverlaps);
+  //physWorld = new G4PVPlacement(no rotation, at (0,0,0), its logical volume, its name, its mother  volume, no boolean operation, copy number, checking overlaps);
 
-  worldVisAtt =
-	  new G4VisAttributes();					//Instantiation of visualization attributes with blue colour
-  worldVisAtt->SetVisibility(false);							//Pass this object to Visualization Manager for visualization
+  worldVisAtt = new G4VisAttributes();					//Instantiation of visualization attributes with blue colour
+  worldVisAtt->SetVisibility(false);						//Pass this object to Visualization Manager for visualization
 
-  //sciCrystVisAtt->SetForceWireframe(true);						//I still believe that it might make Crystal transparent
+  //World visual attributes
+  //sciCrystVisAtt->SetForceWireframe(true);
   logicWorld->SetVisAttributes(worldVisAtt);
+
   //****************************************************************************//
   //******************************* Detector Array *****************************//
   //****************************************************************************//
-  // How many segments and crystal rings in the detector
+  // Number of segments and rings in the array
+  nbSegments = 15;                //# of detectors in one ring
+  nbCrystInSegmentRow = 2;        //# of rings
+  nbCrystInSegmentColumn = 1;     //# of detectors in a segment
+  gap = 3*mm;                     //distance between rings
 
-  nbSegments = 15;
-  nbCrystInSegmentRow = 3;        //# of rings
-  nbCrystInSegmentColumn = 1;     //# of crystals in a segment
-
-  vacuumChamber = "no"; //"yes"/"no"
+  //Optional parts of the TPC, to introduce additional gamma ray attenuation
+  //in the materials in between the beam and the detectors
+  vacuumChamber = "no";           //"yes"/"no"
   vacuumFlangeSizeX = 150*mm;
   vacuumFlangeSizeY = 29*mm;
   vacuumFlangeSizeZ = 3*mm;
   vacuumFlangeThickFrontOfScint = 3*mm;
-  gap=3*mm;
 
-  insulationTube = "no"; //"yes"/"no"
+  insulationTube = "no";          //"yes"/"no"
   insulationTubeThickness = 3*mm;
 
-  ComptSupp = "yes";  //"yes"/"no"
+  ComptSupp = "no";               //"yes"/"no"
 
   dPhi = twopi/nbSegments;
   half_dPhi = 0.5*dPhi;
