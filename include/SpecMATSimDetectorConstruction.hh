@@ -129,6 +129,13 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4Element* Bi;
     G4Element* Ge;
     G4Element* N;
+    G4Element* Mg;
+    G4Element* Cr;
+    G4Element* Ni;
+    G4Element* Mo;
+    G4Element* P;
+    G4Element* S;
+    G4Element* Fe;
 
     G4Material* default_mat;
     G4Material* CeBr3;
@@ -173,6 +180,10 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4VSolid* housBoxASolid;
     G4VSolid* housBoxBSolid;
     G4VSolid* sciHousSolid;
+    G4VSolid* segmentBox;
+    G4VSolid* vacuumFlangeBox;
+    G4VSolid* vacuumFlangeSolid;
+    G4VSolid* vacuumChamberSideFlange;
 
 
     G4LogicalVolume* logicWorld;
@@ -201,6 +212,13 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
     G4VisAttributes* sciReflVisAtt;
     G4VisAttributes* sciHousVisAtt;
     G4VisAttributes* insulationTubeVisAtt;
+
+    G4RotationMatrix rotSideFlnge;
+    G4ThreeVector positionSideFlange1;
+    G4Transform3D transformSideFlange1;
+    G4ThreeVector positionSideFlange2;
+    G4Transform3D transformSideFlange2;
+
 
     G4bool  fCheckOverlaps;
 

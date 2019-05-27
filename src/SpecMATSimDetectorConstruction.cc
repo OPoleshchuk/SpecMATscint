@@ -39,12 +39,12 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   //G4double z1, a1, fractionmass1, density1;
   //G4String name1, symbol1;
   //G4int ncomponents1;
-	N  = new G4Element("Nitrogen", "N", z=7., a=14.01*g/mole);
-	O  = new G4Element("Oxygen", "O", z=8., a=16.00*g/mole);
-	density = 0.2E-5*mg/cm3;
-	Air = new G4Material("Air", density, ncomponents=2);
+  N  = new G4Element("Nitrogen", "N", z=7., a=14.01*g/mole);
+  O  = new G4Element("Oxygen", "O", z=8., a=16.00*g/mole);
+  density = 0.2E-5*mg/cm3;
+  Air = new G4Material("Air", density, ncomponents=2);
   Air->AddElement(N, fractionmass=70*perCent);
-	Air->AddElement(O, fractionmass=30*perCent);
+  Air->AddElement(O, fractionmass=30*perCent);
 
   // Define world material
   nist = G4NistManager::Instance();
@@ -169,8 +169,8 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
 
   // Visualization attributes for the Reflector logical volume
   sciReflVisAtt = new G4VisAttributes(G4Colour(1.0, 1.0, 0.0));					//Instantiation of visualization attributes with yellow colour
-  sciReflVisAtt->SetVisibility(true);							//Pass this object to Visualization Manager for visualization
-  sciReflLog->SetVisAttributes(sciReflVisAtt);						//Assignment of visualization attributes to the logical volume of the Reflector
+  sciReflVisAtt->SetVisibility(true);							                      //Pass this object to Visualization Manager for visualization
+  sciReflLog->SetVisAttributes(sciReflVisAtt);						              //Assignment of visualization attributes to the logical volume of the Reflector
 
   //--------------------------------------------------------//
   //******************** Aluminum Housing ******************//
@@ -209,8 +209,8 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
 
   // Visualization attributes for the Housing logical volume
   sciHousVisAtt =
-	  new G4VisAttributes(G4Colour(0.5, 0.5, 0.5));				//Instantiation of visualization attributes with grey colour
-  sciHousVisAtt->SetVisibility(true);						//Pass this object to Visualization Manager for visualization
+  new G4VisAttributes(G4Colour(0.5, 0.5, 0.5));				//Instantiation of visualization attributes with grey colour
+  sciHousVisAtt->SetVisibility(true);					        	//Pass this object to Visualization Manager for visualization
   sciHousLog->SetVisAttributes(sciHousVisAtt);					//Assignment of visualization attributes to the logical volume of the Housing
 
   //--------------------------------------------------------//
@@ -219,116 +219,55 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   // Dimensions of the Window (half-side)
   sciWindSizeX = sciCrystSizeX + sciReflWallThickX + sciHousWallThickX;						//X half-size of the Window
   sciWindSizeY = sciCrystSizeY + sciReflWallThickY + sciHousWallThickY;						//Y half-size of the Window
-  sciWindSizeZ = 1.*mm;									        //Z half-size of the Window
+  sciWindSizeZ = 1.*mm;									                                          //Z half-size of the Window
 
   // Define compound elements for Quartz material
 
-  Si =
-	  new G4Element("Silicon",
-		  	"Si",
-			z=14.,
-			a=28.09*g/mole);
+  Si = new G4Element("Silicon", "Si", z=14.,	a=28.09*g/mole);
 
   // Define Quartz material
-  density = 2.66*g/cm3;									//Assign density of Quartz ot the density variable
-  Quartz = 										//Define object for the Qartz material
-	  new G4Material("Quartz", 							//Name of the material
-		  	 density, 							//Density of the material
-			 ncomponents=2);						//Number of the compound elements in the material
-  Quartz->AddElement (Si, natoms=1);							//Adds chemical element and number of atoms of this element to the material
+  density = 2.66*g/cm3;
+  Quartz = new G4Material("Quartz", density, ncomponents=2);
+  Quartz->AddElement (Si, natoms=1);
   Quartz->AddElement (O, natoms=2);
 
   sciWindMat = Quartz;
 
   // Position of the window relative to the crystal
-  sciWindPosX = sciCrystPosX ;								//Position of the Window along the X axis
-  sciWindPosY = sciCrystPosY ;								//Position of the Window along the Y axis
-  sciWindPosZ = sciCrystPosZ + sciCrystSizeZ + sciWindSizeZ;	 			//Position of the Window relative to the Al Housing along the Z axis
+  sciWindPosX = sciCrystPosX ;								                        //Position of the Window along the X axis
+  sciWindPosY = sciCrystPosY ;							                         	//Position of the Window along the Y axis
+  sciWindPosZ = sciCrystPosZ + sciCrystSizeZ + sciWindSizeZ;	 		  	//Position of the Window relative to the Al Housing along the Z axis
 
-  sciWindPos = G4ThreeVector(sciWindPosX, 				//Position of the Window in space relative to the Al Housing
-		  	     sciWindPosY,
-			     sciWindPosZ);
-
-  // Define solid for the Window
-  G4VSolid* sciWindSolid = 								//Define object for the Window's box
-	  new G4Box("sciWindSolid",							//Name of the Window's box
-		    sciWindSizeX, 							//X half_size of the box
-		    sciWindSizeY, 							//Y half_size of the box
-		    sciWindSizeZ);							//Z half_size of the box
-
-
-  // Define Logical Volume for Window
-  sciWindLog =
-	  new G4LogicalVolume(sciWindSolid,
-		  	      sciWindMat,
-			      "sciWindLog");
+  sciWindPos = G4ThreeVector(sciWindPosX, sciWindPosY, sciWindPosZ);
+  sciWindSolid = 	new G4Box("sciWindSolid",	sciWindSizeX, sciWindSizeY, sciWindSizeZ);  // Define solid for the Window
+  sciWindLog = new G4LogicalVolume(sciWindSolid, sciWindMat, "sciWindLog");             // Define Logical Volume for Window
 
 
   // Visualization attributes for the Window
-  sciWindVisAtt =
-	  new G4VisAttributes(G4Colour(0.0, 1.0, 1.0));					//Instantiation of visualization attributes with cyan colour
-  sciWindVisAtt->SetVisibility(true);							//Pass this object to Visualization Manager for visualization
-  sciWindVisAtt->SetForceWireframe(true);						//I believe that it might make Window transparent
-  sciWindLog->SetVisAttributes(sciWindVisAtt);						//Assignment of visualization attributes to the logical volume of the Window
+  sciWindVisAtt = new G4VisAttributes(G4Colour(0.0, 1.0, 1.0));
+  sciWindVisAtt->SetVisibility(true);
+  sciWindVisAtt->SetForceWireframe(true);
+  sciWindLog->SetVisAttributes(sciWindVisAtt);
 
   //--------------------------------------------------------//
   //******************* Flange material ********************//
   //--------------------------------------------------------//
-  vacuumFlangeMat = nist->FindOrBuildMaterial("G4_Al", false);//Al_Alloy;
-  C =
-	  new G4Element("Carbon",
-		  	"C",
-			z=6.,
-			a=12.011*g/mole);
-  /*
-  G4Element* Mg =
-	  new G4Element("Manganese",
-		  	"Mg",
-			z=25.,
-			a=54.938044*g/mole);
+  vacuumFlangeMat = nist->FindOrBuildMaterial("G4_Al", false);  //Al_Alloy;
 
-  G4Element* Cr =
-	  new G4Element("Chromium",
-		  	"Cr",
-			z=24.,
-			a=51.9961*g/mole);
-  G4Element* Ni =
-	  new G4Element("Nickel",
-		  	"Ni",
-			z=28.,
-			a=58.6934*g/mole);
-  G4Element* Mo =
-	  new G4Element("Molybdenum",
-		  	"Mo",
-			z=42.,
-			a=95.95*g/mole);
-  G4Element* P =
-	  new G4Element("Phosphorus",
-		  	"P",
-			z=15.,
-			a=30.973761998*g/mole);
-  G4Element* S =
-	  new G4Element("Sulfur",
-		  	"S",
-			z=16.,
-			a=32.06*g/mole);
-  G4Element* N =
-	  new G4Element("Nitrogen",
-		  	"N",
-			z=7.,
-			a=14.007*g/mole);
-  G4Element* Fe =
-	  new G4Element("Iron",
-		  	"Fe",
-			z=26.,
-			a=55.845*g/mole);
+  /*
+  C = new G4Element("Carbon",	"C", z=6., a=12.011*g/mole);
+  Mg = new G4Element("Manganese", "Mg", z=25.,	a=54.938044*g/mole);
+  Cr = new G4Element("Chromium",	"Cr",	z=24., a=51.9961*g/mole);
+  Ni = new G4Element("Nickel",	"Ni",	z=28., a=58.6934*g/mole);
+  Mo = new G4Element("Molybdenum",	"Mo",	z=42., a=95.95*g/mole);
+  P = new G4Element("Phosphorus", "P",	z=15., a=30.973761998*g/mole);
+  S = new G4Element("Sulfur", "S",	z=16., a=32.06*g/mole);
+  N = new G4Element("Nitrogen", "N",	z=7.,	a=14.007*g/mole);
+  Fe = new G4Element("Iron",	"Fe",	z=26., a=55.845*g/mole);
 
   density = 8.027*g/cm3;
 
-  Steel_316L =
-          new G4Material("Steel_316L",
-             density,
-             ncomponents=10);
+  Steel_316L = new G4Material("Steel_316L", density, ncomponents=10);
 
   Steel_316L->AddElement (C, fractionmass=0.030*perCent);
   Steel_316L->AddElement (Mg, fractionmass=2*perCent);
@@ -350,18 +289,11 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   // Define insulation tube material
   insulationTubeMat = nist->FindOrBuildMaterial("G4_Al", false);
   /*
-  H =
-	  new G4Element("Hidrogen",
-		  	"H",
-			z=1.,
-			a=1.008*g/mole);
+  H = new G4Element("Hidrogen",	"H", z=1., a=1.008*g/mole);
 
   density = 0.946*g/cm3;
 
-  Polypropylen_C3H6 =
-          new G4Material("Polypropylen_C3H6",
-             density,
-             ncomponents=2);
+  Polypropylen_C3H6 = new G4Material("Polypropylen_C3H6", density, ncomponents=2);
   Polypropylen_C3H6->AddElement (C, natoms=3);
   Polypropylen_C3H6->AddElement (H, natoms=6);
 
@@ -388,26 +320,26 @@ void SpecMATSimDetectorConstruction::DefineMaterials()
 
 G4double SpecMATSimDetectorConstruction::ComputeCircleR1()
 {
-    if (nbSegments == 1) {
-        circleR1 = 150;
-    }
-    else if (nbSegments == 2) {
-        circleR1 = 100;
+  if (nbSegments == 1) {
+    circleR1 = 150;
+  }
+  else if (nbSegments == 2) {
+    circleR1 = 100;
+  }
+  else {
+    if (vacuumChamber == "yes") {
+      if (vacuumFlangeSizeY>sciHousSizeY*nbCrystInSegmentColumn) {
+        circleR1 = vacuumFlangeSizeY/(tandPhi);
+      }
+      else {
+        circleR1 = sciHousSizeY*nbCrystInSegmentColumn/(tandPhi);
+      }
     }
     else {
-        if (vacuumChamber == "yes") {
-            if (vacuumFlangeSizeY>sciHousSizeY*nbCrystInSegmentColumn) {
-                circleR1 = vacuumFlangeSizeY/(tandPhi);
-            }
-            else {
-                circleR1 = sciHousSizeY*nbCrystInSegmentColumn/(tandPhi);
-            }
-        }
-        else {
-            circleR1 = sciHousSizeY*nbCrystInSegmentColumn/(tandPhi);
-        }
+      circleR1 = sciHousSizeY*nbCrystInSegmentColumn/(tandPhi);
     }
-    return circleR1;
+  }
+  return circleR1;
 }
 
 // ###################################################################################
@@ -423,173 +355,98 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   // Define segment which will conain crystals
   nist = G4NistManager::Instance();
   segment_mat = nist->FindOrBuildMaterial("G4_Galactic", false);
-  G4VSolid* segmentBox = new G4Box("segmentBox",
-				sciHousSizeX*nbCrystInSegmentRow+gap*(nbCrystInSegmentRow-1)/2,
-				sciHousSizeY*nbCrystInSegmentColumn,
-				sciHousSizeZ+sciWindSizeZ);
+  segmentBox = new G4Box("segmentBox", sciHousSizeX*nbCrystInSegmentRow+gap*(nbCrystInSegmentRow-1)/2, sciHousSizeY*nbCrystInSegmentColumn, sciHousSizeZ+sciWindSizeZ);
 
   // Checking if the flange dimensions are not smaller than the segment dimensions
   if (vacuumFlangeSizeY<sciHousSizeY*nbCrystInSegmentColumn) {
-                vacuumFlangeSizeY=sciHousSizeY*nbCrystInSegmentColumn;
+    vacuumFlangeSizeY=sciHousSizeY*nbCrystInSegmentColumn;
   }
 
   //--------------------------------------------------------//
   //****************** Compton Suppressor ******************//
   //--------------------------------------------------------//
   if (ComptSupp == "yes") {
-      Bi =
-    	  new G4Element("Bismuth",
-    		  	"Bi",
-    			z=83.,
-    			a=208.98*g/mole);
-      Ge =
-    	  new G4Element("Germanium",
-    		  	"Ge",
-    			z=32.,
-    			a=72.63*g/mole);
-    O =
-    	  new G4Element("Oxygen",
-    		  	"O",
-    			z=8.,
-    			a=15.99*g/mole);
+    Bi = new G4Element("Bismuth",	"Bi",	z=83., a=208.98*g/mole);
+    Ge = new G4Element("Germanium",	"Ge",	z=32., a=72.63*g/mole);
+    O = new G4Element("Oxygen",	"O", z=8., a=15.99*g/mole);
 
-      density = 7.13*g/cm3;
-      BGO =
-    	  new G4Material("BGO",
-    		  	 density,
-    		         ncomponents=3);
-      BGO->AddElement (Bi, natoms=4);
-      BGO->AddElement (Ge, natoms=3);
-      BGO->AddElement (O, natoms=12);
+    density = 7.13*g/cm3;
+    BGO = new G4Material("BGO", density, ncomponents=3);
+    BGO->AddElement (Bi, natoms=4);
+    BGO->AddElement (Ge, natoms=3);
+    BGO->AddElement (O, natoms=12);
 
-      ComptSuppMat = BGO;
+    ComptSuppMat = BGO;
 
-      ComptSuppSizeX = 24.*mm;								//Size and position of all components depends on Crystal size and position.
-      ComptSuppSizeY = 108.*mm;
-      ComptSuppSizeZ = sciHousSizeX*3*mm + (gap/2)*2*mm;
+    ComptSuppSizeX = 24.*mm;						//Size and position of all components depends on Crystal size and position.
+    ComptSuppSizeY = 108.*mm;
+    ComptSuppSizeZ = sciHousSizeX*3*mm + (gap/2)*2*mm;
 
-      // Position of the Compton Suppressor
-      ComptSuppPosX = 0;									//Position of the Compton Suppressor along the X axis
-      ComptSuppPosY = 0;									//Position of the Compton Suppressor along the Y axis
-      ComptSuppPosZ = -300; 			 					//Position of the Compton Suppressor along the Z axis
+    // Position of the Compton Suppressor
+    ComptSuppPosX = 0;									//Position of the Compton Suppressor along the X axis
+    ComptSuppPosY = 0;									//Position of the Compton Suppressor along the Y axis
+    ComptSuppPosZ = -300; 			 				//Position of the Compton Suppressor along the Z axis
 
-      G4ThreeVector ComptSuppPos = G4ThreeVector(ComptSuppPosX,
-    		  			    ComptSuppPosY,
-    					    ComptSuppPosZ);
-      ComptSuppSolidBox =
-        	  new G4Box("ComptSuppSolid",
-        		    117/2,
-        		    30,
-                    ComptSuppSizeZ);
-
-
-    ComptSuppSolidBoxUp =
-            new G4Box("ComptSuppSolidUp",
-                  200,
-                  30*std::cos(dPhi/2),
-                  2*ComptSuppSizeZ);
+    G4ThreeVector ComptSuppPos = G4ThreeVector(ComptSuppPosX, ComptSuppPosY, ComptSuppPosZ);
+    ComptSuppSolidBox = new G4Box("ComptSuppSolid", 117/2, 30, ComptSuppSizeZ);
+    ComptSuppSolidBoxUp = new G4Box("ComptSuppSolidUp", 200, 30*std::cos(dPhi/2), 2*ComptSuppSizeZ);
 
     G4RotationMatrix ComptSuppRotmBoxUp  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
     ComptSuppRotmBoxUp.rotateZ(dPhi/2);                                      //** rotation matrix for positioning ComptSupp
-
     G4ThreeVector positionComptSuppBoxUp = G4ThreeVector(-117/2, 30, 0);
-
     G4Transform3D transformComptSuppBoxUp = G4Transform3D(ComptSuppRotmBoxUp,positionComptSuppBoxUp);
 
 
-    ComptSuppSolidBoxDown =
-          new G4Box("ComptSuppSolidDown",
-                200,
-                30*std::cos(dPhi/2),
-                2*ComptSuppSizeZ);
+    ComptSuppSolidBoxDown = new G4Box("ComptSuppSolidDown", 200, 30*std::cos(dPhi/2), 2*ComptSuppSizeZ);
 
-    G4RotationMatrix ComptSuppRotmBoxDown  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
-    ComptSuppRotmBoxDown.rotateZ(-dPhi/2);                               //** rotation matrix for positioning ComptSupp
-
+    G4RotationMatrix ComptSuppRotmBoxDown  = G4RotationMatrix();              //** rotation matrix for positioning ComptSupp
+    ComptSuppRotmBoxDown.rotateZ(-dPhi/2);                                    //** rotation matrix for positioning ComptSupp
     G4ThreeVector positionComptSuppBoxDown = G4ThreeVector(-117/2, -30, 0);
-
     G4Transform3D transformComptSuppBoxDown = G4Transform3D(ComptSuppRotmBoxDown,positionComptSuppBoxDown);
 
 
-    G4VSolid* ComptSuppSolidBoxWithoutUp =
-        new G4SubtractionSolid("ComptSuppSolidBoxWithoutUp",
-                   ComptSuppSolidBox,
-                   ComptSuppSolidBoxUp,
-                   transformComptSuppBoxUp);
-
-    G4VSolid* ComptSuppSolidBoxWithoutDown =
-       new G4SubtractionSolid("ComptSuppSolidBoxWithoutDown",
-                  ComptSuppSolidBoxWithoutUp,
-                  ComptSuppSolidBoxDown,
-                  transformComptSuppBoxDown);
-
+    G4VSolid* ComptSuppSolidBoxWithoutUp = new G4SubtractionSolid("ComptSuppSolidBoxWithoutUp", ComptSuppSolidBox, ComptSuppSolidBoxUp, transformComptSuppBoxUp);
+    G4VSolid* ComptSuppSolidBoxWithoutDown = new G4SubtractionSolid("ComptSuppSolidBoxWithoutDown", ComptSuppSolidBoxWithoutUp, ComptSuppSolidBoxDown, transformComptSuppBoxDown);
     G4double rotationAngle=dPhi/2;
 
-    ComptSuppTrapLog =
-         new G4LogicalVolume(ComptSuppSolidBoxWithoutDown,
-                     ComptSuppMat,
-                     "ComptSuppTrap");
+    ComptSuppTrapLog = new G4LogicalVolume(ComptSuppSolidBoxWithoutDown, ComptSuppMat, "ComptSuppTrap");
+    for (G4int i = 0; i < nbSegments; i++) {
+      G4RotationMatrix ComptSuppTrapRotm  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
+      ComptSuppTrapRotm.rotateZ(rotationAngle);                               //** rotation matrix for positioning ComptSupp
+      G4ThreeVector positionComptSuppTrap = G4ThreeVector((117/2+circleR1/std::cos(dPhi/2))*std::cos(rotationAngle), (117/2+circleR1/std::cos(dPhi/2))*std::sin(rotationAngle), 0);
+      G4Transform3D transformComptSuppTrap = G4Transform3D(ComptSuppTrapRotm,positionComptSuppTrap);
+      new G4PVPlacement(transformComptSuppTrap, ComptSuppTrapLog, "ComptSuppTrapPl", logicWorld, false, 100+i, fCheckOverlaps);
+      rotationAngle += dPhi;
+    }
 
-         for (G4int i = 0; i < nbSegments; i++) {
-
-             G4RotationMatrix ComptSuppTrapRotm  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
-             ComptSuppTrapRotm.rotateZ(rotationAngle);                                      //** rotation matrix for positioning ComptSupp
-
-             G4ThreeVector positionComptSuppTrap = G4ThreeVector((117/2+circleR1/std::cos(dPhi/2))*std::cos(rotationAngle), (117/2+circleR1/std::cos(dPhi/2))*std::sin(rotationAngle), 0);
-
-             G4Transform3D transformComptSuppTrap = G4Transform3D(ComptSuppTrapRotm,positionComptSuppTrap);
-
-             new G4PVPlacement(transformComptSuppTrap,
-                               ComptSuppTrapLog,                	//Crystal logical volume
-                               "ComptSuppTrapPl",              	    //Crystal positioning name
-                               logicWorld,              				//its mother  volume
-                               false,                   				//no boolean operation
-                               100+i,                       				//copy number
-                               fCheckOverlaps);          				//overlaps checking  */
-             rotationAngle += dPhi;
-         }
-
-
-
-      // Visualization attributes for the Compton Suppressor logical volume
-      ComptSuppVisAtt =
-    	  new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));					//Instantiation of visualization attributes with blue colour
-      ComptSuppVisAtt->SetVisibility(true);							    //Pass this object to Visualization Manager for visualization
-      ComptSuppVisAtt->SetForceSolid(true);
-
-      ComptSuppTrapLog->SetVisAttributes(ComptSuppVisAtt);					//Assignment of visualization attributes to the logical volume of the Crystal
+    // Visualization attributes for the Compton Suppressor logical volume
+    ComptSuppVisAtt = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));					//Instantiation of visualization attributes with blue colour
+    ComptSuppVisAtt->SetVisibility(true);							                      //Pass this object to Visualization Manager for visualization
+    ComptSuppVisAtt->SetForceSolid(true);
+    ComptSuppTrapLog->SetVisAttributes(ComptSuppVisAtt);					          //Assignment of visualization attributes to the logical volume of the Crystal
 
   }
 
 
   //Define the vacuum chamber flange
   if (vacuumChamber == "yes") {
-      G4VSolid* vacuumFlangeBox = new G4Box("vacuumFlangeBox",
-    				vacuumFlangeSizeX,
-    				vacuumFlangeSizeY,
-    				vacuumFlangeSizeZ);
+      vacuumFlangeBox = new G4Box("vacuumFlangeBox", vacuumFlangeSizeX,	vacuumFlangeSizeY, vacuumFlangeSizeZ);
       // Subtracts Reflector box from Housing box
-      G4VSolid* vacuumFlangeSolid = new G4SubtractionSolid("vacuumFlangeSolid",
-  	  			    vacuumFlangeBox,
-  				    segmentBox,
-  				    0,
-  				    G4ThreeVector(0, 0, (sciHousSizeZ+sciWindSizeZ)+vacuumFlangeSizeZ-(2*vacuumFlangeSizeZ-vacuumFlangeThickFrontOfScint)));
-      vacuumFlangeBoxLog = new G4LogicalVolume(vacuumFlangeSolid,
-                    vacuumFlangeMat,
-                    "vacuumFlangeBoxLog");
+      vacuumFlangeSolid = new G4SubtractionSolid("vacuumFlangeSolid", vacuumFlangeBox, segmentBox, 0, G4ThreeVector(0, 0, (sciHousSizeZ+sciWindSizeZ)+vacuumFlangeSizeZ-(2*vacuumFlangeSizeZ-vacuumFlangeThickFrontOfScint)));
+      vacuumFlangeBoxLog = new G4LogicalVolume(vacuumFlangeSolid, vacuumFlangeMat, "vacuumFlangeBoxLog");
 
       vacuumSideFlangeMat = Al_Alloy;
-      G4RotationMatrix rotSideFlnge  = G4RotationMatrix();
+      rotSideFlnge  = G4RotationMatrix();
       rotSideFlnge.rotateZ(dPhi/2);
-      G4ThreeVector positionSideFlange1 = G4ThreeVector(0, 0, vacuumFlangeSizeX);
-      G4Transform3D transformSideFlange1 = G4Transform3D(rotSideFlnge, positionSideFlange1);
-      G4ThreeVector positionSideFlange2 = G4ThreeVector(0, 0, -vacuumFlangeSizeX-2*vacuumFlangeSizeZ);
-      G4Transform3D transformSideFlange2 = G4Transform3D(rotSideFlnge, positionSideFlange2);
+      positionSideFlange1 = G4ThreeVector(0, 0, vacuumFlangeSizeX);
+      transformSideFlange1 = G4Transform3D(rotSideFlnge, positionSideFlange1);
+      positionSideFlange2 = G4ThreeVector(0, 0, -vacuumFlangeSizeX-2*vacuumFlangeSizeZ);
+      transformSideFlange2 = G4Transform3D(rotSideFlnge, positionSideFlange2);
       G4double vacuumChamberSideFlangeThickness[] = {0, 2*vacuumFlangeSizeZ};
       G4double vacuumChamberSideFlangeInnerR[] = {0, 0};
       G4double vacuumChamberSideFlangeOuterR[] = {circleR1+2*vacuumFlangeSizeZ, circleR1+2*vacuumFlangeSizeZ};
 
-      G4VSolid* vacuumChamberSideFlange = new G4Polyhedra("vacuumChamberSideFlange",
+      vacuumChamberSideFlange = new G4Polyhedra("vacuumChamberSideFlange",
                      0,
                      2*3.1415926535897932384626433,
                      nbSegments,
@@ -597,6 +454,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
                      vacuumChamberSideFlangeThickness,
                      vacuumChamberSideFlangeInnerR,
                      vacuumChamberSideFlangeOuterR);
+                     
       vacuumChamberSideFlangeLog = new G4LogicalVolume(vacuumChamberSideFlange,
                     vacuumSideFlangeMat,
                     "vacuumChamberSideFlangeLog");
