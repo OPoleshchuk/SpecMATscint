@@ -54,19 +54,14 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   // Define world material
   nist = G4NistManager::Instance();
   default_mat = nist->FindOrBuildMaterial("G4_AIR", false);
-
   solidWorld = new G4Box("World", worldSizeXY, worldSizeXY, worldSizeZ);  //Worls size
-
   logicWorld = new G4LogicalVolume(solidWorld, Air, "World");             //World material and id name
-
   physWorld = new G4PVPlacement(0, G4ThreeVector(), logicWorld, "World", 0, false, 0, fCheckOverlaps);
   //physWorld = new G4PVPlacement(no rotation, at (0,0,0), its logical volume, its name, its mother  volume, no boolean operation, copy number, checking overlaps);
 
+  //World visual attributes
   worldVisAtt = new G4VisAttributes();					//Instantiation of visualization attributes with blue colour
   worldVisAtt->SetVisibility(false);						//Pass this object to Visualization Manager for visualization
-
-  //World visual attributes
-  //sciCrystVisAtt->SetForceWireframe(true);
   logicWorld->SetVisAttributes(worldVisAtt);
 
   //****************************************************************************//
@@ -110,23 +105,10 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
 
   /*
   // LaBr3 material
-  La =
-      new G4Element("Lanthanum",
-            "La",
-            z=57.,
-            a=138.9055*g/mole);
-
-  Br =
-      new G4Element("Bromine",
-            "Br",
-            z=35.,
-            a=79.904*g/mole);
-
+  La = new G4Element("Lanthanum", "La", z=57., a=138.9055*g/mole);
+  Br = new G4Element("Bromine", "Br", z=35., a=79.904*g/mole);
   density = 5.1*g/cm3;
-  LaBr3 =
-      new G4Material("LaBr3",
-             density,
-                 ncomponents=2);
+  LaBr3 = new G4Material("LaBr3", density, ncomponents=2);
   LaBr3->AddElement (La, natoms=1);
   LaBr3->AddElement (Br, natoms=3);
 
@@ -134,22 +116,10 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   */
 
   // CeBr3 material
-  Ce =
-	  new G4Element("Cerium",
-		  	"Ce",
-			z=58.,
-			a=140.116*g/mole);
-  Br =
-	  new G4Element("Bromine",
-		  	"Br",
-			z=35.,
-			a=79.904*g/mole);
-
+  Ce = new G4Element("Cerium", "Ce", z=58., a=140.116*g/mole);
+  Br = new G4Element("Bromine", "Br", z=35., a=79.904*g/mole);
   density = 5.1*g/cm3;
-  CeBr3 =
-	  new G4Material("CeBr3",
-		  	 density,
-		         ncomponents=2);
+  CeBr3 = new G4Material("CeBr3", density, ncomponents=2);
   CeBr3->AddElement (Ce, natoms=1);
   CeBr3->AddElement (Br, natoms=3);
 
@@ -158,28 +128,18 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   // Position of the crystal
   sciCrystPosX = 0;									//Position of the Crystal along the X axis
   sciCrystPosY = 0;									//Position of the Crystal along the Y axis
-  sciCrystPosZ = 0; 			 						//Position of the Crystal along the Z axis
+  sciCrystPosZ = 0; 			 					//Position of the Crystal along the Z axis
 
-  sciCrystPos = G4ThreeVector(sciCrystPosX,
-		  	      sciCrystPosY,
-			      sciCrystPosZ);
+  sciCrystPos = G4ThreeVector(sciCrystPosX, sciCrystPosY, sciCrystPosZ);
+
   // Define box for Crystal
-  sciCrystSolid =
-	  new G4Box("sciCrystSolid",
-		    sciCrystSizeX,
-		    sciCrystSizeY,
-		    sciCrystSizeZ);
+  sciCrystSolid = new G4Box("sciCrystSolid", sciCrystSizeX, sciCrystSizeY, sciCrystSizeZ);
 
   // Define Logical Volume for Crystal
-  sciCrystLog =
-	  new G4LogicalVolume(sciCrystSolid,
-			      sciCrystMat,
-			      "crystal");
-
+  sciCrystLog = new G4LogicalVolume(sciCrystSolid, sciCrystMat, "crystal");
 
   // Visualization attributes for the Crystal logical volume
-  sciCrystVisAtt =
-	  new G4VisAttributes(G4Colour(0.0, 0.0, 1.0));					//Instantiation of visualization attributes with blue colour
+  sciCrystVisAtt = new G4VisAttributes(G4Colour(0.0, 0.0, 1.0));					//Instantiation of visualization attributes with blue colour
   sciCrystVisAtt->SetVisibility(true);							//Pass this object to Visualization Manager for visualization
   sciCrystVisAtt->SetForceSolid(true);
   //sciCrystVisAtt->SetForceWireframe(true);						//I still believe that it might make Crystal transparent
