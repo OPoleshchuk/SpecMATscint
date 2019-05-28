@@ -36,21 +36,19 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   worldSizeXY = 40*cm;
   worldSizeZ  = 40*cm;
 
-  //G4double z1, a1, fractionmass1, density1;
-  //G4String name1, symbol1;
-  //G4int ncomponents1;
+  // Define world material manually
   N  = new G4Element("Nitrogen", "N", z=7., a=14.01*g/mole);
   O  = new G4Element("Oxygen", "O", z=8., a=16.00*g/mole);
   density = 0.2E-5*mg/cm3;
   Air = new G4Material("Air", density, ncomponents=2);
   Air->AddElement(N, fractionmass=70*perCent);
   Air->AddElement(O, fractionmass=30*perCent);
-
-  // Define world material
+  // or from the GEANT4 library
   nist = G4NistManager::Instance();
   default_mat = nist->FindOrBuildMaterial("G4_AIR", false);
-  solidWorld = new G4Box("World", worldSizeXY, worldSizeXY, worldSizeZ);  //Worls size
-  logicWorld = new G4LogicalVolume(solidWorld, Air, "World");             //World material and id name
+
+  solidWorld = new G4Box("World", worldSizeXY, worldSizeXY, worldSizeZ);
+  logicWorld = new G4LogicalVolume(solidWorld, Air, "World");
   physWorld = new G4PVPlacement(0, G4ThreeVector(), logicWorld, "World", 0, false, 0, fCheckOverlaps);
   //physWorld = new G4PVPlacement(no rotation, at (0,0,0), its logical volume, its name, its mother  volume, no boolean operation, copy number, checking overlaps);
 
@@ -79,7 +77,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   insulationTube = "no";          //"yes"/"no"
   insulationTubeThickness = 3*mm;
 
-  ComptSupp = "no";               //"yes"/"no"
+  ComptSuppFlag = "no";           //"yes"/"no"
 
   dPhi = twopi/nbSegments;
   half_dPhi = 0.5*dPhi;
@@ -124,15 +122,15 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   sciCrystPosZ = 0; 			 					//Position of the Crystal along the Z axis
 
   sciCrystPos = G4ThreeVector(sciCrystPosX, sciCrystPosY, sciCrystPosZ);
-  sciCrystSolid = new G4Box("sciCrystSolid", sciCrystSizeX, sciCrystSizeY, sciCrystSizeZ); // Define box for Crystal
-  sciCrystLog = new G4LogicalVolume(sciCrystSolid, sciCrystMat, "crystal"); // Define Logical Volume for Crystal
+  sciCrystSolid = new G4Box("sciCrystSolid", sciCrystSizeX, sciCrystSizeY, sciCrystSizeZ);  // Define box for Crystal
+  sciCrystLog = new G4LogicalVolume(sciCrystSolid, sciCrystMat, "crystal");                 // Define Logical Volume for Crystal
 
   // Visualization attributes for the Crystal logical volume
-  sciCrystVisAtt = new G4VisAttributes(G4Colour(0.0, 0.0, 1.0));					//Instantiation of visualization attributes with blue colour
-  sciCrystVisAtt->SetVisibility(true);							//Pass this object to Visualization Manager for visualization
+  sciCrystVisAtt = new G4VisAttributes(G4Colour(0.0, 0.0, 1.0));
+  sciCrystVisAtt->SetVisibility(true);
   sciCrystVisAtt->SetForceSolid(true);
-  //sciCrystVisAtt->SetForceWireframe(true);						//I still believe that it might make Crystal transparent
-  sciCrystLog->SetVisAttributes(sciCrystVisAtt);					//Assignment of visualization attributes to the logical volume of the Crystal
+  //sciCrystVisAtt->SetForceWireframe(true);
+  sciCrystLog->SetVisAttributes(sciCrystVisAtt);
 
   //--------------------------------------------------------//
   //*********************** Reflector **********************//
@@ -209,9 +207,9 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
 
   // Visualization attributes for the Housing logical volume
   sciHousVisAtt =
-  new G4VisAttributes(G4Colour(0.5, 0.5, 0.5));				//Instantiation of visualization attributes with grey colour
-  sciHousVisAtt->SetVisibility(true);					        	//Pass this object to Visualization Manager for visualization
-  sciHousLog->SetVisAttributes(sciHousVisAtt);					//Assignment of visualization attributes to the logical volume of the Housing
+  new G4VisAttributes(G4Colour(0.5, 0.5, 0.5));
+  sciHousVisAtt->SetVisibility(true);
+  sciHousLog->SetVisAttributes(sciHousVisAtt);
 
   //--------------------------------------------------------//
   //******************** Quartz window *********************//
@@ -365,7 +363,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   //--------------------------------------------------------//
   //****************** Compton Suppressor ******************//
   //--------------------------------------------------------//
-  if (ComptSupp == "yes") {
+  if (ComptSuppFlag == "yes") {
     Bi = new G4Element("Bismuth",	"Bi",	z=83., a=208.98*g/mole);
     Ge = new G4Element("Germanium",	"Ge",	z=32., a=72.63*g/mole);
     O = new G4Element("Oxygen",	"O", z=8., a=15.99*g/mole);
@@ -387,265 +385,232 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     ComptSuppPosY = 0;									//Position of the Compton Suppressor along the Y axis
     ComptSuppPosZ = -300; 			 				//Position of the Compton Suppressor along the Z axis
 
-    G4ThreeVector ComptSuppPos = G4ThreeVector(ComptSuppPosX, ComptSuppPosY, ComptSuppPosZ);
+    ComptSuppPos = G4ThreeVector(ComptSuppPosX, ComptSuppPosY, ComptSuppPosZ);
     ComptSuppSolidBox = new G4Box("ComptSuppSolid", 117/2, 30, ComptSuppSizeZ);
     ComptSuppSolidBoxUp = new G4Box("ComptSuppSolidUp", 200, 30*std::cos(dPhi/2), 2*ComptSuppSizeZ);
 
-    G4RotationMatrix ComptSuppRotmBoxUp  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
+    ComptSuppRotmBoxUp  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
     ComptSuppRotmBoxUp.rotateZ(dPhi/2);                                      //** rotation matrix for positioning ComptSupp
-    G4ThreeVector positionComptSuppBoxUp = G4ThreeVector(-117/2, 30, 0);
-    G4Transform3D transformComptSuppBoxUp = G4Transform3D(ComptSuppRotmBoxUp,positionComptSuppBoxUp);
+    positionComptSuppBoxUp = G4ThreeVector(-117/2, 30, 0);
+    transformComptSuppBoxUp = G4Transform3D(ComptSuppRotmBoxUp,positionComptSuppBoxUp);
 
 
     ComptSuppSolidBoxDown = new G4Box("ComptSuppSolidDown", 200, 30*std::cos(dPhi/2), 2*ComptSuppSizeZ);
 
-    G4RotationMatrix ComptSuppRotmBoxDown  = G4RotationMatrix();              //** rotation matrix for positioning ComptSupp
+    ComptSuppRotmBoxDown  = G4RotationMatrix();              //** rotation matrix for positioning ComptSupp
     ComptSuppRotmBoxDown.rotateZ(-dPhi/2);                                    //** rotation matrix for positioning ComptSupp
-    G4ThreeVector positionComptSuppBoxDown = G4ThreeVector(-117/2, -30, 0);
-    G4Transform3D transformComptSuppBoxDown = G4Transform3D(ComptSuppRotmBoxDown,positionComptSuppBoxDown);
+    positionComptSuppBoxDown = G4ThreeVector(-117/2, -30, 0);
+    transformComptSuppBoxDown = G4Transform3D(ComptSuppRotmBoxDown,positionComptSuppBoxDown);
 
 
-    G4VSolid* ComptSuppSolidBoxWithoutUp = new G4SubtractionSolid("ComptSuppSolidBoxWithoutUp", ComptSuppSolidBox, ComptSuppSolidBoxUp, transformComptSuppBoxUp);
-    G4VSolid* ComptSuppSolidBoxWithoutDown = new G4SubtractionSolid("ComptSuppSolidBoxWithoutDown", ComptSuppSolidBoxWithoutUp, ComptSuppSolidBoxDown, transformComptSuppBoxDown);
-    G4double rotationAngle=dPhi/2;
+    ComptSuppSolidBoxWithoutUp = new G4SubtractionSolid("ComptSuppSolidBoxWithoutUp", ComptSuppSolidBox, ComptSuppSolidBoxUp, transformComptSuppBoxUp);
+    ComptSuppSolidBoxWithoutDown = new G4SubtractionSolid("ComptSuppSolidBoxWithoutDown", ComptSuppSolidBoxWithoutUp, ComptSuppSolidBoxDown, transformComptSuppBoxDown);
+    rotationAngle=dPhi/2;
 
     ComptSuppTrapLog = new G4LogicalVolume(ComptSuppSolidBoxWithoutDown, ComptSuppMat, "ComptSuppTrap");
     for (G4int i = 0; i < nbSegments; i++) {
-      G4RotationMatrix ComptSuppTrapRotm  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
+      ComptSuppTrapRotm  = G4RotationMatrix();               //** rotation matrix for positioning ComptSupp
       ComptSuppTrapRotm.rotateZ(rotationAngle);                               //** rotation matrix for positioning ComptSupp
-      G4ThreeVector positionComptSuppTrap = G4ThreeVector((117/2+circleR1/std::cos(dPhi/2))*std::cos(rotationAngle), (117/2+circleR1/std::cos(dPhi/2))*std::sin(rotationAngle), 0);
-      G4Transform3D transformComptSuppTrap = G4Transform3D(ComptSuppTrapRotm,positionComptSuppTrap);
+      positionComptSuppTrap = G4ThreeVector((117/2+circleR1/std::cos(dPhi/2))*std::cos(rotationAngle), (117/2+circleR1/std::cos(dPhi/2))*std::sin(rotationAngle), 0);
+      transformComptSuppTrap = G4Transform3D(ComptSuppTrapRotm,positionComptSuppTrap);
       new G4PVPlacement(transformComptSuppTrap, ComptSuppTrapLog, "ComptSuppTrapPl", logicWorld, false, 100+i, fCheckOverlaps);
       rotationAngle += dPhi;
     }
 
     // Visualization attributes for the Compton Suppressor logical volume
-    ComptSuppVisAtt = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));					//Instantiation of visualization attributes with blue colour
-    ComptSuppVisAtt->SetVisibility(true);							                      //Pass this object to Visualization Manager for visualization
+    ComptSuppVisAtt = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));
+    ComptSuppVisAtt->SetVisibility(true);
     ComptSuppVisAtt->SetForceSolid(true);
-    ComptSuppTrapLog->SetVisAttributes(ComptSuppVisAtt);					          //Assignment of visualization attributes to the logical volume of the Crystal
+    ComptSuppTrapLog->SetVisAttributes(ComptSuppVisAtt);
 
   }
 
 
   //Define the vacuum chamber flange
   if (vacuumChamber == "yes") {
-      vacuumFlangeBox = new G4Box("vacuumFlangeBox", vacuumFlangeSizeX,	vacuumFlangeSizeY, vacuumFlangeSizeZ);
-      // Subtracts Reflector box from Housing box
-      vacuumFlangeSolid = new G4SubtractionSolid("vacuumFlangeSolid", vacuumFlangeBox, segmentBox, 0, G4ThreeVector(0, 0, (sciHousSizeZ+sciWindSizeZ)+vacuumFlangeSizeZ-(2*vacuumFlangeSizeZ-vacuumFlangeThickFrontOfScint)));
-      vacuumFlangeBoxLog = new G4LogicalVolume(vacuumFlangeSolid, vacuumFlangeMat, "vacuumFlangeBoxLog");
+    vacuumFlangeBox = new G4Box("vacuumFlangeBox", vacuumFlangeSizeX,	vacuumFlangeSizeY, vacuumFlangeSizeZ);
+    // Subtracts Reflector box from Housing box
+    vacuumFlangeSolid = new G4SubtractionSolid("vacuumFlangeSolid", vacuumFlangeBox, segmentBox, 0, G4ThreeVector(0, 0, (sciHousSizeZ+sciWindSizeZ)+vacuumFlangeSizeZ-(2*vacuumFlangeSizeZ-vacuumFlangeThickFrontOfScint)));
+    vacuumFlangeBoxLog = new G4LogicalVolume(vacuumFlangeSolid, vacuumFlangeMat, "vacuumFlangeBoxLog");
 
-      vacuumSideFlangeMat = Al_Alloy;
-      rotSideFlnge  = G4RotationMatrix();
-      rotSideFlnge.rotateZ(dPhi/2);
-      positionSideFlange1 = G4ThreeVector(0, 0, vacuumFlangeSizeX);
-      transformSideFlange1 = G4Transform3D(rotSideFlnge, positionSideFlange1);
-      positionSideFlange2 = G4ThreeVector(0, 0, -vacuumFlangeSizeX-2*vacuumFlangeSizeZ);
-      transformSideFlange2 = G4Transform3D(rotSideFlnge, positionSideFlange2);
-      G4double vacuumChamberSideFlangeThickness[] = {0, 2*vacuumFlangeSizeZ};
-      G4double vacuumChamberSideFlangeInnerR[] = {0, 0};
-      G4double vacuumChamberSideFlangeOuterR[] = {circleR1+2*vacuumFlangeSizeZ, circleR1+2*vacuumFlangeSizeZ};
+    vacuumSideFlangeMat = Al_Alloy;
+    rotSideFlnge  = G4RotationMatrix();
+    rotSideFlnge.rotateZ(dPhi/2);
+    positionSideFlange1 = G4ThreeVector(0, 0, vacuumFlangeSizeX);
+    transformSideFlange1 = G4Transform3D(rotSideFlnge, positionSideFlange1);
+    positionSideFlange2 = G4ThreeVector(0, 0, -vacuumFlangeSizeX-2*vacuumFlangeSizeZ);
+    transformSideFlange2 = G4Transform3D(rotSideFlnge, positionSideFlange2);
+    G4double vacuumChamberSideFlangeThickness[] = {0, 2*vacuumFlangeSizeZ};
+    G4double vacuumChamberSideFlangeInnerR[] = {0, 0};
+    G4double vacuumChamberSideFlangeOuterR[] = {circleR1+2*vacuumFlangeSizeZ, circleR1+2*vacuumFlangeSizeZ};
 
-      vacuumChamberSideFlange = new G4Polyhedra("vacuumChamberSideFlange",
-                     0,
-                     2*3.1415926535897932384626433,
-                     nbSegments,
-                     2,
-                     vacuumChamberSideFlangeThickness,
-                     vacuumChamberSideFlangeInnerR,
-                     vacuumChamberSideFlangeOuterR);
-                     
-      vacuumChamberSideFlangeLog = new G4LogicalVolume(vacuumChamberSideFlange,
-                    vacuumSideFlangeMat,
-                    "vacuumChamberSideFlangeLog");
-      new G4PVPlacement(transformSideFlange1,
-                    vacuumChamberSideFlangeLog,                //its logical volume
-                    "VacuumChamberSideFlangeLog",              //its name
-                    logicWorld,                                //its mother  volume
-                    false,                                     //no boolean operation
-                    1,                                         //copy number
-                    fCheckOverlaps);                           // checking overlaps
-      new G4PVPlacement(transformSideFlange2,
-                    vacuumChamberSideFlangeLog,                //its logical volume
-                    "VacuumChamberSideFlangeLog",              //its name
-                    logicWorld,                                //its mother  volume
-                    false,                                     //no boolean operation
-                    2,                                         //copy number
-                    fCheckOverlaps);                           // checking overlaps
+    vacuumChamberSideFlange = new G4Polyhedra("vacuumChamberSideFlange", 0, 2*3.1415926535897932384626433, nbSegments, 2, vacuumChamberSideFlangeThickness, vacuumChamberSideFlangeInnerR, vacuumChamberSideFlangeOuterR);
+    vacuumChamberSideFlangeLog = new G4LogicalVolume(vacuumChamberSideFlange, vacuumSideFlangeMat, "vacuumChamberSideFlangeLog");
+    new G4PVPlacement(transformSideFlange1, vacuumChamberSideFlangeLog, "VacuumChamberSideFlangeLog", logicWorld, false, 1, fCheckOverlaps);
+    new G4PVPlacement(transformSideFlange2, vacuumChamberSideFlangeLog, "VacuumChamberSideFlangeLog", logicWorld, false, 2, fCheckOverlaps);
   }
 
   //Defines insulation tube between the field cage and the vacuum chamber which might be used for preventing sparks in the real setup
   //And its stopping power should be simulated
   //
   if (/*vacuumChamber == "yes" &&*/ insulationTube == "yes") {
-      //Geometry of the insulation Tube
-      insulationTubeInnerRadius = circleR1-insulationTubeThickness;
-      insulationTubeOuterRadius = circleR1;
-      G4VSolid* insulationTubeSolid = new G4Tubs("insulationTubeSolid",
-    				insulationTubeInnerRadius,
-                    insulationTubeOuterRadius,
-    				vacuumFlangeSizeX,
-    				0*deg,
-                    360*deg);
-      insulationTubeLog = new G4LogicalVolume(insulationTubeSolid,
-                    insulationTubeMat,
-                    "insulationTubeLog");
-      new G4PVPlacement(0,
-                    G4ThreeVector(0,0,0),
-                    insulationTubeLog,                //its logical volume
-                    "insulationTubePhys",              //its name
-                    logicWorld,                                //its mother  volume
-                    false,                                     //no boolean operation
-                    1,                                         //copy number
-                    fCheckOverlaps);                           // checking overlaps
-      // Visualization attributes for the insulation tube
-      insulationTubeVisAtt =
-  	    new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));					//Instantiation of visualization attributes with cyan colour
-      insulationTubeVisAtt->SetVisibility(true);							//Pass this object to Visualization Manager for visualization
-      insulationTubeVisAtt->SetForceWireframe(true);						//I believe that it might make Window transparent
-      insulationTubeLog->SetVisAttributes(insulationTubeVisAtt);						//Assignment of visualization attributes to the logical volume of the Window
+    //Geometry of the insulation Tube
+    insulationTubeInnerRadius = circleR1-insulationTubeThickness;
+    insulationTubeOuterRadius = circleR1;
+    insulationTubeSolid = new G4Tubs("insulationTubeSolid",	insulationTubeInnerRadius, insulationTubeOuterRadius,	vacuumFlangeSizeX, 0*deg, 360*deg);
+    insulationTubeLog = new G4LogicalVolume(insulationTubeSolid, insulationTubeMat, "insulationTubeLog");
+    new G4PVPlacement(0, G4ThreeVector(0,0,0), insulationTubeLog, "insulationTubePhys", logicWorld, false, 1, fCheckOverlaps);
+
+    // Visualization attributes for the insulation tube
+    insulationTubeVisAtt = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));
+    insulationTubeVisAtt->SetVisibility(true);
+    insulationTubeVisAtt->SetForceWireframe(true);
+    insulationTubeLog->SetVisAttributes(insulationTubeVisAtt);
   }
 
   //Positioning of segments and crystals in the segment
 
   //In TotalCrystNb array will be stored coordinates of the all crystals, which could be used for further Doppler correction
-  G4int TotalCrystNb = nbCrystInSegmentRow*nbCrystInSegmentColumn*nbSegments;   //Dimension of the dynamic the array
-  G4ThreeVector *crystalPositionsArray = new G4ThreeVector[TotalCrystNb];                  //Dinamic mamory allocation for the array
-  for (int i=0; i<TotalCrystNb; i++) {
-    crystalPositionsArray[i] = G4ThreeVector(0.,0.,0.);                                    // Initialize all elements of the array to zero.
+  TotalCrystNb = nbCrystInSegmentRow*nbCrystInSegmentColumn*nbSegments;   //Dimension of the dynamic the array
+  crystalPositionsArray = new G4ThreeVector[TotalCrystNb];                //Dinamic mamory allocation for the array
+  for (i=0; i<TotalCrystNb; i++) {
+    crystalPositionsArray[i] = G4ThreeVector(0.,0.,0.);                   // Initialize all elements of the array to zero.
   }
 
-  G4int i = 0;          //counter for reconstruction of crystal positions
-  G4int crysNb = 1;     //crystal counter
-	for (G4int iseg = 0; iseg < nbSegments ; iseg++) {
-			G4double phi = iseg*dPhi;
-			G4RotationMatrix rotm  = G4RotationMatrix();     //** rotation matrix for positioning segments
-			rotm.rotateY(90*deg);                            //** rotation matrix for positioning segments
-			rotm.rotateZ(phi);                               //** rotation matrix for positioning segments
+  i = 0;          //counter for reconstruction of crystal positions
+  crysNb = 1;     //crystal counter
+  for (iseg = 0; iseg < nbSegments ; iseg++) {
+    phi = iseg*dPhi;
+    rotm  = G4RotationMatrix();                      //** rotation matrix for positioning segments
+    rotm.rotateY(90*deg);                            //** rotation matrix for positioning segments
+    rotm.rotateZ(phi);                               //** rotation matrix for positioning segments
 
-            G4RotationMatrix rotm2  = G4RotationMatrix();    //### rotation matrix for reconstruction of crystal positions
-			rotm2.rotateX(360*deg - phi);                    //### rotation matrix for reconstruction of crystal positions
-            G4RotationMatrix rotm3  = G4RotationMatrix();    //### rotation matrix for reconstruction of crystal positions
-			rotm3.rotateY(90*deg);                           //### rotation matrix for reconstruction of crystal positions
+    rotm2  = G4RotationMatrix();                     //### rotation matrix for reconstruction of crystal positions
+    rotm2.rotateX(360*deg - phi);                    //### rotation matrix for reconstruction of crystal positions
+    rotm3  = G4RotationMatrix();                     //### rotation matrix for reconstruction of crystal positions
+    rotm3.rotateY(90*deg);                           //### rotation matrix for reconstruction of crystal positions
 
-			G4ThreeVector uz = G4ThreeVector(std::cos(phi), std::sin(phi), 0.); //cooficient which will be used for preliminary rotation of the segments and crystals
-            segmentBoxLog = new G4LogicalVolume(segmentBox,
-                          segment_mat,
-                          "segmentBoxLog");
-			G4ThreeVector positionInSegment = G4ThreeVector(-(nbCrystInSegmentRow*sciHousSizeX+gap*(nbCrystInSegmentRow-1)/2-sciHousSizeX), -(nbCrystInSegmentColumn*sciHousSizeY-sciHousSizeY), (sciHousSizeZ-sciCrystSizeZ-sciWindSizeZ));
-			for (G4int icrystRow = 0; icrystRow < nbCrystInSegmentColumn; icrystRow++) {
-				for (G4int icrystCol = 0; icrystCol < nbCrystInSegmentRow; icrystCol++) {
-						G4RotationMatrix rotm1  = G4RotationMatrix();
+    uz = G4ThreeVector(std::cos(phi), std::sin(phi), 0.); //cooficient which will be used for preliminary rotation of the segments and crystals
+    segmentBoxLog = new G4LogicalVolume(segmentBox, segment_mat, "segmentBoxLog");
+    positionInSegment = G4ThreeVector(-(nbCrystInSegmentRow*sciHousSizeX+gap*(nbCrystInSegmentRow-1)/2-sciHousSizeX), -(nbCrystInSegmentColumn*sciHousSizeY-sciHousSizeY), (sciHousSizeZ-sciCrystSizeZ-sciWindSizeZ));
 
-						G4ThreeVector positionCryst = (G4ThreeVector(0., 0., sciCrystPosZ) + positionInSegment);
-						G4ThreeVector positionWind = (G4ThreeVector(0., 0., sciWindPosZ) + positionInSegment);
-						G4ThreeVector positionRefl = (G4ThreeVector(0., 0., sciReflPosZ) + positionInSegment);
-						G4ThreeVector positionHous = (G4ThreeVector(0., 0., sciHousPosZ) + positionInSegment);
+    for (icrystRow = 0; icrystRow < nbCrystInSegmentColumn; icrystRow++) {
+      for (icrystCol = 0; icrystCol < nbCrystInSegmentRow; icrystCol++) {
+        rotm1  = G4RotationMatrix();
 
-                        crystalPositionsArray[crysNb - 1] = positionCryst; //assigning initial crystal positions in a segment into array
+        positionCryst = (G4ThreeVector(0., 0., sciCrystPosZ) + positionInSegment);
+        positionWind = (G4ThreeVector(0., 0., sciWindPosZ) + positionInSegment);
+        positionRefl = (G4ThreeVector(0., 0., sciReflPosZ) + positionInSegment);
+        positionHous = (G4ThreeVector(0., 0., sciHousPosZ) + positionInSegment);
 
-						G4Transform3D transformCryst = G4Transform3D(rotm1,positionCryst);
-						G4Transform3D transformWind = G4Transform3D(rotm1,positionWind);
-						G4Transform3D transformRefl = G4Transform3D(rotm1,positionRefl);
-						G4Transform3D transformHous = G4Transform3D(rotm1,positionHous);
+        crystalPositionsArray[crysNb - 1] = positionCryst; //assigning initial crystal positions in a segment into array
 
-						// Crystal position
-						new G4PVPlacement(transformCryst,			  //no rotation here rotm1 is empty, position
-										  sciCrystLog,                //its logical volume
-										  "sciCrystPl",               //its name
-										  segmentBoxLog,              //its mother  volume
-										  false,                      //no boolean operation
-										  crysNb,                     //crystal unique number will
-										  fCheckOverlaps);            // checking overlaps
+        transformCryst = G4Transform3D(rotm1,positionCryst);
+        transformWind = G4Transform3D(rotm1,positionWind);
+        transformRefl = G4Transform3D(rotm1,positionRefl);
+        transformHous = G4Transform3D(rotm1,positionHous);
 
-						new G4PVPlacement(transformWind,
-										  sciWindLog,
-										  "sciWindPl",
-										  segmentBoxLog,
-										  false,
-										  crysNb,
-										  fCheckOverlaps);
+        // Crystal position
+        new G4PVPlacement(transformCryst,			//no rotation here rotm1 is empty, position
+          sciCrystLog,                        //its logical volume
+          "sciCrystPl",                       //its name
+          segmentBoxLog,                      //its mother  volume
+          false,                              //no boolean operation
+          crysNb,                             //crystal unique number will
+          fCheckOverlaps);                    // checking overlaps
 
-						new G4PVPlacement(transformRefl,
-										  sciReflLog,
-										  "sciReflPl",
-										  segmentBoxLog,
-										  false,
-										  crysNb,
-										  fCheckOverlaps);
+        new G4PVPlacement(transformWind,
+          sciWindLog,
+          "sciWindPl",
+          segmentBoxLog,
+          false,
+          crysNb,
+          fCheckOverlaps);
 
-						new G4PVPlacement(transformHous,
-										  sciHousLog,
-										  "sciHousPl",
-										  segmentBoxLog,
-										  false,
-										  crysNb,
-										  fCheckOverlaps);
-						crysNb += 1;
-						positionInSegment += G4ThreeVector(sciHousSizeX*2+gap, 0., 0.);
-				}
-				positionInSegment -= G4ThreeVector(nbCrystInSegmentRow*sciHousSizeX*2+gap*(nbCrystInSegmentRow), 0., 0.);
-				positionInSegment += G4ThreeVector(0., sciHousSizeY*2, 0.);
-			}
-            //segment and flange positioning
-            if (vacuumChamber == "yes") {
-                //Flange positioning
-                G4ThreeVector positionVacuumFlange = (circleR1+vacuumFlangeSizeZ)*uz;
-    			G4Transform3D transformVacuumFlange = G4Transform3D(rotm, positionVacuumFlange);
-                new G4PVPlacement(transformVacuumFlange, //position
-    				  vacuumFlangeBoxLog,                //its logical volume
-    				  "VacuumFlange",                    //its name
-    				  logicWorld,                         //its mother  volume
-    				  false,                              //no boolean operation
-    				  iseg,                               //copy number
-    				  fCheckOverlaps);                    // checking overlaps
-                //Segment positioning
-    			G4ThreeVector positionSegment = (circleR1+2*vacuumFlangeSizeZ+(sciHousSizeZ+sciWindSizeZ)-(2*vacuumFlangeSizeZ-vacuumFlangeThickFrontOfScint))*uz;
-    			G4Transform3D transformSegment = G4Transform3D(rotm, positionSegment);
-    			new G4PVPlacement(transformSegment, //position
-    				  segmentBoxLog,                //its logical volume
-    				  "Segment",                    //its name
-    				  logicWorld,                   //its mother  volume
-    				  false,                        //no boolean operation
-    				  iseg,                         //copy number
-    				  fCheckOverlaps);              // checking overlaps
-                //Saving crystal positions in the crystalPositionsArray array
-                for (; i < crysNb-1; i++) {
-                    G4AffineTransform TransformCrystPos1;
-                    TransformCrystPos1.SetNetRotation(rotm2); //rotates the crystal centers (in one segment) by angle phi around X
-                    crystalPositionsArray[i] = TransformCrystPos1.TransformPoint(crystalPositionsArray[i]);
+        new G4PVPlacement(transformRefl,
+          sciReflLog,
+          "sciReflPl",
+          segmentBoxLog,
+          false,
+          crysNb,
+          fCheckOverlaps);
 
-                    G4AffineTransform TransformCrystPos;
-                    TransformCrystPos.SetNetRotation(rotm3); //rotates the crystal centers (in one segment) by 90deg around Y
-                    TransformCrystPos.SetNetTranslation(positionSegment);
-                    crystalPositionsArray[i] = TransformCrystPos.TransformPoint(crystalPositionsArray[i]);
-                }
-            }
-            //segment position in case vacuumChamber is "no"
-            else {
-                //Segment positioning
-                G4ThreeVector positionSegment = (circleR1+(sciHousSizeZ+sciWindSizeZ))*uz;
-    			G4Transform3D transformSegment = G4Transform3D(rotm, positionSegment);
-    			new G4PVPlacement(transformSegment, //position
-    				  segmentBoxLog,                //its logical volume
-    				  "Segment",                    //its name
-    				  logicWorld,                   //its mother  volume
-    				  false,                        //no boolean operation
-    				  iseg,                         //copy number
-    				  fCheckOverlaps);              // checking overlaps
-                //Saving crystal positions in the crystalPositionsArray array
-                for (; i < crysNb-1; i++) {
-                    G4AffineTransform TransformCrystPos1;
-                    TransformCrystPos1.SetNetRotation(rotm2); //rotates the crystal centers (in one segment) by angle phi around X
-                    crystalPositionsArray[i] = TransformCrystPos1.TransformPoint(crystalPositionsArray[i]);
+        new G4PVPlacement(transformHous,
+          sciHousLog,
+          "sciHousPl",
+          segmentBoxLog,
+          false,
+          crysNb,
+          fCheckOverlaps);
 
-                    G4AffineTransform TransformCrystPos;
-                    TransformCrystPos.SetNetRotation(rotm3); //rotates the crystal centers (in one segment) by 90deg around Y
-                    TransformCrystPos.SetNetTranslation(positionSegment);
-                    crystalPositionsArray[i] = TransformCrystPos.TransformPoint(crystalPositionsArray[i]);
-                }
-            }
-	}
+        crysNb += 1;
+        positionInSegment += G4ThreeVector(sciHousSizeX*2+gap, 0., 0.);
+      }
+      positionInSegment -= G4ThreeVector(nbCrystInSegmentRow*sciHousSizeX*2+gap*(nbCrystInSegmentRow), 0., 0.);
+      positionInSegment += G4ThreeVector(0., sciHousSizeY*2, 0.);
+    }
+
+    //segment and flange positioning
+    if (vacuumChamber == "yes") {
+      //Flange positioning
+      positionVacuumFlange = (circleR1+vacuumFlangeSizeZ)*uz;
+      transformVacuumFlange = G4Transform3D(rotm, positionVacuumFlange);
+
+      new G4PVPlacement(transformVacuumFlange,                            //position
+        vacuumFlangeBoxLog,                                               //its logical volume
+        "VacuumFlange",                                                   //its name
+        logicWorld,                                                       //its mother  volume
+        false,                                                            //no boolean operation
+        iseg,                                                             //copy number
+        fCheckOverlaps);                                                  // checking overlaps
+
+      //Segment positioning
+      positionSegment = (circleR1+2*vacuumFlangeSizeZ+(sciHousSizeZ+sciWindSizeZ)-(2*vacuumFlangeSizeZ-vacuumFlangeThickFrontOfScint))*uz;
+      transformSegment = G4Transform3D(rotm, positionSegment);
+
+      new G4PVPlacement(transformSegment,                                 //position
+        segmentBoxLog,                                                    //its logical volume
+        "Segment",                                                        //its name
+        logicWorld,                                                       //its mother  volume
+        false,                                                            //no boolean operation
+        iseg,                                                             //copy number
+        fCheckOverlaps);                                                  // checking overlaps
+
+      //Saving crystal positions in the crystalPositionsArray array
+      for (; i < crysNb-1; i++) {
+        TransformCrystPos1.SetNetRotation(rotm2); //rotates the crystal centers (in one segment) by angle phi around X
+        crystalPositionsArray[i] = TransformCrystPos1.TransformPoint(crystalPositionsArray[i]);
+
+        TransformCrystPos.SetNetRotation(rotm3); //rotates the crystal centers (in one segment) by 90deg around Y
+        TransformCrystPos.SetNetTranslation(positionSegment);
+        crystalPositionsArray[i] = TransformCrystPos.TransformPoint(crystalPositionsArray[i]);
+      }
+    }
+    //segment position in case vacuumChamber is "no"
+    else {
+      //Segment positioning
+      positionSegment = (circleR1+(sciHousSizeZ+sciWindSizeZ))*uz;
+      transformSegment = G4Transform3D(rotm, positionSegment);
+
+      new G4PVPlacement(transformSegment,                                 //position
+        segmentBoxLog,                                                    //its logical volume
+        "Segment",                                                        //its name
+        logicWorld,                                                       //its mother  volume
+        false,                                                            //no boolean operation
+        iseg,                                                             //copy number
+        fCheckOverlaps);                                                  // checking overlaps
+
+      //Saving crystal positions in the crystalPositionsArray array
+      for (; i < crysNb-1; i++) {
+        TransformCrystPos1.SetNetRotation(rotm2); //rotates the crystal centers (in one segment) by angle phi around X
+        crystalPositionsArray[i] = TransformCrystPos1.TransformPoint(crystalPositionsArray[i]);
+
+        TransformCrystPos.SetNetRotation(rotm3); //rotates the crystal centers (in one segment) by 90deg around Y
+        TransformCrystPos.SetNetTranslation(positionSegment);
+        crystalPositionsArray[i] = TransformCrystPos.TransformPoint(crystalPositionsArray[i]);
+      }
+    }
+  }
 
   // Prints dimensions of the scintillation array
   G4cout <<""<< G4endl;
@@ -672,25 +637,25 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   G4cout <<"$$$$"<<" Radius of a circle inscribed in the array: "<<circleR1<<"mm "<< G4endl;
   G4cout <<"$$$$"<< G4endl;
   if (vacuumChamber == "yes") {
-  G4cout <<"$$$$"<<" Flange material: "<<vacuumFlangeMat->GetName()<< G4endl;
-  G4cout <<"$$$$"<<" SideFlange material: "<<vacuumSideFlangeMat->GetName()<< G4endl;
-  G4cout <<"$$$$"<<" Flange width: "<<vacuumFlangeSizeY*2<<"mm "<< G4endl;
-  G4cout <<"$$$$"<<" Flange thickness: "<<vacuumFlangeSizeZ*2<<"mm "<< G4endl;
-  G4cout <<"$$$$"<<" Flange thickness in front of the window: "<<vacuumFlangeThickFrontOfScint<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Flange material: "<<vacuumFlangeMat->GetName()<< G4endl;
+    G4cout <<"$$$$"<<" SideFlange material: "<<vacuumSideFlangeMat->GetName()<< G4endl;
+    G4cout <<"$$$$"<<" Flange width: "<<vacuumFlangeSizeY*2<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Flange thickness: "<<vacuumFlangeSizeZ*2<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Flange thickness in front of the window: "<<vacuumFlangeThickFrontOfScint<<"mm "<< G4endl;
   }
   G4cout <<"$$$$"<< G4endl;
   if (/*vacuumChamber == "yes" &&*/ insulationTube == "yes") {
-  G4cout <<"$$$$"<<" Insulator material: "<<insulationTubeMat->GetName()<< G4endl;
-  G4cout <<"$$$$"<<" Insulator thickness: "<<insulationTubeThickness<<"mm "<< G4endl;
-  G4cout <<"$$$$"<<" Insulator tube outer radius: "<<insulationTubeOuterRadius<<"mm "<< G4endl;
-  G4cout <<"$$$$"<<" Insulator tube inner radius: "<<insulationTubeInnerRadius<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Insulator material: "<<insulationTubeMat->GetName()<< G4endl;
+    G4cout <<"$$$$"<<" Insulator thickness: "<<insulationTubeThickness<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Insulator tube outer radius: "<<insulationTubeOuterRadius<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Insulator tube inner radius: "<<insulationTubeInnerRadius<<"mm "<< G4endl;
   }
   G4cout <<"$$$$"<< G4endl;
   G4cout <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
   G4cout <<""<< G4endl;
   G4cout <<"Positions of the crystal centers in the world:"<< G4endl;
-  for (G4int i = 0; i < TotalCrystNb; i++) {
-      G4cout << "CrystNb" << i+1 << ": " << crystalPositionsArray[i] << G4endl;
+  for (i = 0; i < TotalCrystNb; i++) {
+    G4cout << "CrystNb" << i+1 << ": " << crystalPositionsArray[i] << G4endl;
   }
   G4cout <<""<< G4endl;
   delete [] crystalPositionsArray; //Free memory allocated for the crystalPositionsArray array
@@ -706,20 +671,20 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 void SpecMATSimDetectorConstruction::CreateScorers()
 {
 
-  G4SDManager* SDman = G4SDManager::GetSDMpointer();
+  SDman = G4SDManager::GetSDMpointer();
   SDman->SetVerboseLevel(1);
 
   // declare crystal as a MultiFunctionalDetector scorer
   //
-  G4MultiFunctionalDetector* cryst = new G4MultiFunctionalDetector("crystal");
-  G4PSEnergyDeposit* primitiv = new G4PSEnergyDeposit("edep");
+  cryst = new G4MultiFunctionalDetector("crystal");
+  primitiv = new G4PSEnergyDeposit("edep");
   cryst->RegisterPrimitive(primitiv);
   SDman->AddNewDetector(cryst);
   sciCrystLog->SetSensitiveDetector(cryst);
 
-  if (ComptSupp == "yes") {
-      G4MultiFunctionalDetector* ComptSupp = new G4MultiFunctionalDetector("ComptSupp");
-      G4PSEnergyDeposit* ComptSuppPrimitiv = new G4PSEnergyDeposit("edep");
+  if (ComptSuppFlag == "yes") {
+      ComptSupp = new G4MultiFunctionalDetector("ComptSupp");
+      ComptSuppPrimitiv = new G4PSEnergyDeposit("edep");
       ComptSupp->RegisterPrimitive(ComptSuppPrimitiv);
       SDman->AddNewDetector(ComptSupp);
       ComptSuppTrapLog->SetSensitiveDetector(ComptSupp);
