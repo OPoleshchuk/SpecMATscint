@@ -1,3 +1,15 @@
+///Author: Oleksii Poleshchuk
+///
+///KU Leuven 2019
+///
+///SpecMATscint is a GEANT4 code for simulation
+///of gamma-rays detection efficiency with
+///the SpecMAT scintillation array.
+///
+///Primarily, this code was written for identification of
+///the best geometry of a scintillation array based
+///on it's total detection efficiency.
+///
 /// \file SpecMATSimDetectorConstruction.hh
 /// \brief Definition of the SpecMATSimDetectorConstruction class
 
@@ -51,6 +63,7 @@ private:
 
   G4String ComptSuppFlag;
   G4String vacuumChamber;
+  G4String insulationTube;
 
   G4double a, z, density;
   G4double fractionmass;
@@ -61,7 +74,34 @@ private:
   G4double vacuumFlangeSizeY;
   G4double vacuumFlangeSizeZ;
   G4double vacuumFlangeThickFrontOfScint;
-  G4String insulationTube;
+  G4double vacuumTubeThickness;
+  G4double vacuumTubeInnerRadius;
+  G4double vacuumTubeOuterRadius;
+
+  G4double vacuumTubeThickness2;
+  G4double vacuumTubeInnerRadius2;
+  G4double vacuumTubeOuterRadius2;
+
+  G4double vacuumTubeThickness3;
+  G4double vacuumTubeInnerRadius3;
+  G4double vacuumTubeOuterRadius3;
+
+  G4double vacuumTubeThickness4;
+  G4double vacuumTubeInnerRadius4;
+  G4double vacuumTubeOuterRadius4;
+
+  G4double vacuumTubeThickness5;
+  G4double vacuumTubeInnerRadius5;
+  G4double vacuumTubeOuterRadius5;
+
+  G4double vacuumTubeThickness6;
+  G4double vacuumTubeInnerRadius6;
+  G4double vacuumTubeOuterRadius6;
+
+  G4double vacuumTubeThickness7;
+  G4double vacuumTubeInnerRadius7;
+  G4double vacuumTubeOuterRadius7;
+
   G4double insulationTubeThickness;
   G4double insulationTubeInnerRadius;
   G4double insulationTubeOuterRadius;
@@ -75,8 +115,8 @@ private:
   G4double ComptSuppSizeX;
   G4double ComptSuppSizeY;
   G4double ComptSuppSizeZ;
-  G4double ComptSuppPosX;									//Position of the Crystal along the X axis
-  G4double ComptSuppPosY;									//Position of the Crystal along the Y axis
+  G4double ComptSuppPosX;
+  G4double ComptSuppPosY;
   G4double ComptSuppPosZ;
   G4double sciCrystPosX;
   G4double sciCrystPosY;
@@ -144,6 +184,7 @@ private:
   G4Material* vacuumSideFlangeMat;
   G4Material* Polypropylen_C3H6;
   G4Material* insulationTubeMat;
+  G4Material* vacuumTubeMat;
   G4Material* Air;
   G4Material* segment_mat;
   G4Material* Steel_316L;
@@ -189,6 +230,13 @@ private:
   G4VSolid* vacuumFlangeSolid;
   G4VSolid* vacuumChamberSideFlange;
   G4VSolid* insulationTubeSolid;
+  G4VSolid* vacuumTubeSolid;
+  G4VSolid* vacuumTubeSolid2;
+  G4VSolid* vacuumTubeSolid3;
+  G4VSolid* vacuumTubeSolid4;
+  G4VSolid* vacuumTubeSolid5;
+  G4VSolid* vacuumTubeSolid6;
+  G4VSolid* vacuumTubeSolid7;
 
   G4LogicalVolume* logicWorld;
   G4LogicalVolume* sciCrystLog;
@@ -202,6 +250,13 @@ private:
   G4LogicalVolume* vacuumFlangeBoxLog;
   G4LogicalVolume* vacuumChamberSideFlangeLog;
   G4LogicalVolume* insulationTubeLog;
+  G4LogicalVolume* vacuumTubeLog;
+  G4LogicalVolume* vacuumTubeLog2;
+  G4LogicalVolume* vacuumTubeLog3;
+  G4LogicalVolume* vacuumTubeLog4;
+  G4LogicalVolume* vacuumTubeLog5;
+  G4LogicalVolume* vacuumTubeLog6;
+  G4LogicalVolume* vacuumTubeLog7;
   G4LogicalVolume* segmentBoxLog;
 
   G4VPhysicalVolume* physWorld;
@@ -215,6 +270,13 @@ private:
   G4VisAttributes* sciReflVisAtt;
   G4VisAttributes* sciHousVisAtt;
   G4VisAttributes* insulationTubeVisAtt;
+  G4VisAttributes* vacuumTubeVisAtt;
+  G4VisAttributes* vacuumTubeVisAtt2;
+  G4VisAttributes* vacuumTubeVisAtt3;
+  G4VisAttributes* vacuumTubeVisAtt4;
+  G4VisAttributes* vacuumTubeVisAtt5;
+  G4VisAttributes* vacuumTubeVisAtt6;
+  G4VisAttributes* vacuumTubeVisAtt7;
 
   G4RotationMatrix rotSideFlnge;
   G4RotationMatrix ComptSuppRotmBoxUp;
@@ -311,10 +373,13 @@ public:
   void SetInsulationTubeMat (G4String);
   G4Material* GetInsulationTubeMat(){return insulationTubeMat;}
 
+  void SetComptSuppFlag (G4String);
+  G4String GetComptSuppFlag(){return ComptSuppFlag;}
+
   void SetGap(G4double val){gap = val;}
   G4double GetGap(void){return gap;}
 };
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// ###################################################################################
 
 #endif

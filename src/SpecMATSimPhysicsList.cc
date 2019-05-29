@@ -1,3 +1,15 @@
+///Author: Oleksii Poleshchuk
+///
+///KU Leuven 2019
+///
+///SpecMATscint is a GEANT4 code for simulation
+///of gamma-rays detection efficiency with
+///the SpecMAT scintillation array.
+///
+///Primarily, this code was written for identification of
+///the best geometry of a scintillation array based
+///on it's total detection efficiency.
+///
 /// \file SpecMATSimPhysicsList.cc
 /// \brief Implementation of the SpecMATSimPhysicsList class
 
@@ -7,10 +19,11 @@
 #include "G4RadioactiveDecayPhysics.hh"
 #include "G4EmStandardPhysics.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// ###################################################################################
 
-SpecMATSimPhysicsList::SpecMATSimPhysicsList() 
-: G4VModularPhysicsList(){
+SpecMATSimPhysicsList::SpecMATSimPhysicsList()
+: G4VModularPhysicsList()
+{
   SetVerboseLevel(1);
 
   // Default physics
@@ -23,17 +36,17 @@ SpecMATSimPhysicsList::SpecMATSimPhysicsList()
   RegisterPhysics(new G4EmStandardPhysics());
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// ###################################################################################
 
 SpecMATSimPhysicsList::~SpecMATSimPhysicsList()
-{ 
+{
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// ###################################################################################
 
 void SpecMATSimPhysicsList::SetCuts()
 {
   G4VUserPhysicsList::SetCuts();
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// ###################################################################################

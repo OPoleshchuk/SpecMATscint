@@ -1,3 +1,15 @@
+///Author: Oleksii Poleshchuk
+///
+///KU Leuven 2019
+///
+///SpecMATscint is a GEANT4 code for simulation
+///of gamma-rays detection efficiency with
+///the SpecMAT scintillation array.
+///
+///Primarily, this code was written for identification of
+///the best geometry of a scintillation array based
+///on it's total detection efficiency.
+///
 /// \file SpecMATSimPhysicsList.hh
 /// \brief Definition of the SpecMATSimPhysicsList class
 
@@ -22,7 +34,6 @@ public:
   virtual void SetCuts();
 };
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// ###################################################################################
 
 #endif
-

@@ -1,3 +1,15 @@
+///Author: Oleksii Poleshchuk
+///
+///KU Leuven 2019
+///
+///SpecMATscint is a GEANT4 code for simulation
+///of gamma-rays detection efficiency with
+///the SpecMAT scintillation array.
+///
+///Primarily, this code was written for identification of
+///the best geometry of a scintillation array based
+///on it's total detection efficiency.
+///
 /// \file SpecMATSimRunAction.cc
 /// \brief Implementation of the SpecMATSimRunAction class
 
@@ -16,19 +28,19 @@
 #include "G4ParticleTable.hh"
 #include "G4ParticleDefinition.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// ###################################################################################
 
 SpecMATSimRunAction::SpecMATSimRunAction()
- : G4UserRunAction(),
-   fGoodEvents(0),
-   sciCryst(0),
-   gammaSource(0)
+: G4UserRunAction(),
+  fGoodEvents(0),
+  sciCryst(0),
+  gammaSource(0)
 {
   sciCryst = new SpecMATSimDetectorConstruction();
   gammaSource = new SpecMATSimPrimaryGeneratorAction();
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// ###################################################################################
 
 SpecMATSimRunAction::~SpecMATSimRunAction()
 {
@@ -36,7 +48,7 @@ SpecMATSimRunAction::~SpecMATSimRunAction()
   delete gammaSource;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// ###################################################################################
 
 void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
 {
@@ -50,9 +62,8 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   // Creates analysis manager
   // The choice of analysis technology is done via selection of a namespace
   // in SpecMATSimAnalysis.hh
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  G4cout << "Using " << analysisManager->GetType()
-         << " analysis manager" << G4endl;
+  analysisManager = G4AnalysisManager::Instance();
+  G4cout << "Using " << analysisManager->GetType() << " analysis manager" << G4endl;
 
   // Creates directories
   //
@@ -69,45 +80,45 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
 
   G4String source =gammaSource->GetSource();
   if (source=="gamma") {
-      particleEnergy = G4UIcommand::ConvertToString(gammaSource->GetGammaEnergy());
-      particleName = source;
+    particleEnergy = G4UIcommand::ConvertToString(gammaSource->GetGammaEnergy());
+    particleName = source;
   } else if (source=="ion") {
-      G4double Z = gammaSource->GetZ();
-      G4double A = gammaSource->GetA();
-      G4double excitEnergy = gammaSource->GetExcitEnergy();
-      particleEnergy = gammaSource->GetIonEnergy();
-      particleName = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy)->GetParticleName();
+    Z = gammaSource->GetZ();
+    A = gammaSource->GetA();
+    excitEnergy = gammaSource->GetExcitEnergy();
+    particleEnergy = gammaSource->GetIonEnergy();
+    particleName = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy)->GetParticleName();
   } else {
-      particleEnergy = "unknown";
-      particleName = "unknown";
+    particleEnergy = "unknown";
+    particleName = "unknown";
   }
 
-  G4String NbSegments = G4UIcommand::ConvertToString(sciCryst->GetNbSegments());
-  G4String Rows = G4UIcommand::ConvertToString(sciCryst->GetNbCrystInSegmentColumn());
-  G4String Columns = G4UIcommand::ConvertToString(sciCryst->GetNbCrystInSegmentRow());
-  G4String circleR = G4UIcommand::ConvertToString(sciCryst->ComputeCircleR1());
+  NbSegments = G4UIcommand::ConvertToString(sciCryst->GetNbSegments());
+  Rows       = G4UIcommand::ConvertToString(sciCryst->GetNbCrystInSegmentColumn());
+  Columns    = G4UIcommand::ConvertToString(sciCryst->GetNbCrystInSegmentRow());
+  circleR    = G4UIcommand::ConvertToString(sciCryst->ComputeCircleR1());
 
   chamber = sciCryst->GetVacuumChamber();
   insulator = sciCryst->GetInsulationTube();
 
   if (chamber == "yes") {
-      chamberName = "Flan_";
-      flangeMatName = sciCryst->GetVacuumFlangeMat()->GetName();
+    chamberName = "Flan_";
+    flangeMatName = sciCryst->GetVacuumFlangeMat()->GetName();
   } else {
-      chamberName = "";
-      flangeMatName = "";
+    chamberName = "";
+    flangeMatName = "";
   }
 
   if (/*(chamber == "yes") &&*/ (insulator == "yes")) {
-      insulatorName = "Ins_";
-      insulatorMatName = sciCryst->GetInsulationTubeMat()->GetName();
+    insulatorName = "Ins_";
+    insulatorMatName = sciCryst->GetInsulationTubeMat()->GetName();
   } else {
-      insulatorName = "";
-      insulatorMatName = "";
+    insulatorName = "";
+    insulatorMatName = "";
   }
-  G4String Gap = G4UIcommand::ConvertToString(sciCryst->GetGap());
 
-  G4String fileName = crystMatName+"_"+crystSizeX+"mmx"+crystSizeY+"mmx"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"crystals_"+"R"+circleR+"mm_"+particleName+particleEnergy+"MeV_"+chamberName+flangeMatName+insulatorName+insulatorMatName+"_gap_"+Gap+".root";
+  Gap = G4UIcommand::ConvertToString(sciCryst->GetGap());
+  fileName = crystMatName+"_"+crystSizeX+"mmx"+crystSizeY+"mmx"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"crystals_"+"R"+circleR+"mm_"+particleName+particleEnergy+"MeV_"+chamberName+flangeMatName+insulatorName+insulatorMatName+"_gap_"+Gap+".root";
 
   // Open the file
   //
@@ -116,14 +127,15 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
 
   // Creating histograms
   //
-  G4int crystNb;
   for(crystNb = 1; crystNb <= (sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments()); crystNb++) {
-  analysisManager->CreateH1(G4UIcommand::ConvertToString(crystNb),"Edep in crystal Nb" + G4UIcommand::ConvertToString(crystNb), 15501, 0., 15500*MeV);
+    analysisManager->CreateH1(G4UIcommand::ConvertToString(crystNb),"Edep in crystal Nb" + G4UIcommand::ConvertToString(crystNb), 15501, 0., 15500*MeV);
   }
   analysisManager->CreateH1("Total", "Total Edep", 15501, 0., 15500*MeV);
-  G4int segmentNb;
-  for(segmentNb = 1; segmentNb <= (sciCryst->GetNbSegments()); segmentNb++) {
-  analysisManager->CreateH1(G4UIcommand::ConvertToString(100+segmentNb),"Edep in ComptSupp Nb" + G4UIcommand::ConvertToString(100+segmentNb), 15501, 0., 15500*MeV);
+  ComptSuppFlagTest = sciCryst->GetComptSuppFlag();
+  if (ComptSuppFlagTest == "yes") {
+    for(segmentNb = 1; segmentNb <= (sciCryst->GetNbSegments()); segmentNb++) {
+      analysisManager->CreateH1(G4UIcommand::ConvertToString(100+segmentNb),"Edep in ComptSupp Nb" + G4UIcommand::ConvertToString(100+segmentNb), 15501, 0., 15500*MeV);
+    }
   }
   // Creating ntuple
   //
@@ -134,9 +146,11 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateNtupleDColumn("EdepRes");
   analysisManager->CreateNtupleDColumn("EdepNoRes");
   analysisManager->CreateNtupleDColumn("EventCS");
-  analysisManager->CreateNtupleDColumn("ComptSuppNb");
-  analysisManager->CreateNtupleDColumn("EdepComptSuppRes");
-  analysisManager->CreateNtupleDColumn("EdepComptSuppNoRes");
+  if (ComptSuppFlagTest == "yes") {
+    analysisManager->CreateNtupleDColumn("ComptSuppNb");
+    analysisManager->CreateNtupleDColumn("EdepComptSuppRes");
+    analysisManager->CreateNtupleDColumn("EdepComptSuppNoRes");
+  }
   //From SteppingAction
   /*
   analysisManager->CreateNtupleDColumn("EventSA");
@@ -156,25 +170,22 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->FinishNtuple();
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// ###################################################################################
 
 void SpecMATSimRunAction::EndOfRunAction(const G4Run* aRun)
 {
-  G4int NbOfEvents = aRun->GetNumberOfEvent();
+  NbOfEvents = aRun->GetNumberOfEvent();
   if (NbOfEvents == 0) return;
 
   //aRun conditions
   //
-  const SpecMATSimPrimaryGeneratorAction* kinematic
-    = static_cast<const SpecMATSimPrimaryGeneratorAction*>(
-        G4RunManager::GetRunManager()->GetUserPrimaryGeneratorAction());
-  G4ParticleDefinition* particle
-    = kinematic->GetParticleGun()->GetParticleDefinition();
-  G4String partName = particle->GetParticleName();
+  const SpecMATSimPrimaryGeneratorAction* kinematic = static_cast<const SpecMATSimPrimaryGeneratorAction*>(G4RunManager::GetRunManager()->GetUserPrimaryGeneratorAction());
+  particle = kinematic->GetParticleGun()->GetParticleDefinition();
+  partName = particle->GetParticleName();
 
   // save histograms
   //
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  analysisManager = G4AnalysisManager::Instance();
   analysisManager->Write();
   analysisManager->CloseFile();
 
@@ -185,10 +196,10 @@ void SpecMATSimRunAction::EndOfRunAction(const G4Run* aRun)
   //print
   //
   G4cout
-     << "\n--------------------End of Run------------------------------\n"
-     << " The Run was " << NbOfEvents << " "<< partName
-     << "\n------------------------------------------------------------\n"
-     << G4endl;
+  << "\n--------------------End of Run------------------------------\n"
+  << " The Run was " << NbOfEvents << " "<< partName
+  << "\n------------------------------------------------------------\n"
+  << G4endl;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// ###################################################################################

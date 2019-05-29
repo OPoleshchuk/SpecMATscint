@@ -1,3 +1,15 @@
+///Author: Oleksii Poleshchuk
+///
+///KU Leuven 2019
+///
+///SpecMATscint is a GEANT4 code for simulation
+///of gamma-rays detection efficiency with
+///the SpecMAT scintillation array.
+///
+///Primarily, this code was written for identification of
+///the best geometry of a scintillation array based
+///on it's total detection efficiency.
+///
 /// \file SpecMATSimPrimaryGeneratorAction.hh
 /// \brief Definition of the SpecMATSimPrimaryGeneratorAction class
 
@@ -19,56 +31,55 @@ class SpecMATSimDetectorConstruction;
 
 class SpecMATSimPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
-  public:
+public:
+  G4int Z;
+  G4int A;
+  G4int n_particle;
+  G4double ionCharge;
+  G4double excitEnergy;
+  G4double ionEnergy;
+  G4String source;
 
-    G4int Z;
-    G4int A;
-    G4int n_particle;
-    G4double ionCharge;
-    G4double excitEnergy;
-    G4double ionEnergy;
-    G4String source;
+  SpecMATSimPrimaryGeneratorAction();
+  virtual ~SpecMATSimPrimaryGeneratorAction();
 
-    SpecMATSimPrimaryGeneratorAction();
-    virtual ~SpecMATSimPrimaryGeneratorAction();
+  virtual void GeneratePrimaries(G4Event*);
 
-    virtual void GeneratePrimaries(G4Event*);
+  const G4ParticleGun* GetParticleGun() const { return fParticleGun; }
 
-    const G4ParticleGun* GetParticleGun() const { return fParticleGun; }
+  void SetDistFromCrystSurfToSource(G4double val) { distFromCrystSurfToSource = val; }
+  G4double GetDistFromCrystSurfToSource(void) { return distFromCrystSurfToSource;}
 
-    void SetDistFromCrystSurfToSource(G4double val) { distFromCrystSurfToSource = val; }
-    G4double GetDistFromCrystSurfToSource(void) { return distFromCrystSurfToSource;}
+  void SetGammaEnergy(G4double val) { gammaEnergy = val; }
+  G4double GetGammaEnergy(void) { return gammaEnergy;}
 
-    void SetGammaEnergy(G4double val) { gammaEnergy = val; }
-    G4double GetGammaEnergy(void) { return gammaEnergy;}
+  void SetZ(G4double val) { Z = val; }
+  G4double GetZ(void) { return Z;}
 
-    void SetZ(G4double val) { Z = val; }
-    G4double GetZ(void) { return Z;}
+  void SetA(G4double val) { A = val; }
+  G4double GetA(void) { return A;}
 
-    void SetA(G4double val) { A = val; }
-    G4double GetA(void) { return A;}
+  void SetIonCharge(G4double val) { ionCharge = val; }
+  G4double GetIonCharge(void) { return ionCharge;}
 
-    void SetIonCharge(G4double val) { ionCharge = val; }
-    G4double GetIonCharge(void) { return ionCharge;}
+  void SetExcitEnergy(G4double val) { excitEnergy = val; }
+  G4double GetExcitEnergy(void) { return excitEnergy;}
 
-    void SetExcitEnergy(G4double val) { excitEnergy = val; }
-    G4double GetExcitEnergy(void) { return excitEnergy;}
+  void SetIonEnergy(G4double val) { ionEnergy = val; }
+  G4double GetIonEnergy(void) { return ionEnergy;}
 
-    void SetIonEnergy(G4double val) { ionEnergy = val; }
-    G4double GetIonEnergy(void) { return ionEnergy;}
+  void SetSource(G4String val) { source = val; }
+  G4String GetSource(void) { return source;}
 
-    void SetSource(G4String val) { source = val; }
-    G4String GetSource(void) { return source;}
+private:
+  SpecMATSimDetectorConstruction* sciCryst;
 
-  private:
-    SpecMATSimDetectorConstruction* sciCryst;
+  G4ParticleGun*  fParticleGun;
 
-    G4ParticleGun*  fParticleGun;
-
-    G4double distFromCrystSurfToSource;
-    G4double gammaEnergy;
+  G4double distFromCrystSurfToSource;
+  G4double gammaEnergy;
 };
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// ###################################################################################
 
 #endif
