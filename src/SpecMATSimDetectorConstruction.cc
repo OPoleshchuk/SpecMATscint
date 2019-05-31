@@ -51,7 +51,8 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   // Define world material manually
   N  = new G4Element("Nitrogen", "N", z=7., a=14.01*g/mole);
   O  = new G4Element("Oxygen", "O", z=8., a=16.00*g/mole);
-  density = 0.2E-5*mg/cm3;
+  //density = 0.2E-5*mg/cm3;
+  density = 1.225*mg/cm3;
   Air = new G4Material("Air", density, ncomponents=2);
   Air->AddElement(N, fractionmass=70*perCent);
   Air->AddElement(O, fractionmass=30*perCent);
@@ -60,7 +61,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   default_mat = nist->FindOrBuildMaterial("G4_AIR", false);
 
   solidWorld = new G4Box("World", worldSizeXY, worldSizeXY, worldSizeZ);
-  logicWorld = new G4LogicalVolume(solidWorld, Air, "World");
+  logicWorld = new G4LogicalVolume(solidWorld, default_mat, "World");
   physWorld = new G4PVPlacement(0, G4ThreeVector(), logicWorld, "World", 0, false, 0, fCheckOverlaps);
   //physWorld = new G4PVPlacement(no rotation, at (0,0,0), its logical volume, its name, its mother  volume, no boolean operation, copy number, checking overlaps);
 
@@ -348,6 +349,7 @@ G4double SpecMATSimDetectorConstruction::ComputeCircleR1()
         circleR1 = sciHousSizeY*nbCrystInSegmentColumn/(tandPhi);
       }*/
       circleR1 = sciHousSizeY*nbCrystInSegmentColumn/(tandPhi);
+      circleR1=131.25*mm;
     }
     else {
       circleR1 = sciHousSizeY*nbCrystInSegmentColumn/(tandPhi);
@@ -468,7 +470,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     vacuumTubeOuterRadius = circleR1;
     vacuumTubeSolid = new G4Tubs("vacuumTubeSolid",	vacuumTubeInnerRadius, vacuumTubeOuterRadius,	102.25*mm, 0*deg, 360*deg);
     vacuumTubeLog = new G4LogicalVolume(vacuumTubeSolid, vacuumTubeMat, "vacuumTubeLog");
-    new G4PVPlacement(0, G4ThreeVector(0,0,29.25*mm), vacuumTubeLog, "vacuumTubePhys", logicWorld, false, 1, fCheckOverlaps);
+    new G4PVPlacement(0, G4ThreeVector(0,0,29.25*mm-29.25*2*mm), vacuumTubeLog, "vacuumTubePhys", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
     vacuumTubeVisAtt = new G4VisAttributes(G4Colour(0.5, 0.5, 0.5));
@@ -481,7 +483,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     vacuumTubeOuterRadius2 = 226*mm;
     vacuumTubeSolid2 = new G4Tubs("vacuumTubeSolid2",	vacuumTubeInnerRadius2, vacuumTubeOuterRadius2,	5*mm, 0*deg, 360*deg);
     vacuumTubeLog2 = new G4LogicalVolume(vacuumTubeSolid2, vacuumTubeMat, "vacuumTubeLog2");
-    new G4PVPlacement(0, G4ThreeVector(0,0,-78*mm), vacuumTubeLog2, "vacuumTubePhys2", logicWorld, false, 1, fCheckOverlaps);
+    new G4PVPlacement(0, G4ThreeVector(0,0,-78*mm-29.25*2*mm), vacuumTubeLog2, "vacuumTubePhys2", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
     vacuumTubeLog2->SetVisAttributes(vacuumTubeVisAtt);
@@ -491,7 +493,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     vacuumTubeOuterRadius3 = 255*mm;
     vacuumTubeSolid3 = new G4Tubs("vacuumTubeSolid3",	vacuumTubeInnerRadius3, vacuumTubeOuterRadius3,	5*mm, 0*deg, 360*deg);
     vacuumTubeLog3 = new G4LogicalVolume(vacuumTubeSolid3, vacuumTubeMat, "vacuumTubeLog3");
-    new G4PVPlacement(0, G4ThreeVector(0,0,-88*mm), vacuumTubeLog3, "vacuumTubePhys3", logicWorld, false, 1, fCheckOverlaps);
+    new G4PVPlacement(0, G4ThreeVector(0,0,-88*mm-29.25*2*mm), vacuumTubeLog3, "vacuumTubePhys3", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
     vacuumTubeLog3->SetVisAttributes(vacuumTubeVisAtt);
@@ -501,7 +503,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     vacuumTubeOuterRadius4 = 255*mm;
     vacuumTubeSolid4 = new G4Tubs("vacuumTubeSolid4",	vacuumTubeInnerRadius4, vacuumTubeOuterRadius4,	15*mm, 0*deg, 360*deg);
     vacuumTubeLog4 = new G4LogicalVolume(vacuumTubeSolid4, vacuumTubeMat, "vacuumTubeLog4");
-    new G4PVPlacement(0, G4ThreeVector(0,0,-108*mm), vacuumTubeLog4, "vacuumTubePhys4", logicWorld, false, 1, fCheckOverlaps);
+    new G4PVPlacement(0, G4ThreeVector(0,0,-108*mm-29.25*2*mm), vacuumTubeLog4, "vacuumTubePhys4", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
     vacuumTubeLog4->SetVisAttributes(vacuumTubeVisAtt);
@@ -511,7 +513,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     vacuumTubeOuterRadius5 = 254*mm;
     vacuumTubeSolid5 = new G4Tubs("vacuumTubeSolid5",	vacuumTubeInnerRadius5, vacuumTubeOuterRadius5,	7.5*mm, 0*deg, 360*deg);
     vacuumTubeLog5 = new G4LogicalVolume(vacuumTubeSolid5, vacuumTubeMat, "vacuumTubeLog5");
-    new G4PVPlacement(0, G4ThreeVector(0,0,138*mm), vacuumTubeLog5, "vacuumTubePhys5", logicWorld, false, 1, fCheckOverlaps);
+    new G4PVPlacement(0, G4ThreeVector(0,0,139*mm-29.25*2*mm), vacuumTubeLog5, "vacuumTubePhys5", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
     vacuumTubeLog5->SetVisAttributes(vacuumTubeVisAtt);
@@ -521,7 +523,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     vacuumTubeOuterRadius6 = 254*mm;
     vacuumTubeSolid6 = new G4Tubs("vacuumTubeSolid6",	vacuumTubeInnerRadius6, vacuumTubeOuterRadius6,	37.5*mm, 0*deg, 360*deg);
     vacuumTubeLog6 = new G4LogicalVolume(vacuumTubeSolid6, vacuumTubeMat, "vacuumTubeLog6");
-    new G4PVPlacement(0, G4ThreeVector(0,0,174*mm), vacuumTubeLog6, "vacuumTubePhys6", logicWorld, false, 1, fCheckOverlaps);
+    new G4PVPlacement(0, G4ThreeVector(0,0,184*mm-29.25*2*mm), vacuumTubeLog6, "vacuumTubePhys6", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
     vacuumTubeLog6->SetVisAttributes(vacuumTubeVisAtt);
@@ -531,7 +533,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     vacuumTubeOuterRadius7 = 305*mm;
     vacuumTubeSolid7 = new G4Tubs("vacuumTubeSolid7",	vacuumTubeInnerRadius7, vacuumTubeOuterRadius7,	10*mm, 0*deg, 360*deg);
     vacuumTubeLog7 = new G4LogicalVolume(vacuumTubeSolid7, vacuumTubeMat, "vacuumTubeLog7");
-    new G4PVPlacement(0, G4ThreeVector(0,0,226.5*mm), vacuumTubeLog7, "vacuumTubePhys7", logicWorld, false, 1, fCheckOverlaps);
+    new G4PVPlacement(0, G4ThreeVector(0,0,231.5*mm-29.25*2*mm), vacuumTubeLog7, "vacuumTubePhys7", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
     vacuumTubeLog7->SetVisAttributes(vacuumTubeVisAtt);

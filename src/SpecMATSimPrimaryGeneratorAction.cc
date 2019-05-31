@@ -34,8 +34,8 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
   sciCryst(0),
   fParticleGun(0)
 {
-  //source = "gamma";
-  source = "ion";
+  source = "gamma";
+  //source = "ion";
   //################### Monoenergetic gamma source ############################//
   n_particle = 1;
   fParticleGun  = new G4ParticleGun(n_particle);
@@ -43,8 +43,8 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
   gammaEnergy=1000*keV;
 
   //################### Isotope source ################################//
-  Z = 27;
-  A = 60;
+  Z = 95;
+  A = 241;
   ionCharge = 0.*eplus;
   excitEnergy = 0.*MeV;
   ionEnergy = 0.*MeV;
@@ -68,31 +68,34 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     //
     //distribution uniform in solid angle
     //
-    G4ParticleDefinition* particle = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
+    particle = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
     fParticleGun->SetParticleDefinition(particle);
     fParticleGun->SetParticleEnergy(gammaEnergy);
-    G4double cosTheta = 2*G4UniformRand() - 1., phi = twopi*G4UniformRand();
-    G4double sinTheta = std::sqrt(1. - cosTheta*cosTheta);
-    G4double  ux = sinTheta*std::cos(phi),
-              uy = sinTheta*std::sin(phi),
-              uz = cosTheta;
+    cosTheta = 2*G4UniformRand() - 1.;
+    phi = twopi*G4UniformRand();
+    sinTheta = std::sqrt(1. - cosTheta*cosTheta);
+    ux = sinTheta*std::cos(phi);
+    uy = sinTheta*std::sin(phi);
+    uz = cosTheta;
     //G4int randomNum = G4UniformRand()*201 - 100;
-    G4int randomNum = G4UniformRand()*131 - 65;
-    G4cout << randomNum << G4endl;
+    randomNum = 61.75 + G4UniformRand()*323.5 - 323.5/2 -29.25*2;
+    //G4cout << randomNum << G4endl;
     fParticleGun->SetParticleMomentumDirection(G4ThreeVector(ux,uy,uz));
-    fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm)); //randomNum*mm
+    //fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm)); //randomNum*mm
+    fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,-29.25*mm));
     fParticleGun->GeneratePrimaryVertex(anEvent);
   }
   else {
     //################### Isotope source ################################//
-    G4ParticleDefinition* ion= G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
+    ion= G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
     fParticleGun->SetParticleDefinition(ion);
     fParticleGun->SetParticleCharge(ionCharge);
-    G4int randomNum = G4UniformRand()*131 - 65;
-    G4cout << randomNum << G4endl;
-    fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm));
+    randomNum = 61.75 + G4UniformRand()*323.5 - 323.5/2 -29.25*2;
+    //G4cout << randomNum << G4endl;
+    //fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm));
+    fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,-29.25*mm));
     fParticleGun->SetParticleEnergy(ionEnergy);
-    fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,29.25));
+    fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,0.));
     fParticleGun->GeneratePrimaryVertex(anEvent);
   }
 }

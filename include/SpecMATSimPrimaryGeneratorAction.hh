@@ -73,11 +73,19 @@ public:
 
 private:
   SpecMATSimDetectorConstruction* sciCryst;
+  G4ParticleDefinition* particle;
+  G4ParticleDefinition* ion;
 
   G4ParticleGun*  fParticleGun;
 
   G4double distFromCrystSurfToSource;
   G4double gammaEnergy;
+  G4double cosTheta;
+  G4double sinTheta;
+  G4double phi;
+  G4double  ux, uy, uz;
+
+  G4int randomNum;
 };
 
 // ###################################################################################

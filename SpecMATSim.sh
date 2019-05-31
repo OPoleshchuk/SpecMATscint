@@ -1,5 +1,5 @@
 #!/bin/bash
-iterator=5000
+iterator=0
 while [ $iterator -le 10000 ]
 do
 ba="gammaEnergy="

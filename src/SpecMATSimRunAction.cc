@@ -102,8 +102,9 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   insulator = sciCryst->GetInsulationTube();
 
   if (chamber == "yes") {
-    chamberName = "Flan_";
-    flangeMatName = sciCryst->GetVacuumFlangeMat()->GetName();
+    chamberName = "Al_Chamber_pos2";
+    //flangeMatName = sciCryst->GetVacuumFlangeMat()->GetName();
+    flangeMatName = "";
   } else {
     chamberName = "";
     flangeMatName = "";
@@ -128,13 +129,13 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   // Creating histograms
   //
   for(crystNb = 1; crystNb <= (sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments()); crystNb++) {
-    analysisManager->CreateH1(G4UIcommand::ConvertToString(crystNb),"Edep in crystal Nb" + G4UIcommand::ConvertToString(crystNb), 15501, 0., 15500*MeV);
+    analysisManager->CreateH1(G4UIcommand::ConvertToString(crystNb),"Edep in crystal Nb" + G4UIcommand::ConvertToString(crystNb), 15500, 0., 15500*MeV);
   }
-  analysisManager->CreateH1("Total", "Total Edep", 15501, 0., 15500*MeV);
+  analysisManager->CreateH1("Total", "Total Edep", 15500, 0., 15500*MeV);
   ComptSuppFlagTest = sciCryst->GetComptSuppFlag();
   if (ComptSuppFlagTest == "yes") {
     for(segmentNb = 1; segmentNb <= (sciCryst->GetNbSegments()); segmentNb++) {
-      analysisManager->CreateH1(G4UIcommand::ConvertToString(100+segmentNb),"Edep in ComptSupp Nb" + G4UIcommand::ConvertToString(100+segmentNb), 15501, 0., 15500*MeV);
+      analysisManager->CreateH1(G4UIcommand::ConvertToString(100+segmentNb),"Edep in ComptSupp Nb" + G4UIcommand::ConvertToString(100+segmentNb), 15500, 0., 15500*MeV);
     }
   }
   // Creating ntuple
