@@ -63,9 +63,10 @@ private:
 
   G4String ComptSuppFlag;
   G4String vacuumChamber;
+  G4String sourceTube;
   G4String insulationTube;
 
-  G4double a, z, density;
+  G4double a, z, density, densitySTM;
   G4double fractionmass;
   G4double worldSizeXY;
   G4double worldSizeZ;
@@ -101,6 +102,10 @@ private:
   G4double vacuumTubeThickness7;
   G4double vacuumTubeInnerRadius7;
   G4double vacuumTubeOuterRadius7;
+
+  G4double sourceTubeThickness;
+  G4double sourceTubeInnerRadius;
+  G4double sourceTubeOuterRadius;
 
   G4double insulationTubeThickness;
   G4double insulationTubeInnerRadius;
@@ -155,7 +160,7 @@ private:
   G4Element* Si;
   G4Element* Ti;
   G4Element* Al;
-  G4Element* C;
+  G4Element* Carb;
   G4Element* H;
   G4Element* Bi;
   G4Element* Ge;
@@ -167,6 +172,7 @@ private:
   G4Element* P;
   G4Element* S;
   G4Element* Fe;
+  G4Element* Chlor;
 
   G4Material* default_mat;
   G4Material* CeBr3;
@@ -185,6 +191,8 @@ private:
   G4Material* Polypropylen_C3H6;
   G4Material* insulationTubeMat;
   G4Material* vacuumTubeMat;
+  G4Material* PVC;
+  G4Material* sourceTubeMat;
   G4Material* Air;
   G4Material* segment_mat;
   G4Material* Steel_316L;
@@ -237,6 +245,7 @@ private:
   G4VSolid* vacuumTubeSolid5;
   G4VSolid* vacuumTubeSolid6;
   G4VSolid* vacuumTubeSolid7;
+  G4VSolid* sourceTubeSolid;
 
   G4LogicalVolume* logicWorld;
   G4LogicalVolume* sciCrystLog;
@@ -257,6 +266,7 @@ private:
   G4LogicalVolume* vacuumTubeLog5;
   G4LogicalVolume* vacuumTubeLog6;
   G4LogicalVolume* vacuumTubeLog7;
+  G4LogicalVolume* sourceTubeLog;
   G4LogicalVolume* segmentBoxLog;
 
   G4VPhysicalVolume* physWorld;
@@ -277,6 +287,7 @@ private:
   G4VisAttributes* vacuumTubeVisAtt5;
   G4VisAttributes* vacuumTubeVisAtt6;
   G4VisAttributes* vacuumTubeVisAtt7;
+  G4VisAttributes* sourceTubeVisAtt;
 
   G4RotationMatrix rotSideFlnge;
   G4RotationMatrix ComptSuppRotmBoxUp;

@@ -40,7 +40,7 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
   n_particle = 1;
   fParticleGun  = new G4ParticleGun(n_particle);
   sciCryst = new SpecMATSimDetectorConstruction();
-  gammaEnergy=1000*keV;
+  gammaEnergy=11000*keV;
 
   //################### Isotope source ################################//
   Z = 95;

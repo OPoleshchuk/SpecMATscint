@@ -82,6 +82,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   //Optional parts of the TPC, to introduce additional gamma ray attenuation
   //in the materials in between the beam and the detectors
   vacuumChamber = "yes";           //"yes"/"no"
+  sourceTube = "yes";
   /*vacuumFlangeSizeX = 150*mm;
   vacuumFlangeSizeY = 29*mm;
   vacuumFlangeSizeZ = 3*mm;
@@ -267,6 +268,29 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   //--------------------------------------------------------//
   vacuumFlangeMat = nist->FindOrBuildMaterial("G4_Al", false);  //Al_Alloy;
   vacuumTubeMat = nist->FindOrBuildMaterial("G4_Al", false);
+
+
+  //if (sourceTube == "yes") {
+    Chlor = new G4Element("Chlor", "Chlor", z=17., a=35.453*g/mole);
+    Carb = new G4Element("Carb",	"Carb", z=6., a=12.011*g/mole);
+    H = new G4Element("Hidrogen",	"H", z=1., a=1.008*g/mole);
+    //N = new G4Element("Nitrogen", "N",	z=7.,	a=14.007*g/mole);
+    //density = 0.2E-5*mg/cm3;
+    density = 1.3*g/cm3;
+    PVC = new G4Material("PVC", density, ncomponents=3);
+    PVC->AddElement (Chlor, natoms=1);
+    PVC->AddElement (Carb, natoms=2);
+    PVC->AddElement (H, natoms=3);
+    /*
+    PVC = new G4Material("PVC", densitySTM, ncomponents=2);
+    //Quartz->AddElement (Chlor, natoms=1);
+    PVC->AddElement (C, natoms=2);
+    PVC->AddElement (H, natoms=3);
+    */
+
+
+    sourceTubeMat = Quartz;
+  //}
 
   /*
   C = new G4Element("Carbon",	"C", z=6., a=12.011*g/mole);
@@ -538,6 +562,22 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     // Visualization attributes for the insulation tube
     vacuumTubeLog7->SetVisAttributes(vacuumTubeVisAtt);
 
+    if (sourceTube == "yes") {
+
+      //PlasticSource Holder
+      sourceTubeInnerRadius = 10*mm;
+      sourceTubeOuterRadius = 15*mm;
+      sourceTubeSolid = new G4Tubs("sourceTubeSolid",	sourceTubeInnerRadius, sourceTubeOuterRadius,	300*mm, 0*deg, 360*deg);
+      sourceTubeLog = new G4LogicalVolume(sourceTubeSolid, vacuumTubeMat, "sourceTubeLog");
+      new G4PVPlacement(0, G4ThreeVector(0,0,0), sourceTubeLog, "sourceTubePhys", logicWorld, false, 1, fCheckOverlaps);
+
+      // Visualization attributes for the insulation tube
+      sourceTubeVisAtt = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));
+      sourceTubeVisAtt->SetVisibility(true);
+      sourceTubeVisAtt->SetForceSolid(true);
+      sourceTubeLog->SetVisAttributes(sourceTubeVisAtt);
+
+    }
   }
 
   //Defines insulation tube between the field cage and the vacuum chamber which might be used for preventing sparks in the real setup

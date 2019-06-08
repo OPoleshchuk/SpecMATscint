@@ -102,7 +102,7 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   insulator = sciCryst->GetInsulationTube();
 
   if (chamber == "yes") {
-    chamberName = "Al_Chamber_pos2";
+    chamberName = "Al_Chamber_pos2_pointSource_sourceTube6mm";
     //flangeMatName = sciCryst->GetVacuumFlangeMat()->GetName();
     flangeMatName = "";
   } else {
