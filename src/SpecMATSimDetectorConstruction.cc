@@ -1,6 +1,6 @@
 ///Author: Oleksii Poleshchuk
 ///
-///KU Leuven 2019
+///KU Leuven 2016-2019
 ///
 ///SpecMATscint is a GEANT4 code for simulation
 ///of gamma-rays detection efficiency with
@@ -38,25 +38,30 @@
 
 // ###################################################################################
 
-SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetectorConstruction(),fCheckOverlaps(true)
+SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():
+G4VUserDetectorConstruction(),
+fCheckOverlaps(true)
 {
+
   //****************************************************************************//
   //********************************* World ************************************//
   //****************************************************************************//
   // Dimensions of world
   // half-size
-  worldSizeXY = 40*cm;
-  worldSizeZ  = 40*cm;
+  worldSizeXY = 80*cm;
+  worldSizeZ  = 80*cm;
 
   // Define world material manually
-  N  = new G4Element("Nitrogen", "N", z=7., a=14.01*g/mole);
-  O  = new G4Element("Oxygen", "O", z=8., a=16.00*g/mole);
+
+  //N  = new G4Element("Nitrogen", "N", z=7., a=14.01*g/mole);
+
   //density = 0.2E-5*mg/cm3;
-  density = 1.225*mg/cm3;
-  Air = new G4Material("Air", density, ncomponents=2);
-  Air->AddElement(N, fractionmass=70*perCent);
-  Air->AddElement(O, fractionmass=30*perCent);
+  //density = 1.225*mg/cm3;
+  //Air = new G4Material("Air", density, ncomponents=2);
+  //Air->AddElement(N, fractionmass=70*perCent);
+  //Air->AddElement(O, fractionmass=30*perCent);
   // or from the GEANT4 library
+
   nist = G4NistManager::Instance();
   default_mat = nist->FindOrBuildMaterial("G4_AIR", false);
 
@@ -71,27 +76,30 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   logicWorld->SetVisAttributes(worldVisAtt);
 
   //****************************************************************************//
-  //******************************* Detector Array *****************************//
+  //************************ Detector Array Parameters *************************//
   //****************************************************************************//
   // Number of segments and rings in the array
   nbSegments = 15;                //# of detectors in one ring
-  nbCrystInSegmentRow = 2;        //# of rings
+  nbCrystInSegmentRow = 3;        //# of rings
   nbCrystInSegmentColumn = 1;     //# of detectors in a segment
-  gap = 3*mm;                     //distance between rings
+  gap = 3*mm;                     //distance between detector rings
 
-  //Optional parts of the TPC, to introduce additional gamma ray attenuation
-  //in the materials in between the beam and the detectors
-  vacuumChamber = "yes";           //"yes"/"no"
-  sourceTube = "yes";
+  //Optional parts of the TPC, to introduce real gamma ray attenuation
+  vacuumChamber = "yes";          //"yes"/"no"
+  vacuumChamberThickness = 3*mm;  // 3*mm is the real thickness of the tinnest wall in the vacuum chamber
+  vacuumChamberShift = -29.25*mm; //to align with the scintillation detector array
   /*vacuumFlangeSizeX = 150*mm;
   vacuumFlangeSizeY = 29*mm;
   vacuumFlangeSizeZ = 3*mm;
   vacuumFlangeThickFrontOfScint = 3*mm;*/
 
-  vacuumTubeThickness = 3*mm;
+  sourceHolder = "no";           //"yes"/"no"
+  sourceHousingHilde = "no";     //"yes"/"no" Hilde's radioactive source housing
+  pointSourcePositionZ=0*mm;    //defines position of the point source in the PrimaryGeneratorAction as well as position of the sourceHousingHilde
+  sourceHousingHildePositionZ = pointSourcePositionZ;
 
-  insulationTube = "no";          //"yes"/"no"
-  insulationTubeThickness = 3*mm;
+  fieldCageEpoxy = "yes";          //"yes"/"no"
+  fieldCageEpoxyThickness = 16.25*mm;
 
   ComptSuppFlag = "no";           //"yes"/"no"
 
@@ -111,8 +119,6 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   sciCrystSizeZ = 24.*mm;
 
   // Define Scintillation material and its compounds
-
-
   // LaBr3 material
   La = new G4Element("Lanthanum", "La", z=57., a=138.9055*g/mole);
   Br = new G4Element("Bromine", "Br", z=35., a=79.904*g/mole);
@@ -163,6 +169,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
 
   // Define Reflector (white powder TiO2) material and its compounds
   Ti = new G4Element("Titanium", "Ti", z=22., a=47.9*g/mole);
+  O  = new G4Element("Oxygen", "O", z=8., a=16.00*g/mole);
 
   density = 4.23*g/cm3;
   TiO2 = new G4Material("TiO2", density, ncomponents=2);
@@ -267,16 +274,41 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   //******************* Flange material ********************//
   //--------------------------------------------------------//
   vacuumFlangeMat = nist->FindOrBuildMaterial("G4_Al", false);  //Al_Alloy;
-  vacuumTubeMat = nist->FindOrBuildMaterial("G4_Al", false);
+  //vacuumChamberMat = nist->FindOrBuildMaterial("G4_Al", false);
 
 
-  //if (sourceTube == "yes") {
+  Mn = new G4Element("Manganese", "Mg", z=25.,	a=54.938044*g/mole);
+  Fe = new G4Element("Iron",	"Fe",	z=26., a=55.845*g/mole);
+  Cu = new G4Element("Copper",	"Cu",	z=29., a=63.546*g/mole);
+  Mg = new G4Element("Magnesium",	"Mg", z=12., a=24.305*g/mole);
+  Si = new G4Element("Silicon",	"Si",	z=14., a=28.0855*g/mole);
+  Zn = new G4Element("Zinc",	"Zn",	z=30., a=65.38*g/mole);
+  Cr = new G4Element("Chromium", "Cr",	z=24., a=51.9961*g/mole);
+  Ti = new G4Element("Titanium", "Ti",	z=22., a=47.867*g/mole);
+  Al = new G4Element("Aluminium", "Al",	z=13.,	a=26.9815384*g/mole);
+
+  densityAluminum5083 = 2.65*g/cm3;
+
+  Aluminum5083 = new G4Material("Aluminum5083", density, ncomponents=9);
+
+  Aluminum5083->AddElement (Mn, fractionmassMn=1.0*perCent);
+  Aluminum5083->AddElement (Fe, fractionmassFe=0.4*perCent);
+  Aluminum5083->AddElement (Cu, fractionmassCu=0.1*perCent);
+  Aluminum5083->AddElement (Mg, fractionmassMg=4.9*perCent);
+  Aluminum5083->AddElement (Si, fractionmassSi=0.4*perCent);
+  Aluminum5083->AddElement (Zn, fractionmassZn=0.25*perCent);
+  Aluminum5083->AddElement (Cr, fractionmassCr=0.25*perCent);
+  Aluminum5083->AddElement (Ti, fractionmassTi=0.15*perCent);
+  Aluminum5083->AddElement (Al, fractionmassAl=(100-1-0.4-0.1-4.9-0.4-0.25-0.25-0.15)*perCent);
+
+  vacuumChamberMat = Aluminum5083;
+
     Chlor = new G4Element("Chlor", "Chlor", z=17., a=35.453*g/mole);
     Carb = new G4Element("Carb",	"Carb", z=6., a=12.011*g/mole);
     H = new G4Element("Hidrogen",	"H", z=1., a=1.008*g/mole);
     //N = new G4Element("Nitrogen", "N",	z=7.,	a=14.007*g/mole);
     //density = 0.2E-5*mg/cm3;
-    density = 1.3*g/cm3;
+    density = 1.45*g/cm3;
     PVC = new G4Material("PVC", density, ncomponents=3);
     PVC->AddElement (Chlor, natoms=1);
     PVC->AddElement (Carb, natoms=2);
@@ -287,11 +319,14 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
     PVC->AddElement (C, natoms=2);
     PVC->AddElement (H, natoms=3);
     */
+    sourceHolderMat = PVC;
+    sourceHousingHildeMat = PVC;
 
-
-    sourceTubeMat = Quartz;
-  //}
-
+    densityEpoxy = 1.12*g/cm3;
+    epoxy = new G4Material("epoxy", densityEpoxy, ncomponents=3); //based on the datasheet of 20-3001NC/20-3002NC epoxy from Epoxies,Etc (Triggerbond® T20-3002BK) components of up to 100% is 25068-38-6 Bisphenol A diglycidyl ether with ch formulae C21H24O4 thsi epoxy is used in the SpecMAT field cage v1
+    epoxy->AddElement (O, natoms=4);
+    epoxy->AddElement (Carb, natoms=21);
+    epoxy->AddElement (H, natoms=24);
   /*
   C = new G4Element("Carbon",	"C", z=6., a=12.011*g/mole);
   Mg = new G4Element("Manganese", "Mg", z=25.,	a=54.938044*g/mole);
@@ -325,7 +360,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   //****************** Insulator material ******************//
   //--------------------------------------------------------//
   // Define insulation tube material
-  insulationTubeMat = nist->FindOrBuildMaterial("G4_Al", false);
+  fieldCageEpoxyMat = nist->FindOrBuildMaterial("epoxy", false);
   /*
   H = new G4Element("Hidrogen",	"H", z=1., a=1.008*g/mole);
 
@@ -335,7 +370,7 @@ SpecMATSimDetectorConstruction::SpecMATSimDetectorConstruction():G4VUserDetector
   Polypropylen_C3H6->AddElement (C, natoms=3);
   Polypropylen_C3H6->AddElement (H, natoms=6);
 
-  insulationTubeMat = Polypropylen_C3H6;
+  fieldCageEpoxyMat = Polypropylen_C3H6;
   */
 
 
@@ -373,10 +408,12 @@ G4double SpecMATSimDetectorConstruction::ComputeCircleR1()
         circleR1 = sciHousSizeY*nbCrystInSegmentColumn/(tandPhi);
       }*/
       circleR1 = sciHousSizeY*nbCrystInSegmentColumn/(tandPhi);
-      circleR1=131.25*mm;
+      //circleR1=132.56*mm; //Deviations from the design 131.25+1%
+      circleR1=131.25*mm; //CAD size
     }
     else {
       circleR1 = sciHousSizeY*nbCrystInSegmentColumn/(tandPhi);
+      circleR1=131.25*mm;
     }
   }
   return circleR1;
@@ -490,112 +527,147 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     new G4PVPlacement(transformSideFlange1, vacuumChamberSideFlangeLog, "VacuumChamberSideFlangeLog", logicWorld, false, 1, fCheckOverlaps);
     new G4PVPlacement(transformSideFlange2, vacuumChamberSideFlangeLog, "VacuumChamberSideFlangeLog", logicWorld, false, 2, fCheckOverlaps);*/
 
-    vacuumTubeInnerRadius = circleR1-vacuumTubeThickness;
-    vacuumTubeOuterRadius = circleR1;
-    vacuumTubeSolid = new G4Tubs("vacuumTubeSolid",	vacuumTubeInnerRadius, vacuumTubeOuterRadius,	102.25*mm, 0*deg, 360*deg);
-    vacuumTubeLog = new G4LogicalVolume(vacuumTubeSolid, vacuumTubeMat, "vacuumTubeLog");
-    new G4PVPlacement(0, G4ThreeVector(0,0,29.25*mm-29.25*2*mm), vacuumTubeLog, "vacuumTubePhys", logicWorld, false, 1, fCheckOverlaps);
+    vacuumChamberInnerRadius = 131.25*mm-vacuumChamberThickness;
+    vacuumChamberOuterRadius = 131.25*mm;
+    vacuumChamberSolid = new G4Tubs("vacuumChamberSolid",	vacuumChamberInnerRadius, vacuumChamberOuterRadius,	102.25*mm, 0*deg, 360*deg);
+    vacuumChamberLog = new G4LogicalVolume(vacuumChamberSolid, vacuumChamberMat, "vacuumChamberLog");
+    new G4PVPlacement(0, G4ThreeVector(0,0,29.25*mm+vacuumChamberShift), vacuumChamberLog, "vacuumChamberPhys", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
-    vacuumTubeVisAtt = new G4VisAttributes(G4Colour(0.5, 0.5, 0.5));
-    vacuumTubeVisAtt->SetVisibility(true);
-    vacuumTubeVisAtt->SetForceSolid(true);
-    vacuumTubeLog->SetVisAttributes(vacuumTubeVisAtt);
+    vacuumChamberVisAtt = new G4VisAttributes(G4Colour(0.5, 0.5, 0.5));
+    vacuumChamberVisAtt->SetVisibility(true);
+    vacuumChamberVisAtt->SetForceSolid(true);
+    vacuumChamberLog->SetVisAttributes(vacuumChamberVisAtt);
 
     //Secondtube
-    vacuumTubeInnerRadius2 = vacuumTubeInnerRadius;
-    vacuumTubeOuterRadius2 = 226*mm;
-    vacuumTubeSolid2 = new G4Tubs("vacuumTubeSolid2",	vacuumTubeInnerRadius2, vacuumTubeOuterRadius2,	5*mm, 0*deg, 360*deg);
-    vacuumTubeLog2 = new G4LogicalVolume(vacuumTubeSolid2, vacuumTubeMat, "vacuumTubeLog2");
-    new G4PVPlacement(0, G4ThreeVector(0,0,-78*mm-29.25*2*mm), vacuumTubeLog2, "vacuumTubePhys2", logicWorld, false, 1, fCheckOverlaps);
+    vacuumChamberInnerRadius2 = vacuumChamberInnerRadius;
+    vacuumChamberOuterRadius2 = 226*mm;
+    vacuumChamberSolid2 = new G4Tubs("vacuumChamberSolid2",	vacuumChamberInnerRadius2, vacuumChamberOuterRadius2,	5*mm, 0*deg, 360*deg);
+    vacuumChamberLog2 = new G4LogicalVolume(vacuumChamberSolid2, vacuumChamberMat, "vacuumChamberLog2");
+    new G4PVPlacement(0, G4ThreeVector(0,0,-78*mm+vacuumChamberShift), vacuumChamberLog2, "vacuumChamberPhys2", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
-    vacuumTubeLog2->SetVisAttributes(vacuumTubeVisAtt);
+    vacuumChamberLog2->SetVisAttributes(vacuumChamberVisAtt);
 
     //Thirdtube
-    vacuumTubeInnerRadius3 = 150*mm;
-    vacuumTubeOuterRadius3 = 255*mm;
-    vacuumTubeSolid3 = new G4Tubs("vacuumTubeSolid3",	vacuumTubeInnerRadius3, vacuumTubeOuterRadius3,	5*mm, 0*deg, 360*deg);
-    vacuumTubeLog3 = new G4LogicalVolume(vacuumTubeSolid3, vacuumTubeMat, "vacuumTubeLog3");
-    new G4PVPlacement(0, G4ThreeVector(0,0,-88*mm-29.25*2*mm), vacuumTubeLog3, "vacuumTubePhys3", logicWorld, false, 1, fCheckOverlaps);
+    vacuumChamberInnerRadius3 = 150*mm;
+    vacuumChamberOuterRadius3 = 255*mm;
+    vacuumChamberSolid3 = new G4Tubs("vacuumChamberSolid3",	vacuumChamberInnerRadius3, vacuumChamberOuterRadius3,	5*mm, 0*deg, 360*deg);
+    vacuumChamberLog3 = new G4LogicalVolume(vacuumChamberSolid3, vacuumChamberMat, "vacuumChamberLog3");
+    new G4PVPlacement(0, G4ThreeVector(0,0,-88*mm+vacuumChamberShift), vacuumChamberLog3, "vacuumChamberPhys3", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
-    vacuumTubeLog3->SetVisAttributes(vacuumTubeVisAtt);
+    vacuumChamberLog3->SetVisAttributes(vacuumChamberVisAtt);
 
     //Fourthtube
-    vacuumTubeInnerRadius4 = 200*mm;
-    vacuumTubeOuterRadius4 = 255*mm;
-    vacuumTubeSolid4 = new G4Tubs("vacuumTubeSolid4",	vacuumTubeInnerRadius4, vacuumTubeOuterRadius4,	15*mm, 0*deg, 360*deg);
-    vacuumTubeLog4 = new G4LogicalVolume(vacuumTubeSolid4, vacuumTubeMat, "vacuumTubeLog4");
-    new G4PVPlacement(0, G4ThreeVector(0,0,-108*mm-29.25*2*mm), vacuumTubeLog4, "vacuumTubePhys4", logicWorld, false, 1, fCheckOverlaps);
+    vacuumChamberInnerRadius4 = 200*mm;
+    vacuumChamberOuterRadius4 = 255*mm;
+    vacuumChamberSolid4 = new G4Tubs("vacuumChamberSolid4",	vacuumChamberInnerRadius4, vacuumChamberOuterRadius4,	15*mm, 0*deg, 360*deg);
+    vacuumChamberLog4 = new G4LogicalVolume(vacuumChamberSolid4, vacuumChamberMat, "vacuumChamberLog4");
+    new G4PVPlacement(0, G4ThreeVector(0,0,-108*mm+vacuumChamberShift), vacuumChamberLog4, "vacuumChamberPhys4", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
-    vacuumTubeLog4->SetVisAttributes(vacuumTubeVisAtt);
+    vacuumChamberLog4->SetVisAttributes(vacuumChamberVisAtt);
 
     //Fifthtube
-    vacuumTubeInnerRadius5 = vacuumTubeInnerRadius*mm;
-    vacuumTubeOuterRadius5 = 254*mm;
-    vacuumTubeSolid5 = new G4Tubs("vacuumTubeSolid5",	vacuumTubeInnerRadius5, vacuumTubeOuterRadius5,	7.5*mm, 0*deg, 360*deg);
-    vacuumTubeLog5 = new G4LogicalVolume(vacuumTubeSolid5, vacuumTubeMat, "vacuumTubeLog5");
-    new G4PVPlacement(0, G4ThreeVector(0,0,139*mm-29.25*2*mm), vacuumTubeLog5, "vacuumTubePhys5", logicWorld, false, 1, fCheckOverlaps);
+    vacuumChamberInnerRadius5 = vacuumChamberInnerRadius*mm;
+    vacuumChamberOuterRadius5 = 254*mm;
+    vacuumChamberSolid5 = new G4Tubs("vacuumChamberSolid5",	vacuumChamberInnerRadius5, vacuumChamberOuterRadius5,	7.5*mm, 0*deg, 360*deg);
+    vacuumChamberLog5 = new G4LogicalVolume(vacuumChamberSolid5, vacuumChamberMat, "vacuumChamberLog5");
+    new G4PVPlacement(0, G4ThreeVector(0,0,139*mm+vacuumChamberShift), vacuumChamberLog5, "vacuumChamberPhys5", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
-    vacuumTubeLog5->SetVisAttributes(vacuumTubeVisAtt);
+    vacuumChamberLog5->SetVisAttributes(vacuumChamberVisAtt);
 
     //Sixthtube
-    vacuumTubeInnerRadius6 = 239*mm;
-    vacuumTubeOuterRadius6 = 254*mm;
-    vacuumTubeSolid6 = new G4Tubs("vacuumTubeSolid6",	vacuumTubeInnerRadius6, vacuumTubeOuterRadius6,	37.5*mm, 0*deg, 360*deg);
-    vacuumTubeLog6 = new G4LogicalVolume(vacuumTubeSolid6, vacuumTubeMat, "vacuumTubeLog6");
-    new G4PVPlacement(0, G4ThreeVector(0,0,184*mm-29.25*2*mm), vacuumTubeLog6, "vacuumTubePhys6", logicWorld, false, 1, fCheckOverlaps);
+    vacuumChamberInnerRadius6 = 239*mm;
+    vacuumChamberOuterRadius6 = 254*mm;
+    vacuumChamberSolid6 = new G4Tubs("vacuumChamberSolid6",	vacuumChamberInnerRadius6, vacuumChamberOuterRadius6,	37.5*mm, 0*deg, 360*deg);
+    vacuumChamberLog6 = new G4LogicalVolume(vacuumChamberSolid6, vacuumChamberMat, "vacuumChamberLog6");
+    new G4PVPlacement(0, G4ThreeVector(0,0,184*mm+vacuumChamberShift), vacuumChamberLog6, "vacuumChamberPhys6", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
-    vacuumTubeLog6->SetVisAttributes(vacuumTubeVisAtt);
+    vacuumChamberLog6->SetVisAttributes(vacuumChamberVisAtt);
 
     //Seventhtube
-    vacuumTubeInnerRadius7 = 239*mm;
-    vacuumTubeOuterRadius7 = 305*mm;
-    vacuumTubeSolid7 = new G4Tubs("vacuumTubeSolid7",	vacuumTubeInnerRadius7, vacuumTubeOuterRadius7,	10*mm, 0*deg, 360*deg);
-    vacuumTubeLog7 = new G4LogicalVolume(vacuumTubeSolid7, vacuumTubeMat, "vacuumTubeLog7");
-    new G4PVPlacement(0, G4ThreeVector(0,0,231.5*mm-29.25*2*mm), vacuumTubeLog7, "vacuumTubePhys7", logicWorld, false, 1, fCheckOverlaps);
+    vacuumChamberInnerRadius7 = 239*mm;
+    vacuumChamberOuterRadius7 = 305*mm;
+    vacuumChamberSolid7 = new G4Tubs("vacuumChamberSolid7",	vacuumChamberInnerRadius7, vacuumChamberOuterRadius7,	10*mm, 0*deg, 360*deg);
+    vacuumChamberLog7 = new G4LogicalVolume(vacuumChamberSolid7, vacuumChamberMat, "vacuumChamberLog7");
+    new G4PVPlacement(0, G4ThreeVector(0,0,231.5*mm+vacuumChamberShift), vacuumChamberLog7, "vacuumChamberPhys7", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
-    vacuumTubeLog7->SetVisAttributes(vacuumTubeVisAtt);
+    vacuumChamberLog7->SetVisAttributes(vacuumChamberVisAtt);
 
-    if (sourceTube == "yes") {
-
+    if (sourceHolder == "yes") {
       //PlasticSource Holder
-      sourceTubeInnerRadius = 10*mm;
-      sourceTubeOuterRadius = 15*mm;
-      sourceTubeSolid = new G4Tubs("sourceTubeSolid",	sourceTubeInnerRadius, sourceTubeOuterRadius,	300*mm, 0*deg, 360*deg);
-      sourceTubeLog = new G4LogicalVolume(sourceTubeSolid, vacuumTubeMat, "sourceTubeLog");
-      new G4PVPlacement(0, G4ThreeVector(0,0,0), sourceTubeLog, "sourceTubePhys", logicWorld, false, 1, fCheckOverlaps);
-
+      sourceHolderInnerRadius = 12.7*mm;
+      sourceHolderOuterRadius = 15*mm;
+      sourceHolderSolid = new G4Tubs("sourceHolderSolid",	sourceHolderInnerRadius, sourceHolderOuterRadius,	35*mm, 0*deg, 360*deg);
+      sourceHolderLog = new G4LogicalVolume(sourceHolderSolid, sourceHolderMat, "sourceHolderLog");
+      new G4PVPlacement(0, G4ThreeVector(0,0,sourceHousingHildePositionZ), sourceHolderLog, "sourceHolderPhys", logicWorld, false, 1, fCheckOverlaps);
       // Visualization attributes for the insulation tube
-      sourceTubeVisAtt = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));
-      sourceTubeVisAtt->SetVisibility(true);
-      sourceTubeVisAtt->SetForceSolid(true);
-      sourceTubeLog->SetVisAttributes(sourceTubeVisAtt);
+      sourceHolderVisAtt = new G4VisAttributes(G4Colour(0.97, 0.82, 0.09));
+      sourceHolderVisAtt->SetVisibility(true);
+      sourceHolderVisAtt->SetForceSolid(true);
+      sourceHolderLog->SetVisAttributes(sourceHolderVisAtt);
+
+      sourceHolderLeftInnerRadius = 0*mm;
+      sourceHolderLeftOuterRadius = 12.7*mm;
+      sourceHolderLeftSolid = new G4Tubs("sourceHolderLeftSolid",	sourceHolderLeftInnerRadius, sourceHolderLeftOuterRadius,	355/2*mm, 0*deg, 360*deg);
+      sourceHolderLeftLog = new G4LogicalVolume(sourceHolderLeftSolid, sourceHolderMat, "sourceHolderLeftLog");
+      new G4PVPlacement(0, G4ThreeVector(0,0,sourceHousingHildePositionZ-355/2-35+20), sourceHolderLeftLog, "sourceHolderLeftPhys", logicWorld, false, 1, fCheckOverlaps);
+      // Visualization attributes for the insulation tube
+      sourceHolderLeftVisAtt = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));
+      sourceHolderLeftVisAtt->SetVisibility(true);
+      sourceHolderLeftVisAtt->SetForceSolid(true);
+      sourceHolderLeftLog->SetVisAttributes(sourceHolderLeftVisAtt);
+
+      sourceHolderRightInnerRadius = 0*mm;
+      sourceHolderRightOuterRadius = 12.7*mm;
+      sourceHolderRightSolid = new G4Tubs("sourceHolderRightSolid",	sourceHolderRightInnerRadius, sourceHolderRightOuterRadius,	355/2*mm, 0*deg, 360*deg);
+      sourceHolderRightLog = new G4LogicalVolume(sourceHolderRightSolid, sourceHolderMat, "sourceHolderRightLog");
+      new G4PVPlacement(0, G4ThreeVector(0,0,sourceHousingHildePositionZ+355/2+35-20), sourceHolderRightLog, "sourceHolderRightPhys", logicWorld, false, 1, fCheckOverlaps);
+      // Visualization attributes for the insulation tube
+      sourceHolderRightVisAtt = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));
+      sourceHolderRightVisAtt->SetVisibility(true);
+      sourceHolderRightVisAtt->SetForceSolid(true);
+      sourceHolderRightLog->SetVisAttributes(sourceHolderRightVisAtt);
+
+
+    }
+
+    if (sourceHousingHilde == "yes") {
+      //PlasticSourceHousing
+      sourceHousingHildeInnerRadius = 6.7*mm;
+      sourceHousingHildeOuterRadius = 12.7*mm;
+      sourceHousingHildeSolid = new G4Tubs("sourceHousingHildeSolid",	sourceHousingHildeInnerRadius, sourceHousingHildeOuterRadius,	1.6*mm, 0*deg, 360*deg);
+      sourceHousingHildeLog = new G4LogicalVolume(sourceHousingHildeSolid, sourceHousingHildeMat, "sourceHousingHildeLog");
+      new G4PVPlacement(0, G4ThreeVector(0,0,sourceHousingHildePositionZ), sourceHousingHildeLog, "sourceHousingHildePhys", logicWorld, false, 1, fCheckOverlaps);
+      // Visualization attributes for the insulation tube
+      sourceHousingHildeVisAtt = new G4VisAttributes(G4Colour(0.0, 1.0, 0.0));
+      sourceHousingHildeVisAtt->SetVisibility(true);
+      sourceHousingHildeVisAtt->SetForceSolid(true);
+      sourceHousingHildeLog->SetVisAttributes(sourceHousingHildeVisAtt);
 
     }
   }
 
-  //Defines insulation tube between the field cage and the vacuum chamber which might be used for preventing sparks in the real setup
-  //And its stopping power should be simulated
+  //Defines the field cage
   //
-  if (/*vacuumChamber == "yes" &&*/ insulationTube == "yes") {
+  if (fieldCageEpoxy == "yes") {
     //Geometry of the insulation Tube
-    insulationTubeInnerRadius = circleR1-insulationTubeThickness;
-    insulationTubeOuterRadius = circleR1;
-    insulationTubeSolid = new G4Tubs("insulationTubeSolid",	insulationTubeInnerRadius, insulationTubeOuterRadius,	150*mm, 0*deg, 360*deg);
-    insulationTubeLog = new G4LogicalVolume(insulationTubeSolid, insulationTubeMat, "insulationTubeLog");
-    new G4PVPlacement(0, G4ThreeVector(0,0,0), insulationTubeLog, "insulationTubePhys", logicWorld, false, 1, fCheckOverlaps);
+    fieldCageEpoxyInnerRadius = 225.20/2-fieldCageEpoxyThickness;
+    fieldCageEpoxyOuterRadius = 225.20/2;
+    fieldCageEpoxySolid = new G4Tubs("fieldCageEpoxySolid",	fieldCageEpoxyInnerRadius, fieldCageEpoxyOuterRadius,	161.75*mm, 0*deg, 360*deg);
+    fieldCageEpoxyLog = new G4LogicalVolume(fieldCageEpoxySolid, fieldCageEpoxyMat, "fieldCageEpoxyLog");
+    new G4PVPlacement(0, G4ThreeVector(0,0,32.5), fieldCageEpoxyLog, "fieldCageEpoxyPhys", logicWorld, false, 1, fCheckOverlaps);
 
     // Visualization attributes for the insulation tube
-    insulationTubeVisAtt = new G4VisAttributes(G4Colour(0.45, 0.25, 0.0));
-    insulationTubeVisAtt->SetVisibility(true);
-    insulationTubeVisAtt->SetForceSolid(true);
-    insulationTubeLog->SetVisAttributes(insulationTubeVisAtt);
+    fieldCageEpoxyVisAtt = new G4VisAttributes(G4Colour(0.96, 0.63, 0.15));
+    fieldCageEpoxyVisAtt->SetVisibility(true);
+    fieldCageEpoxyVisAtt->SetForceSolid(true);
+    fieldCageEpoxyLog->SetVisAttributes(fieldCageEpoxyVisAtt);
   }
 
   //Positioning of segments and crystals in the segment
@@ -741,9 +813,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
       }
     //}
   }
-
-  // Prints dimensions of the scintillation array
-  G4cout <<""<< G4endl;
+  //G4cout <<gammaSource->GetSource();<< G4endl;
   G4cout <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
   G4cout <<"$$$$"<< G4endl;
   G4cout <<"$$$$"<<" Crystal material: "<<sciCrystMat->GetName()<< G4endl;
@@ -767,18 +837,31 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   G4cout <<"$$$$"<<" Radius of a circle inscribed in the array: "<<circleR1<<"mm "<< G4endl;
   G4cout <<"$$$$"<< G4endl;
   if (vacuumChamber == "yes") {
-    /*G4cout <<"$$$$"<<" Flange material: "<<vacuumFlangeMat->GetName()<< G4endl;
-    G4cout <<"$$$$"<<" SideFlange material: "<<vacuumSideFlangeMat->GetName()<< G4endl;
-    G4cout <<"$$$$"<<" Flange width: "<<vacuumFlangeSizeY*2<<"mm "<< G4endl;
-    G4cout <<"$$$$"<<" Flange thickness: "<<vacuumFlangeSizeZ*2<<"mm "<< G4endl;
-    G4cout <<"$$$$"<<" Flange thickness in front of the window: "<<vacuumFlangeThickFrontOfScint<<"mm "<< G4endl;*/
+    G4cout <<"$$$$"<<" Vacuum Chamber Material: "<<vacuumChamberMat->GetName()<< G4endl;
+    G4cout <<"$$$$"<<" Vacuum Chamber Wall Thickness: "<<vacuumChamberThickness<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Vacuum Chamber outer radius: "<<vacuumChamberInnerRadius<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Vacuum Chamber inner radius: "<<vacuumChamberOuterRadius<<"mm "<< G4endl;
   }
   G4cout <<"$$$$"<< G4endl;
-  if (/*vacuumChamber == "yes" &&*/ insulationTube == "yes") {
-    G4cout <<"$$$$"<<" Insulator material: "<<insulationTubeMat->GetName()<< G4endl;
-    G4cout <<"$$$$"<<" Insulator thickness: "<<insulationTubeThickness<<"mm "<< G4endl;
-    G4cout <<"$$$$"<<" Insulator tube outer radius: "<<insulationTubeOuterRadius<<"mm "<< G4endl;
-    G4cout <<"$$$$"<<" Insulator tube inner radius: "<<insulationTubeInnerRadius<<"mm "<< G4endl;
+  if (sourceHolder == "yes") {
+    G4cout <<"$$$$"<<" Source Holder Material: "<<sourceHolderMat->GetName()<< G4endl;
+    G4cout <<"$$$$"<<" Source Holder Wall Thickness: "<<sourceHolderOuterRadius-sourceHolderInnerRadius<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Source Holder outer radius: "<<sourceHolderInnerRadius<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Source Holder inner radius: "<<sourceHolderOuterRadius<<"mm "<< G4endl;
+  }
+  G4cout <<"$$$$"<< G4endl;
+  if (sourceHousingHilde == "yes") {
+    G4cout <<"$$$$"<<" Source Housing Material: "<<sourceHousingHildeMat->GetName()<< G4endl;
+    G4cout <<"$$$$"<<" Source Housing Wall Thickness: "<<sourceHousingHildeOuterRadius-sourceHousingHildeInnerRadius<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Source Housing outer radius: "<<sourceHousingHildeInnerRadius<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Source Housing inner radius: "<<sourceHousingHildeOuterRadius<<"mm "<< G4endl;
+  }
+  G4cout <<"$$$$"<< G4endl;
+  if (fieldCageEpoxy == "yes") {
+    G4cout <<"$$$$"<<" Field Cage material: "<<fieldCageEpoxyMat->GetName()<< G4endl;
+    G4cout <<"$$$$"<<" Field Cage thickness: "<<fieldCageEpoxyThickness<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Field Cage outer radius: "<<fieldCageEpoxyOuterRadius<<"mm "<< G4endl;
+    G4cout <<"$$$$"<<" Field Cage inner radius: "<<fieldCageEpoxyInnerRadius<<"mm "<< G4endl;
   }
   G4cout <<"$$$$"<< G4endl;
   G4cout <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;

@@ -1,6 +1,6 @@
 ///Author: Oleksii Poleshchuk
 ///
-///KU Leuven 2019
+///KU Leuven 2016-2019
 ///
 ///SpecMATscint is a GEANT4 code for simulation
 ///of gamma-rays detection efficiency with
@@ -144,13 +144,36 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     // fill histograms
     //
     if (copyNb <= ((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1)) {
-      analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1, absoEdep);
-      analysisManager->FillH1(copyNb, absoEdep);
-
+      analysisManager->FillH1(copyNb, absoEdep); //each crystal EdepRes
+      analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1, absoEdep); //total EdepRes
+      analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+4, edep/keV); //total EdepNoRes
+      //analysisManager->FillH1(copyNb, edep/keV);
       analysisManager->FillNtupleDColumn(0, eventNb);
       analysisManager->FillNtupleDColumn(1, copyNb);
       analysisManager->FillNtupleDColumn(2, absoEdep);
-      analysisManager->FillNtupleDColumn(3, edep/keV);
+      analysisManager->FillNtupleDColumn(7, edep/keV);
+      if (copyNb == 1) {
+        analysisManager->FillNtupleDColumn(3, absoEdep);
+        analysisManager->FillNtupleDColumn(8, edep/keV);
+      }
+      if (copyNb == 2) {
+        analysisManager->FillNtupleDColumn(4, absoEdep);
+        analysisManager->FillNtupleDColumn(9, edep/keV);
+      }
+      if (copyNb != 3 && copyNb != 6 && copyNb != 9 && copyNb != 12 && copyNb != 15 && copyNb != 18 && copyNb != 21 && copyNb != 24 && copyNb != 27 && copyNb != 30 && copyNb != 33 && copyNb != 36 && copyNb != 39 && copyNb != 42 && copyNb != 45) {
+        //30 crystals (without the ring located further from the beamline)
+        analysisManager->FillNtupleDColumn(5, absoEdep);
+        analysisManager->FillNtupleDColumn(10, edep/keV);//30 crystals (without the ring located further from the beamline)
+        analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+2, absoEdep); //total EdepRes for 30Cryst
+        analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+5, edep/keV); //total EdepNoRes for 40Cryst
+      }
+      if (copyNb != 3 && copyNb != 6 && copyNb != 9 && copyNb != 12 && copyNb != 15) {
+        //40 crystals (without five in the ring located further from the beamline)
+        analysisManager->FillNtupleDColumn(6, absoEdep);
+        analysisManager->FillNtupleDColumn(11, edep/keV);
+        analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+3, absoEdep); //total EdepRes for 40Cryst
+        analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+6, edep/keV); //total EdepNoRes for 40Cryst
+      }
       analysisManager->AddNtupleRow();
     }
   }
@@ -167,6 +190,7 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
       copyNbComptSupp  = (itr2->first);
       edepComptSupp = *(itr2->second);
       if (edepComptSupp > eThreshold) nbOfFiredComptSupp++;
+      //Resolution correction of registered gamma energy for BGO.
       edepComptSuppRes = G4RandGauss::shoot(edepComptSupp/keV, (((edepComptSupp/keV)*(398*pow(edepComptSupp/keV, -0.584))/100)/2.355));
 
       //G4cout << "\n" << "ComptSupp Nb" << copyNbComptSupp << ": E " << edepComptSupp/keV << " keV, Resolution Corrected E "<< edepComptSuppRes << " keV, " << "FWHM " << ((edep/keV)*(108*pow(edep/keV,-0.498))/100) << G4endl;
@@ -174,12 +198,12 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
       // fill histograms
       //
       if (copyNbComptSupp > (99)) {
-        analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1+copyNbComptSupp-100, edepComptSuppRes);
+        analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+2+copyNbComptSupp-100, edepComptSuppRes);
         analysisManager->FillNtupleDColumn(0, eventNb);
-        analysisManager->FillNtupleDColumn(4, eventNb);
-        analysisManager->FillNtupleDColumn(5, copyNbComptSupp);
-        analysisManager->FillNtupleDColumn(6, edepComptSuppRes);
-        analysisManager->FillNtupleDColumn(7, edepComptSupp/keV);
+        analysisManager->FillNtupleDColumn(12, eventNb);
+        analysisManager->FillNtupleDColumn(13, copyNbComptSupp);
+        analysisManager->FillNtupleDColumn(14, edepComptSuppRes);
+        analysisManager->FillNtupleDColumn(15, edepComptSupp/keV);
         analysisManager->AddNtupleRow();
 
       }

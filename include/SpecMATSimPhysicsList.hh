@@ -1,6 +1,6 @@
 ///Author: Oleksii Poleshchuk
 ///
-///KU Leuven 2019
+///KU Leuven 2016-2019
 ///
 ///SpecMATscint is a GEANT4 code for simulation
 ///of gamma-rays detection efficiency with

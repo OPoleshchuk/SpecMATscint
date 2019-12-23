@@ -1,6 +1,6 @@
 ///Author: Oleksii Poleshchuk
 ///
-///KU Leuven 2019
+///KU Leuven 2016-2019
 ///
 ///SpecMATscint is a GEANT4 code for simulation
 ///of gamma-rays detection efficiency with
@@ -30,11 +30,11 @@
 
 // ###################################################################################
 
-SpecMATSimRunAction::SpecMATSimRunAction()
-: G4UserRunAction(),
-  fGoodEvents(0),
-  sciCryst(0),
-  gammaSource(0)
+SpecMATSimRunAction::SpecMATSimRunAction():
+G4UserRunAction(),
+fGoodEvents(0),
+sciCryst(0),
+gammaSource(0)
 {
   sciCryst = new SpecMATSimDetectorConstruction();
   gammaSource = new SpecMATSimPrimaryGeneratorAction();
@@ -78,7 +78,16 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   crystSizeY = G4UIcommand::ConvertToString(sciCryst->GetSciCrystSizeY()*2);
   crystSizeZ = G4UIcommand::ConvertToString(sciCryst->GetSciCrystSizeZ()*2);
 
-  G4String source =gammaSource->GetSource();
+  NbSegments = G4UIcommand::ConvertToString(sciCryst->GetNbSegments());
+  Rows       = G4UIcommand::ConvertToString(sciCryst->GetNbCrystInSegmentColumn());
+  Columns    = G4UIcommand::ConvertToString(sciCryst->GetNbCrystInSegmentRow());
+  circleR    = G4UIcommand::ConvertToString(sciCryst->ComputeCircleR1());
+
+
+
+
+
+  source =gammaSource->GetSource();
   if (source=="gamma") {
     particleEnergy = G4UIcommand::ConvertToString(gammaSource->GetGammaEnergy());
     particleName = source;
@@ -92,50 +101,142 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
     particleEnergy = "unknown";
     particleName = "unknown";
   }
-
-  NbSegments = G4UIcommand::ConvertToString(sciCryst->GetNbSegments());
-  Rows       = G4UIcommand::ConvertToString(sciCryst->GetNbCrystInSegmentColumn());
-  Columns    = G4UIcommand::ConvertToString(sciCryst->GetNbCrystInSegmentRow());
-  circleR    = G4UIcommand::ConvertToString(sciCryst->ComputeCircleR1());
+  sourceTypeRA =gammaSource->GetSourceType();
+  sourcePosition = G4UIcommand::ConvertToString(129+(gammaSource->GetPointSourceZposition()));
 
   chamber = sciCryst->GetVacuumChamber();
-  insulator = sciCryst->GetInsulationTube();
-
   if (chamber == "yes") {
-    chamberName = "Al_Chamber_pos2_pointSource_sourceTube6mm";
+    vacuumChamberMatRA = sciCryst->GetVacuumChamberMat();
+    vacuumChamberMatRAName = vacuumChamberMatRA->GetName();
+    chamberName = vacuumChamberMatRAName + "_Chamber";
+    vacuumChamberThicknessRA = G4UIcommand::ConvertToString(sciCryst->GetVacuumChamberThickness());
     //flangeMatName = sciCryst->GetVacuumFlangeMat()->GetName();
-    flangeMatName = "";
+    //flangeMatName = "";
   } else {
     chamberName = "";
-    flangeMatName = "";
+    vacuumChamberThicknessRA = "";
+    //flangeMatName = "";
+  }
+  sourceHolderRA = sciCryst->GetSourceHolder();
+  if ((sourceHolderRA == "yes")) {
+    sourceHolderRAName = "SourceHolder_";
+    sourceHolderRAMatName = sciCryst->GetSourceHolderMat()->GetName();
+    sourceHolderRAThick = G4UIcommand::ConvertToString(sciCryst->GetSourceHolderOuterRadius()-sciCryst->GetSourceHolderInnerRadius());
+  } else {
+    sourceHolderRAName = "";
+    sourceHolderRAMatName = "";
   }
 
-  if (/*(chamber == "yes") &&*/ (insulator == "yes")) {
-    insulatorName = "Ins_";
-    insulatorMatName = sciCryst->GetInsulationTubeMat()->GetName();
+  sourceHousingHildeRA = sciCryst->GetSourceHousingHilde();
+  if ((sourceHousingHildeRA == "yes")) {
+    sourceHousingHildeRAName = "SourceHous_";
+    sourceHousingHildeRAMatName = sciCryst->GetSourceHolderMat()->GetName();
+    sourceHoldersourceHousingHildeRAThick = G4UIcommand::ConvertToString(sciCryst->GetSourceHousingHildeOuterRadius()-sciCryst->GetSourceHousingHildeInnerRadius());
   } else {
-    insulatorName = "";
-    insulatorMatName = "";
+    sourceHousingHildeRAName = "";
+    sourceHousingHildeRAMatName = "";
+  }
+
+  fieldCageEpoxy = sciCryst->GetFieldCageEpoxy();
+  if ((fieldCageEpoxy == "yes")) {
+    fieldCageEpoxyName = "FCEpoxy_";
+    fieldCageEpoxyMatName = sciCryst->GetFieldCageEpoxyMat()->GetName();
+    fieldCageEpoxyThick = G4UIcommand::ConvertToString(sciCryst->GetFieldCageEpoxyOuterRadius()-sciCryst->GetFieldCageEpoxyInnerRadius());
+  } else {
+    fieldCageEpoxyName = "";
+    fieldCageEpoxyMatName = "";
   }
 
   Gap = G4UIcommand::ConvertToString(sciCryst->GetGap());
-  fileName = crystMatName+"_"+crystSizeX+"mmx"+crystSizeY+"mmx"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"crystals_"+"R"+circleR+"mm_"+particleName+particleEnergy+"MeV_"+chamberName+flangeMatName+insulatorName+insulatorMatName+"_gap_"+Gap+".root";
+
+  fileName = crystMatName+"_"+crystSizeX+"mmx"+crystSizeY+"mmx"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"crystals_"+"R"+circleR+"mm_"+particleName+particleEnergy+"MeV_"+chamberName+"_wallThick"+"_"+vacuumChamberThicknessRA+"mm_"+sourceTypeRA+"_sourcePosition_"+sourcePosition+"mm"+"_"+sourceHolderRAName+sourceHolderRAMatName+sourceHousingHildeRAName+sourceHousingHildeRAMatName+fieldCageEpoxyName+fieldCageEpoxyMatName+"_gap"+Gap+"mm";
+  fileNameRoot = fileName +".root";
+  fileNAmeSettings = fileName +".txt";
+
+  // Prints dimensions of the scintillation array
+  G4cout <<""<< G4endl;
+
+  myfile.open(fileNAmeSettings);
+    //"CeBr3_48mmx48mmx48mm_15x1x3crystals_R131.5mm_gammaScan__point_sourcePosition_129mm_NOChamber_gap3mm.txt");
+  myfile <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
+  myfile <<"$$$$"<< G4endl;
+  myfile <<"$$$$"<<" Crystal material: "<<crystMatName<< G4endl;
+  myfile <<"$$$$"<<" Reflector material: "<<sciCryst->GetSciReflMat()->GetName()<< G4endl;
+  myfile <<"$$$$"<<" Housing material: "<<sciCryst->GetSciHousMat()->GetName()<< G4endl;
+  myfile <<"$$$$"<<" Optic window material: "<<sciCryst->GetSciWindMat()->GetName()<< G4endl;
+  myfile <<"$$$$"<< G4endl;
+  myfile <<"$$$$"<<" Single crystal dimensions: "<<crystSizeX<<"mmx"<<crystSizeY<<"mmx"<<crystSizeZ<<"mm "<< G4endl;
+  myfile <<"$$$$"<<" Dimensions of the crystal housing: "<<sciCryst->GetSciHousSizeX()<<"mmx"<<sciCryst->GetSciHousSizeY()<<"mmx"<<sciCryst->GetSciHousSizeZ()<<"mm "<< G4endl;
+  myfile <<"$$$$"<<" Housing wall thickness: "<<sciCryst->GetSciHousWallThickX()<<"mm "<< G4endl;
+  myfile <<"$$$$"<<" Housing window thickness: "<<sciCryst->GetSciReflWindThick()<<"mm "<< G4endl;
+  myfile <<"$$$$"<<" Reflecting material wall thickness: "<<sciCryst->GetSciReflWallThickX()<<"mm "<< G4endl;
+  myfile <<"$$$$"<<" Reflecting material thickness in front of the window: "<<sciCryst->GetSciReflWindThick()<<"mm "<< G4endl;
+  myfile <<"$$$$"<< G4endl;
+  myfile <<"$$$$"<<" Number of segments in the array: "<<NbSegments<<" "<< G4endl;
+  myfile <<"$$$$"<<" Number of crystals in the segment row: "<<Columns<<" "<< G4endl;
+  myfile <<"$$$$"<<" Number of crystals in the segment column: "<<Rows<<" "<< G4endl;
+  myfile <<"$$$$"<<" Number of crystals in the array: "<<sciCryst->GetNbSegments()*sciCryst->GetNbCrystInSegmentColumn()*sciCryst->GetNbCrystInSegmentRow()<<" "<< G4endl;
+  myfile <<"$$$$"<< G4endl;
+  myfile <<"$$$$"<<" Radius of a circle inscribed in the array: "<<circleR<<"mm "<< G4endl;
+  myfile <<"$$$$"<< G4endl;
+  if (chamber == "yes") {
+    myfile <<"$$$$"<<" Vacuum Chamber Material: "<<sciCryst->GetVacuumChamberMat()->GetName()<< G4endl;
+    myfile <<"$$$$"<<" Vacuum Chamber Wall Thickness: "<<sciCryst->GetVacuumChamberThickness()<<"mm "<< G4endl;
+    myfile <<"$$$$"<<" Vacuum Chamber outer radius: "<<sciCryst->GetVacuumChamberOuterRadius()<<"mm "<< G4endl;
+    myfile <<"$$$$"<<" Vacuum Chamber inner radius: "<<sciCryst->GetVacuumChamberInnerRadius()<<"mm "<< G4endl;
+  }
+  myfile <<"$$$$"<< G4endl;
+  if (sourceHolderRA == "yes") {
+    myfile <<"$$$$"<<" Source Holder Material: "<<sciCryst->GetSourceHolderMat()->GetName()<< G4endl;
+    myfile <<"$$$$"<<" Source Holder Wall Thickness: "<<sciCryst->GetSourceHolderOuterRadius()-sciCryst->GetSourceHolderInnerRadius()<<"mm "<< G4endl;
+    myfile <<"$$$$"<<" Source Holder outer radius: "<<sciCryst->GetSourceHolderOuterRadius()<<"mm "<< G4endl;
+    myfile <<"$$$$"<<" Source Holder inner radius: "<<sciCryst->GetSourceHolderInnerRadius()<<"mm "<< G4endl;
+  }
+  myfile <<"$$$$"<< G4endl;
+  if (sourceHousingHildeRA == "yes") {
+    myfile <<"$$$$"<<" Source Housing Material: "<<sciCryst->GetSourceHousingHildeMat()->GetName()<< G4endl;
+    myfile <<"$$$$"<<" Source Housing Wall Thickness: "<<sciCryst->GetSourceHousingHildeOuterRadius()-sciCryst->GetSourceHousingHildeInnerRadius()<<"mm "<< G4endl;
+    myfile <<"$$$$"<<" Source Housing outer radius: "<<sciCryst->GetSourceHousingHildeOuterRadius()<<"mm "<< G4endl;
+    myfile <<"$$$$"<<" Source Housing inner radius: "<<sciCryst->GetSourceHousingHildeInnerRadius()<<"mm "<< G4endl;
+  }
+  myfile <<"$$$$"<< G4endl;
+  if (fieldCageEpoxy == "yes") {
+    myfile <<"$$$$"<<" Field Cage material: "<<sciCryst->GetFieldCageEpoxyMat()->GetName()<< G4endl;
+    myfile <<"$$$$"<<" Field Cage thickness: "<<sciCryst->GetFieldCageEpoxyOuterRadius()-sciCryst->GetFieldCageEpoxyInnerRadius()<<"mm "<< G4endl;
+    myfile <<"$$$$"<<" Field Cage outer radius: "<<sciCryst->GetFieldCageEpoxyOuterRadius()<<"mm "<< G4endl;
+    myfile <<"$$$$"<<" Field Cage inner radius: "<<sciCryst->GetFieldCageEpoxyInnerRadius()<<"mm "<< G4endl;
+  }
+  myfile <<"$$$$"<< G4endl;
+  myfile <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
+  myfile <<""<< G4endl;
+  //myfile <<"Positions of the crystal centers in the world:"<< G4endl;
+  //crystalPositionsArrayRA=sciCryst->GetCrystalPositionsArray();
+  //for (i = 0; i < 45; i++) {
+    //myfile << "CrystNb" << i+1 << ": " << crystalPositionsArrayRA[i] << G4endl;
+  //}
+  //myfile <<""<< G4endl;
+  myfile.close();
 
   // Open the file
   //
-  analysisManager->OpenFile(fileName);
+  analysisManager->OpenFile(fileNameRoot);
   analysisManager->SetFirstHistoId(1);
 
   // Creating histograms
   //
   for(crystNb = 1; crystNb <= (sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments()); crystNb++) {
-    analysisManager->CreateH1(G4UIcommand::ConvertToString(crystNb),"Edep in crystal Nb" + G4UIcommand::ConvertToString(crystNb), 15500, 0., 15500*MeV);
+    analysisManager->CreateH1(G4UIcommand::ConvertToString(crystNb),"Edep in crystal Nb" + G4UIcommand::ConvertToString(crystNb), 16000, 0., 16000);
   }
-  analysisManager->CreateH1("Total", "Total Edep", 15500, 0., 15500*MeV);
+  analysisManager->CreateH1("Total", "Total Edep", 16000, 0., 16000);
+  analysisManager->CreateH1("Total30Cryst", "Total 30Cryst Edep", 16000, 0., 16000);
+  analysisManager->CreateH1("Total40Cryst", "Total 40Cryst Edep", 16000, 0., 16000);
+  analysisManager->CreateH1("TotalNoRes", "Total EdepNoRes", 16000, 0., 16000);
+  analysisManager->CreateH1("TotalNoRes30Cryst", "Total 30Cryst EdepNoRes", 16000, 0., 16000);
+  analysisManager->CreateH1("TotalNoRes40Cryst", "Total 40Cryst EdepNoRes", 16000, 0., 16000);
   ComptSuppFlagTest = sciCryst->GetComptSuppFlag();
   if (ComptSuppFlagTest == "yes") {
     for(segmentNb = 1; segmentNb <= (sciCryst->GetNbSegments()); segmentNb++) {
-      analysisManager->CreateH1(G4UIcommand::ConvertToString(100+segmentNb),"Edep in ComptSupp Nb" + G4UIcommand::ConvertToString(100+segmentNb), 15500, 0., 15500*MeV);
+      analysisManager->CreateH1(G4UIcommand::ConvertToString(100+segmentNb),"Edep in ComptSupp Nb" + G4UIcommand::ConvertToString(100+segmentNb), 16000, 0., 16000);
     }
   }
   // Creating ntuple
@@ -145,9 +246,17 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateNtupleDColumn("Event");
   analysisManager->CreateNtupleDColumn("CrystNb");
   analysisManager->CreateNtupleDColumn("EdepRes");
+  analysisManager->CreateNtupleDColumn("EdepResCrystNb1");
+  analysisManager->CreateNtupleDColumn("EdepResCrystNb2");
+  analysisManager->CreateNtupleDColumn("EdepRes30Cryst");
+  analysisManager->CreateNtupleDColumn("EdepRes40Cryst");
   analysisManager->CreateNtupleDColumn("EdepNoRes");
-  analysisManager->CreateNtupleDColumn("EventCS");
+  analysisManager->CreateNtupleDColumn("EdepNoResCrystNb1");
+  analysisManager->CreateNtupleDColumn("EdepNoResCrystNb2");
+  analysisManager->CreateNtupleDColumn("EdepNoRes30Cryst");
+  analysisManager->CreateNtupleDColumn("EdepNoRes40Cryst");
   if (ComptSuppFlagTest == "yes") {
+    analysisManager->CreateNtupleDColumn("EventCS");
     analysisManager->CreateNtupleDColumn("ComptSuppNb");
     analysisManager->CreateNtupleDColumn("EdepComptSuppRes");
     analysisManager->CreateNtupleDColumn("EdepComptSuppNoRes");

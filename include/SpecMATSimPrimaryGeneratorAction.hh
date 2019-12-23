@@ -1,6 +1,6 @@
 ///Author: Oleksii Poleshchuk
 ///
-///KU Leuven 2019
+///KU Leuven 2016-2019
 ///
 ///SpecMATscint is a GEANT4 code for simulation
 ///of gamma-rays detection efficiency with
@@ -39,6 +39,9 @@ public:
   G4double excitEnergy;
   G4double ionEnergy;
   G4String source;
+  G4String sourceType;
+  G4double pointSourceZposition;
+
 
   SpecMATSimPrimaryGeneratorAction();
   virtual ~SpecMATSimPrimaryGeneratorAction();
@@ -71,6 +74,12 @@ public:
   void SetSource(G4String val) { source = val; }
   G4String GetSource(void) { return source;}
 
+  void SetSourceType(G4String val) { sourceType = val; }
+  G4String GetSourceType(void) { return sourceType;}
+
+  void SetPointSourceZposition(G4double val) { pointSourceZposition = val; }
+  G4double GetPointSourceZposition(void) { return pointSourceZposition;}
+
 private:
   SpecMATSimDetectorConstruction* sciCryst;
   G4ParticleDefinition* particle;
@@ -84,6 +93,7 @@ private:
   G4double sinTheta;
   G4double phi;
   G4double  ux, uy, uz;
+  G4double vacuumChamberShiftPGA;
 
   G4int randomNum;
 };

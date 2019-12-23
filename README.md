@@ -1,4 +1,5 @@
 # SpecMATscint
+Author: Oleksii Poleshchuk
 
 <img src="https://cloud.githubusercontent.com/assets/17125100/17013239/717b2170-4f1d-11e6-9bf0-72d171279fa0.png" align="right">
 

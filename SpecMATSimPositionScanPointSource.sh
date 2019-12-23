@@ -1,32 +1,37 @@
 #!/bin/bash
-iterator=10
-while [ $iterator -le 10000 ]
+
+#Author: Oleksii Poleshchuk
+#
+#KU Leuven 2016-2019
+#
+#SpecMATscint is a GEANT4 code for simulation
+#of gamma-rays detection efficiency with
+#the SpecMAT scintillation array.
+#
+#\file SpecMATSimPositionScanPointSource.sh
+#
+#This script is used for automatic scanning over a point source position determined
+#by the "pointSourcePositionZ=" variable in the /src/SpecMATSimDetectorConstruction.cc
+#file. The energy of the source remain constant.
+
+iterator=196
+while (( $iterator > -129 ))
 do
-ba="gammaEnergy="
+ba="pointSourcePositionZ="
 ca=$iterator
 
 ea=$ba$ca
 
-if [ $iterator -lt 200 ]
-then
-	((iterator=iterator+10))
-elif [ $iterator -ge 200 ] && [ $iterator -lt 1000 ]
-then
-	((iterator=iterator+100))
-elif [ $iterator -ge 1000 ]
-then
-	((iterator=iterator+1000))
-fi
-
+((iterator=iterator-1))
 
 cb=$iterator
 eb=$ba$cb
 
 ga="s/$ea/$eb/g"
 
-sed -i "s/$ea/$eb/g" /mnt/ksf2/H1/user/u0107893/linux/SpecMATscint/src/SpecMATSimPrimaryGeneratorAction.cc
+sed -i "s/$ea/$eb/g" /mnt/ksf2/H1/user/u0107893/linux/SpecMATscint/src/SpecMATSimDetectorConstruction.cc
 
-make -j4
+make -j20
 ./SpecMATSim SpecMATSim.in > SpecMATSim.out &
 PID=$!
 # Note: From http://stackoverflow.com/questions/12199631/convert-seconds-to-hours-minutes-seconds

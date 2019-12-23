@@ -44,8 +44,15 @@ target_link_libraries(SpecMATSim ${Geant4_LIBRARIES})
 set(SPECMATSIM_SCRIPTS
   SpecMATSim.in
   SpecMATSim.out
-  SpecMATSim.sh
+  SpecMATSimEnergyScan.sh
+  SpecMATSimPositionScanPointSource.sh
   vis.mac
+  SpecMATSimEnergyScanTotalNoResAnalysis.C
+  SpecMATSimEnergyScanTotalNoResAnalysisAddBack.C
+  SpecMATSimPositionScanTotalNoResAnalysis.C
+  cerateFileNamesForSpecMATSimEnergyScanTotalNoResAnalysis.py
+  cerateFileNamesForSpecMATSimEnergyScanTotalNoResAnalysisAddBack.py
+  cerateFileNamesForSpecMATSimPositionScanTotalNoResAnalysis.py
   )
 
 foreach(_script ${SPECMATSIM_SCRIPTS})

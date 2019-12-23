@@ -1,6 +1,6 @@
 ///Author: Oleksii Poleshchuk
 ///
-///KU Leuven 2019
+///KU Leuven 2016-2019
 ///
 ///SpecMATscint is a GEANT4 code for simulation
 ///of gamma-rays detection efficiency with
@@ -36,15 +36,19 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
 {
   source = "gamma";
   //source = "ion";
+  //sourceType = "linear";
+  sourceType = "point";
+  sciCryst = new SpecMATSimDetectorConstruction();
+  pointSourceZposition= sciCryst->GetPointSourcePositionZ(); //PP=-129.25mm Cathode=194.25mm FCcentre=32.5mm for the 3rings configuration MiddleRingCentre=0mm
   //################### Monoenergetic gamma source ############################//
   n_particle = 1;
   fParticleGun  = new G4ParticleGun(n_particle);
-  sciCryst = new SpecMATSimDetectorConstruction();
-  gammaEnergy=11000*keV;
+
+  gammaEnergy=10*keV;
 
   //################### Isotope source ################################//
-  Z = 95;
-  A = 241;
+  Z = 63;
+  A = 152;
   ionCharge = 0.*eplus;
   excitEnergy = 0.*MeV;
   ionEnergy = 0.*MeV;
@@ -68,6 +72,7 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     //
     //distribution uniform in solid angle
     //
+    vacuumChamberShiftPGA = sciCryst->GetVacuumChamberShift();
     particle = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
     fParticleGun->SetParticleDefinition(particle);
     fParticleGun->SetParticleEnergy(gammaEnergy);
@@ -78,11 +83,15 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     uy = sinTheta*std::sin(phi);
     uz = cosTheta;
     //G4int randomNum = G4UniformRand()*201 - 100;
-    randomNum = 61.75 + G4UniformRand()*323.5 - 323.5/2 -29.25*2;
+    randomNum = 32.5 + G4UniformRand()*323.5 - 323.5/2; //32.5mm is the offest of the center of the field cage in respect to the center of the middle ring(out of the 3rings) also world center of the simulation
     //G4cout << randomNum << G4endl;
     fParticleGun->SetParticleMomentumDirection(G4ThreeVector(ux,uy,uz));
-    //fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm)); //randomNum*mm
-    fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,-29.25*mm));
+    if (sourceType == "linear") {
+      fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm)); //randomNum*mm
+    }
+    else {
+      fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,pointSourceZposition*mm));
+    }
     fParticleGun->GeneratePrimaryVertex(anEvent);
   }
   else {
@@ -90,15 +99,18 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     ion= G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
     fParticleGun->SetParticleDefinition(ion);
     fParticleGun->SetParticleCharge(ionCharge);
-    randomNum = 61.75 + G4UniformRand()*323.5 - 323.5/2 -29.25*2;
+    //randomNum = 32.5 + G4UniformRand()*323.5 - 323.5/2;
     //G4cout << randomNum << G4endl;
-    //fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm));
-    fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,-29.25*mm));
+    if (sourceType == "linear") {
+      fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm)); //randomNum*mm
+    }
+    else {
+      fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,pointSourceZposition*mm));
+    }
     fParticleGun->SetParticleEnergy(ionEnergy);
     fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,0.));
     fParticleGun->GeneratePrimaryVertex(anEvent);
   }
 }
-
 
 // ###################################################################################

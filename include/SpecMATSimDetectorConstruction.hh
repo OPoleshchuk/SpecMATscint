@@ -1,6 +1,6 @@
 ///Author: Oleksii Poleshchuk
 ///
-///KU Leuven 2019
+///KU Leuven 2016-2019
 ///
 ///SpecMATscint is a GEANT4 code for simulation
 ///of gamma-rays detection efficiency with
@@ -38,6 +38,8 @@
 
 #include "globals.hh"
 
+
+
 class G4VPhysicalVolume;
 class G4LogicalVolume;
 
@@ -49,6 +51,8 @@ class SpecMATSimDetectorConstruction : public G4VUserDetectorConstruction
 private:
   void DefineMaterials();
   void CreateScorers();
+
+
 
   G4int nbSegments;
   G4int nbCrystInSegmentRow;
@@ -63,11 +67,12 @@ private:
 
   G4String ComptSuppFlag;
   G4String vacuumChamber;
-  G4String sourceTube;
-  G4String insulationTube;
+  G4String sourceHolder;
+  G4String sourceHousingHilde;
+  G4String fieldCageEpoxy;
 
-  G4double a, z, density, densitySTM;
-  G4double fractionmass;
+  G4double a, z, density, densitySTM, densityEpoxy, densityAluminum5083;
+  G4double fractionmass, fractionmassMn, fractionmassFe, fractionmassCu, fractionmassMg, fractionmassSi, fractionmassZn, fractionmassCr, fractionmassTi, fractionmassAl;
   G4double worldSizeXY;
   G4double worldSizeZ;
   G4double gap;
@@ -75,41 +80,49 @@ private:
   G4double vacuumFlangeSizeY;
   G4double vacuumFlangeSizeZ;
   G4double vacuumFlangeThickFrontOfScint;
-  G4double vacuumTubeThickness;
-  G4double vacuumTubeInnerRadius;
-  G4double vacuumTubeOuterRadius;
+  G4double vacuumChamberShift;
+  G4double vacuumChamberThickness;
+  G4double vacuumChamberInnerRadius;
+  G4double vacuumChamberOuterRadius;
 
-  G4double vacuumTubeThickness2;
-  G4double vacuumTubeInnerRadius2;
-  G4double vacuumTubeOuterRadius2;
+  G4double vacuumChamberThickness2;
+  G4double vacuumChamberInnerRadius2;
+  G4double vacuumChamberOuterRadius2;
 
-  G4double vacuumTubeThickness3;
-  G4double vacuumTubeInnerRadius3;
-  G4double vacuumTubeOuterRadius3;
+  G4double vacuumChamberThickness3;
+  G4double vacuumChamberInnerRadius3;
+  G4double vacuumChamberOuterRadius3;
 
-  G4double vacuumTubeThickness4;
-  G4double vacuumTubeInnerRadius4;
-  G4double vacuumTubeOuterRadius4;
+  G4double vacuumChamberThickness4;
+  G4double vacuumChamberInnerRadius4;
+  G4double vacuumChamberOuterRadius4;
 
-  G4double vacuumTubeThickness5;
-  G4double vacuumTubeInnerRadius5;
-  G4double vacuumTubeOuterRadius5;
+  G4double vacuumChamberThickness5;
+  G4double vacuumChamberInnerRadius5;
+  G4double vacuumChamberOuterRadius5;
 
-  G4double vacuumTubeThickness6;
-  G4double vacuumTubeInnerRadius6;
-  G4double vacuumTubeOuterRadius6;
+  G4double vacuumChamberThickness6;
+  G4double vacuumChamberInnerRadius6;
+  G4double vacuumChamberOuterRadius6;
 
-  G4double vacuumTubeThickness7;
-  G4double vacuumTubeInnerRadius7;
-  G4double vacuumTubeOuterRadius7;
+  G4double vacuumChamberThickness7;
+  G4double vacuumChamberInnerRadius7;
+  G4double vacuumChamberOuterRadius7;
 
-  G4double sourceTubeThickness;
-  G4double sourceTubeInnerRadius;
-  G4double sourceTubeOuterRadius;
+  G4double sourceHolderThickness;
+  G4double sourceHolderInnerRadius;
+  G4double sourceHolderOuterRadius;
+  G4double sourceHolderLeftInnerRadius;
+  G4double sourceHolderLeftOuterRadius;
+  G4double sourceHolderRightInnerRadius;
+  G4double sourceHolderRightOuterRadius;
+  G4double sourceHousingHildeThickness;
+  G4double sourceHousingHildeInnerRadius;
+  G4double sourceHousingHildeOuterRadius;
 
-  G4double insulationTubeThickness;
-  G4double insulationTubeInnerRadius;
-  G4double insulationTubeOuterRadius;
+  G4double fieldCageEpoxyThickness;
+  G4double fieldCageEpoxyInnerRadius;
+  G4double fieldCageEpoxyOuterRadius;
   G4double dPhi;
   G4double half_dPhi;
   G4double tandPhi;
@@ -152,6 +165,8 @@ private:
   G4double sciHousPosZ;
   G4double rotationAngle;
   G4double phi;
+  G4double pointSourcePositionZ;
+  G4double sourceHousingHildePositionZ;
 
   G4Element* Ce;
   G4Element* La;
@@ -173,6 +188,15 @@ private:
   G4Element* S;
   G4Element* Fe;
   G4Element* Chlor;
+  G4Element* Mn;
+  //G4Element* Fe;
+  G4Element* Cu;
+  //G4Element* Mg;
+  //G4Element* Si;
+  G4Element* Zn;
+  //G4Element* Cr;
+  //G4Element* Ti;
+  //G4Element* Al;
 
   G4Material* default_mat;
   G4Material* CeBr3;
@@ -189,13 +213,16 @@ private:
   G4Material* vacuumFlangeMat;
   G4Material* vacuumSideFlangeMat;
   G4Material* Polypropylen_C3H6;
-  G4Material* insulationTubeMat;
-  G4Material* vacuumTubeMat;
+  G4Material* fieldCageEpoxyMat;
+  G4Material* vacuumChamberMat;
   G4Material* PVC;
-  G4Material* sourceTubeMat;
+  G4Material* sourceHolderMat;
+  G4Material* sourceHousingHildeMat;
   G4Material* Air;
   G4Material* segment_mat;
   G4Material* Steel_316L;
+  G4Material* Aluminum5083;
+  G4Material* epoxy;
 
   G4NistManager* nist;
 
@@ -237,15 +264,18 @@ private:
   G4VSolid* vacuumFlangeBox;
   G4VSolid* vacuumFlangeSolid;
   G4VSolid* vacuumChamberSideFlange;
-  G4VSolid* insulationTubeSolid;
-  G4VSolid* vacuumTubeSolid;
-  G4VSolid* vacuumTubeSolid2;
-  G4VSolid* vacuumTubeSolid3;
-  G4VSolid* vacuumTubeSolid4;
-  G4VSolid* vacuumTubeSolid5;
-  G4VSolid* vacuumTubeSolid6;
-  G4VSolid* vacuumTubeSolid7;
-  G4VSolid* sourceTubeSolid;
+  G4VSolid* fieldCageEpoxySolid;
+  G4VSolid* vacuumChamberSolid;
+  G4VSolid* vacuumChamberSolid2;
+  G4VSolid* vacuumChamberSolid3;
+  G4VSolid* vacuumChamberSolid4;
+  G4VSolid* vacuumChamberSolid5;
+  G4VSolid* vacuumChamberSolid6;
+  G4VSolid* vacuumChamberSolid7;
+  G4VSolid* sourceHolderSolid;
+  G4VSolid* sourceHolderLeftSolid;
+  G4VSolid* sourceHolderRightSolid;
+  G4VSolid* sourceHousingHildeSolid;
 
   G4LogicalVolume* logicWorld;
   G4LogicalVolume* sciCrystLog;
@@ -258,15 +288,18 @@ private:
   G4LogicalVolume* sciHousLog;
   G4LogicalVolume* vacuumFlangeBoxLog;
   G4LogicalVolume* vacuumChamberSideFlangeLog;
-  G4LogicalVolume* insulationTubeLog;
-  G4LogicalVolume* vacuumTubeLog;
-  G4LogicalVolume* vacuumTubeLog2;
-  G4LogicalVolume* vacuumTubeLog3;
-  G4LogicalVolume* vacuumTubeLog4;
-  G4LogicalVolume* vacuumTubeLog5;
-  G4LogicalVolume* vacuumTubeLog6;
-  G4LogicalVolume* vacuumTubeLog7;
-  G4LogicalVolume* sourceTubeLog;
+  G4LogicalVolume* fieldCageEpoxyLog;
+  G4LogicalVolume* vacuumChamberLog;
+  G4LogicalVolume* vacuumChamberLog2;
+  G4LogicalVolume* vacuumChamberLog3;
+  G4LogicalVolume* vacuumChamberLog4;
+  G4LogicalVolume* vacuumChamberLog5;
+  G4LogicalVolume* vacuumChamberLog6;
+  G4LogicalVolume* vacuumChamberLog7;
+  G4LogicalVolume* sourceHolderLog;
+  G4LogicalVolume* sourceHolderLeftLog;
+  G4LogicalVolume* sourceHolderRightLog;
+  G4LogicalVolume* sourceHousingHildeLog;
   G4LogicalVolume* segmentBoxLog;
 
   G4VPhysicalVolume* physWorld;
@@ -279,15 +312,18 @@ private:
   G4VisAttributes* sciWindVisAtt;
   G4VisAttributes* sciReflVisAtt;
   G4VisAttributes* sciHousVisAtt;
-  G4VisAttributes* insulationTubeVisAtt;
-  G4VisAttributes* vacuumTubeVisAtt;
-  G4VisAttributes* vacuumTubeVisAtt2;
-  G4VisAttributes* vacuumTubeVisAtt3;
-  G4VisAttributes* vacuumTubeVisAtt4;
-  G4VisAttributes* vacuumTubeVisAtt5;
-  G4VisAttributes* vacuumTubeVisAtt6;
-  G4VisAttributes* vacuumTubeVisAtt7;
-  G4VisAttributes* sourceTubeVisAtt;
+  G4VisAttributes* fieldCageEpoxyVisAtt;
+  G4VisAttributes* vacuumChamberVisAtt;
+  G4VisAttributes* vacuumChamberVisAtt2;
+  G4VisAttributes* vacuumChamberVisAtt3;
+  G4VisAttributes* vacuumChamberVisAtt4;
+  G4VisAttributes* vacuumChamberVisAtt5;
+  G4VisAttributes* vacuumChamberVisAtt6;
+  G4VisAttributes* vacuumChamberVisAtt7;
+  G4VisAttributes* sourceHolderVisAtt;
+  G4VisAttributes* sourceHolderLeftVisAtt;
+  G4VisAttributes* sourceHolderRightVisAtt;
+  G4VisAttributes* sourceHousingHildeVisAtt;
 
   G4RotationMatrix rotSideFlnge;
   G4RotationMatrix ComptSuppRotmBoxUp;
@@ -329,12 +365,15 @@ public:
 
   G4double ComputeCircleR1();
 
+  void SetPointSourcePositionZ(G4double val){pointSourcePositionZ = val;}
+  G4double GetPointSourcePositionZ(void){return pointSourcePositionZ;}
+
   void SetNbSegments(G4int val){nbSegments = val;}
-  G4double GetNbSegments(void){return nbSegments;}
+  G4int GetNbSegments(void){return nbSegments;}
   void SetNbCrystInSegmentRow(G4int val){nbCrystInSegmentRow = val;}
-  G4double GetNbCrystInSegmentRow(void){return nbCrystInSegmentRow;}
+  G4int GetNbCrystInSegmentRow(void){return nbCrystInSegmentRow;}
   void SetNbCrystInSegmentColumn(G4int val){nbCrystInSegmentColumn = val;}
-  G4double GetNbCrystInSegmentColumn(void){return nbCrystInSegmentColumn;}
+  G4int GetNbCrystInSegmentColumn(void){return nbCrystInSegmentColumn;}
 
   void SetSciCrystSizeX(G4double val){sciCrystSizeX = val;}
   G4double GetSciCrystSizeX(void){return sciCrystSizeX;}
@@ -349,6 +388,7 @@ public:
   G4double GetSciWindSizeY(void){return sciWindSizeY;}
   void SetSciWindSizeZ(G4double val){sciWindSizeZ = val;}
   G4double GetSciWindSizeZ(void){return sciWindSizeZ;}
+  G4Material* GetSciWindMat(){return sciWindMat;}
 
   void SetSciReflWallThickX(G4double val){sciReflWallThickX = val;}
   G4double GetSciReflWallThickX(void){return sciReflWallThickX;}
@@ -356,6 +396,8 @@ public:
   G4double GetSciReflWallThickY(void){return sciReflWallThickY;}
   void SetSciReflWindThick(G4double val){sciReflWindThick = val;}
   G4double GetSciReflWindThick(void){return sciReflWindThick;}
+  G4Material* GetSciReflMat(){return sciReflMat;}
+
 
   void SetSciHousWallThickX(G4double val){sciHousWallThickX = val;}
   G4double GetSciHousWallThickX(void){return sciHousWallThickX;}
@@ -363,6 +405,7 @@ public:
   G4double GetSciHousWallThickY(void){return sciHousWallThickY;}
   void SetSciHousWindThick(G4double val){sciHousWindThick = val;}
   G4double GetSciHousWindThick(void){return sciHousWindThick;}
+  G4Material* GetSciHousMat(){return sciHousMat;}
 
   void SetSciHousSizeX(G4double val){sciHousSizeX = val;}
   G4double GetSciHousSizeX(void){return sciHousSizeX;}
@@ -371,21 +414,39 @@ public:
   void SetSciHousSizeZ(G4double val){sciHousSizeZ = val;}
   G4double GetSciHousSizeZ(void){return sciHousSizeZ;}
 
-  void SetSciCrystMat (G4String);
   G4Material* GetSciCrystMat(){return sciCrystMat;}
 
-  void SetVacuumChamber (G4String);
+  void SetSourceHolder (G4String val){sourceHolder = val;}
+  G4String GetSourceHolder(){return sourceHolder;}
+  G4Material* GetSourceHolderMat(){return sourceHolderMat;}
+  G4double GetSourceHolderInnerRadius(void){return sourceHolderInnerRadius;}
+  G4double GetSourceHolderOuterRadius(void){return sourceHolderOuterRadius;}
+
+  void SetSourceHousingHilde (G4String val){sourceHousingHilde = val;}
+  G4String GetSourceHousingHilde(){return sourceHousingHilde;}
+  G4Material* GetSourceHousingHildeMat(){return sourceHousingHildeMat;}
+  G4double GetSourceHousingHildeInnerRadius(void){return sourceHousingHildeInnerRadius;}
+  G4double GetSourceHousingHildeOuterRadius(void){return sourceHousingHildeOuterRadius;}
+
+  void SetVacuumChamber (G4String val){vacuumChamber = val;}
   G4String GetVacuumChamber(){return vacuumChamber;}
-  void SetVacuumFlangeMat (G4String);
   G4Material* GetVacuumFlangeMat(){return vacuumFlangeMat;}
+  G4Material* GetVacuumChamberMat(){return vacuumChamberMat;}
+  void SetVacuumChamberThickness(G4double val){vacuumChamberThickness = val;}
+  G4double GetVacuumChamberThickness(void){return vacuumChamberThickness;}
+  void SetVacuumChamberShift(G4double val){vacuumChamberShift = val;}
+  G4double GetVacuumChamberShift(void){return vacuumChamberShift;}
+  G4double GetVacuumChamberInnerRadius(void){return vacuumChamberInnerRadius;}
+  G4double GetVacuumChamberOuterRadius(void){return vacuumChamberOuterRadius;}
 
-  void SetInsulationTube (G4String);
-  G4String GetInsulationTube(){return insulationTube;}
-  void SetInsulationTubeMat (G4String);
-  G4Material* GetInsulationTubeMat(){return insulationTubeMat;}
 
-  void SetComptSuppFlag (G4String);
+  G4String GetFieldCageEpoxy(){return fieldCageEpoxy;}
+  G4Material* GetFieldCageEpoxyMat(){return fieldCageEpoxyMat;}
+  G4double GetFieldCageEpoxyInnerRadius(void){return fieldCageEpoxyInnerRadius;}
+  G4double GetFieldCageEpoxyOuterRadius(void){return fieldCageEpoxyOuterRadius;}
   G4String GetComptSuppFlag(){return ComptSuppFlag;}
+
+  G4ThreeVector* GetCrystalPositionsArray(void){return crystalPositionsArray;}
 
   void SetGap(G4double val){gap = val;}
   G4double GetGap(void){return gap;}

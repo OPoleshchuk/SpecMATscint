@@ -1,3 +1,18 @@
+#Author: Oleksii Poleshchuk
+#
+#KU Leuven 2016-2019
+#
+#SpecMATscint is a GEANT4 code for simulation
+#of gamma-rays detection efficiency with
+#the SpecMAT scintillation array.
+#
+#\file SpecMATSim.in
+#
+#This file is used to define some model parameters, several basic examples
+#are shown below.
+#In SpecMATscint this file is used to define the number of generated gamma rays
+#or ions. The following command "/run/beamOn 3000000" generates 3000000 particles.
+
 #/gun/particle gamma
 #/gun/energy 1500 keV
 

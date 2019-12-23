@@ -1,3 +1,4 @@
+Example of an SpecMATscint output
 
 *************************************************************
  Geant4 version Name: geant4-09-06-patch-04    (30-January-2015)
@@ -6,241 +7,291 @@
                             WWW : http://cern.ch/geant4
 *************************************************************
 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume Segment ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume Segment ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume Segment ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume Segment ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume Segment ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume sciCrystPl ... OK! 
-Checking overlaps for volume sciWindPl ... OK! 
-Checking overlaps for volume sciReflPl ... OK! 
-Checking overlaps for volume sciHousPl ... OK! 
-Checking overlaps for volume Segment ... OK! 
-
+Checking overlaps for volume vacuumChamberPhys ... OK!
+Checking overlaps for volume vacuumChamberPhys2 ... OK!
+Checking overlaps for volume vacuumChamberPhys3 ... OK!
+Checking overlaps for volume vacuumChamberPhys4 ... OK!
+Checking overlaps for volume vacuumChamberPhys5 ... OK!
+Checking overlaps for volume vacuumChamberPhys6 ... OK!
+Checking overlaps for volume vacuumChamberPhys7 ... OK!
+Checking overlaps for volume fieldCageEpoxyPhys ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume sciCrystPl ... OK!
+Checking overlaps for volume sciWindPl ... OK!
+Checking overlaps for volume sciReflPl ... OK!
+Checking overlaps for volume sciHousPl ... OK!
+Checking overlaps for volume Segment ... OK!
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 $$$$
 $$$$ Crystal material: CeBr3
-$$$$ Single crystal dimensions: 38mmx38mmx38mm 
-$$$$ Dimensions of a single crystal housing: 46mmx46mmx42mm 
-$$$$ Number of segments in the array: 6 
-$$$$ Number of crystals in a segment row: 3 
-$$$$ Number of crystals in a segment column: 3 
-$$$$ Number of crystals in the array: 54 
-$$$$ Radius of a circle inscribed in the array: 119.512mm 
+$$$$ Reflector material: TiO2
+$$$$ Housing material: Aluminum_
+$$$$ Optic window material: Quartz
+$$$$
+$$$$ Single crystal dimensions: 48mmx48mmx48mm
+$$$$ Dimensions of the crystal housing: 55mmx55mmx49.5mm
+$$$$ Housing wall thickness: 3mm
+$$$$ Housing window thickness: 1mm
+$$$$ Reflecting material wall thickness: 0.5mm
+$$$$ Reflecting material thickness in front of the window: 0.5mm
+$$$$
+$$$$ Number of segments in the array: 15
+$$$$ Number of crystals in the segment row: 3
+$$$$ Number of crystals in the segment column: 1
+$$$$ Number of crystals in the array: 45
+$$$$ Segment width: 55mm
+$$$$
+$$$$ Radius of a circle inscribed in the array: 131.25mm
+$$$$
+$$$$ Vacuum Chamber Material: Aluminum5083
+$$$$ Vacuum Chamber Wall Thickness: 3mm
+$$$$ Vacuum Chamber outer radius: 128.25mm
+$$$$ Vacuum Chamber inner radius: 131.25mm
+$$$$
+$$$$
+$$$$
+$$$$ Field Cage material: epoxy
+$$$$ Field Cage thickness: 16.25mm
+$$$$ Field Cage outer radius: 112.6mm
+$$$$ Field Cage inner radius: 96.35mm
 $$$$
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+Positions of the crystal centers in the world:
+CrystNb1: (157.25,6.12323e-17,-58)
+CrystNb2: (157.25,6.12323e-17,-1.53081e-17)
+CrystNb3: (157.25,6.12323e-17,58)
+CrystNb4: (143.655,63.9593,-58)
+CrystNb5: (143.655,63.9593,-1.39846e-17)
+CrystNb6: (143.655,63.9593,58)
+CrystNb7: (105.221,116.86,-58)
+CrystNb8: (105.221,116.86,-1.02431e-17)
+CrystNb9: (105.221,116.86,58)
+CrystNb10: (48.5929,149.554,-58)
+CrystNb11: (48.5929,149.554,-4.73046e-18)
+CrystNb12: (48.5929,149.554,58)
+CrystNb13: (-16.4371,156.389,-58)
+CrystNb14: (-16.4371,156.389,1.60013e-18)
+CrystNb15: (-16.4371,156.389,58)
+CrystNb16: (-78.625,136.182,-58)
+CrystNb17: (-78.625,136.182,7.65404e-18)
+CrystNb18: (-78.625,136.182,58)
+CrystNb19: (-127.218,92.4292,-58)
+CrystNb20: (-127.218,92.4292,1.23845e-17)
+CrystNb21: (-127.218,92.4292,58)
+CrystNb22: (-153.814,32.6941,-58)
+CrystNb23: (-153.814,32.6941,1.49736e-17)
+CrystNb24: (-153.814,32.6941,58)
+CrystNb25: (-153.814,-32.6941,-58)
+CrystNb26: (-153.814,-32.6941,1.49736e-17)
+CrystNb27: (-153.814,-32.6941,58)
+CrystNb28: (-127.218,-92.4292,-58)
+CrystNb29: (-127.218,-92.4292,1.23845e-17)
+CrystNb30: (-127.218,-92.4292,58)
+CrystNb31: (-78.625,-136.182,-58)
+CrystNb32: (-78.625,-136.182,7.65404e-18)
+CrystNb33: (-78.625,-136.182,58)
+CrystNb34: (-16.4371,-156.389,-58)
+CrystNb35: (-16.4371,-156.389,1.60013e-18)
+CrystNb36: (-16.4371,-156.389,58)
+CrystNb37: (48.5929,-149.554,-58)
+CrystNb38: (48.5929,-149.554,-4.73046e-18)
+CrystNb39: (48.5929,-149.554,58)
+CrystNb40: (105.221,-116.86,-58)
+CrystNb41: (105.221,-116.86,-1.02431e-17)
+CrystNb42: (105.221,-116.86,58)
+CrystNb43: (143.655,-63.9593,-58)
+CrystNb44: (143.655,-63.9593,-1.39846e-17)
+CrystNb45: (143.655,-63.9593,58)
 
 G4SDManager::AddNewCollection : the collection <crystal/edep> is registered at 1
 New sensitive detector <crystal> is registored at /
@@ -254,9 +305,14 @@ Current available graphics systems are:
   DAWNFILE (DAWNFILE)
   G4HepRep (HepRepXML)
   G4HepRepFile (HepRepFile)
-  OpenGLImmediateX (OGLI, OGLIX)
-  OpenGLStoredX (OGL, OGLS, OGLSX)
+  OpenGLImmediateQt (OGLI, OGLIQt)
+  OpenGLImmediateX (OGLIX)
+  OpenGLImmediateXm (OGLIXm, OGLI_FALLBACK, OGLIQt_FALLBACK)
+  OpenGLStoredQt (OGL, OGLS, OGLSQt)
+  OpenGLStoredX (OGLSX)
+  OpenGLStoredXm (OGLSXm, OGL_FALLBACK, OGLS_FALLBACK, OGLSQt_FALLBACK)
   RayTracer (RayTracer)
+  RayTracerX (RayTracerX)
   VRML1FILE (VRML1FILE)
   VRML2FILE (VRML2FILE)
   gMocrenFile (gMocrenFile)
@@ -286,241 +342,4 @@ Some /vis commands (optionally) take a string to specify colour.
 Available colours:
   black, blue, brown, cyan, gray, green, grey, magenta, red, white, yellow
 
-### Run 0 start.
-Using Root analysis manager
-
-Event №0
-
----> Begin of event: 0
-
-Event №1
-CeBr3 Nb6: E 636.182 keV, coorected E 613.389 keV, FWHM 27.5944
-
-Event №2
-
-Event №3
-CeBr3 Nb46: E 695.709 keV, coorected E 703.708 keV, FWHM 28.8617
-
-Event №4
-
-Event №5
-
-Event №6
-
-Event №7
-
-Event №8
-CeBr3 Nb51: E 1064.39 keV, coorected E 1072.69 keV, FWHM 35.7296
-
-Event №9
-
-Event №10
-CeBr3 Nb42: E 581.246 keV, coorected E 587.608 keV, FWHM 26.3714
-
-Event №11
-
-Event №12
-
-Event №13
-
-Event №14
-CeBr3 Nb4: E 229.324 keV, coorected E 230.714 keV, FWHM 16.5337
-
-Event №15
-
-Event №16
-
-Event №17
-
-Event №18
-CeBr3 Nb33: E 1967.33 keV, coorected E 2003.24 keV, FWHM 48.6352
-
-Event №19
-
-Event №20
-
-Event №21
-CeBr3 Nb15: E 1449.13 keV, coorected E 1462.29 keV, FWHM 41.7157
-
-Event №22
-
-Event №23
-CeBr3 Nb49: E 380.61 keV, coorected E 390.183 keV, FWHM 21.3218
-CeBr3 Nb50: E 1653.25 keV, coorected E 1636.74 keV, FWHM 44.5687
-
-Event №24
-
-Event №25
-
-Event №26
-
-Event №27
-
-Event №28
-CeBr3 Nb21: E 1808.5 keV, coorected E 1760.31 keV, FWHM 46.6228
-
-Event №29
-
-Event №30
-CeBr3 Nb46: E 820.597 keV, coorected E 814.088 keV, FWHM 31.3557
-
-Event №31
-
-Event №32
-
-Event №33
-
-Event №34
-
-Event №35
-
-Event №36
-CeBr3 Nb14: E 1680.85 keV, coorected E 1663.63 keV, FWHM 44.9407
-CeBr3 Nb18: E 256.594 keV, coorected E 262.529 keV, FWHM 17.4931
-
-Event №37
-
-Event №38
-
-Event №39
-
-Event №40
-CeBr3 Nb49: E 457.197 keV, coorected E 448.591 keV, FWHM 23.3774
-
-Event №41
-
-Event №42
-
-Event №43
-
-Event №44
-
-Event №45
-
-Event №46
-
-Event №47
-
-Event №48
-
-Event №49
-
-Event №50
-
-Event №51
-
-Event №52
-CeBr3 Nb10: E 1538.01 keV, coorected E 1526.57 keV, FWHM 42.981
-CeBr3 Nb13: E 476.241 keV, coorected E 470.311 keV, FWHM 23.8612
-
-Event №53
-
-Event №54
-
-Event №55
-CeBr3 Nb30: E 357.199 keV, coorected E 355.719 keV, FWHM 20.6531
-
-Event №56
-
-Event №57
-
-Event №58
-
-Event №59
-
-Event №60
-
-Event №61
-
-Event №62
-CeBr3 Nb49: E 792.059 keV, coorected E 799.203 keV, FWHM 30.8035
-
-Event №63
-
-Event №64
-CeBr3 Nb21: E 959.615 keV, coorected E 972.419 keV, FWHM 33.9185
-
-Event №65
-
-Event №66
-
-Event №67
-
-Event №68
-
-Event №69
-
-Event №70
-
-Event №71
-
-Event №72
-
-Event №73
-
-Event №74
-
-Event №75
-
-Event №76
-CeBr3 Nb38: E 1356.44 keV, coorected E 1364.88 keV, FWHM 40.3543
-CeBr3 Nb40: E 405.573 keV, coorected E 402.253 keV, FWHM 22.0128
-
-Event №77
-CeBr3 Nb34: E 91.4331 keV, coorected E 93.8073 keV, FWHM 10.4207
-
-Event №78
-
-Event №79
-
-Event №80
-CeBr3 Nb4: E 1524.89 keV, coorected E 1526.81 keV, FWHM 42.7966
-
-Event №81
-
-Event №82
-CeBr3 Nb33: E 48.7798 keV, coorected E 49.0657 keV, FWHM 7.60187
-
-Event №83
-CeBr3 Nb21: E 1974.75 keV, coorected E 1977.36 keV, FWHM 48.7272
-
-Event №84
-
-Event №85
-
-Event №86
-
-Event №87
-
-Event №88
-
-Event №89
-CeBr3 Nb20: E 235.119 keV, coorected E 232.725 keV, FWHM 16.7421
-
-Event №90
-
-Event №91
-CeBr3 Nb8: E 238.019 keV, coorected E 250.855 keV, FWHM 16.8455
-
-Event №92
-
-Event №93
-
-Event №94
-
-Event №95
-
-Event №96
-
-Event №97
-
-Event №98
-
-Event №99
-
---------------------End of Run------------------------------
- The Run was 100 Co60[2100.0]
-------------------------------------------------------------
-
-Graphics systems deleted.
-Visualization Manager deleting...
+Available UI session types: [ Qt, Xm, GAG, tcsh, csh ]
