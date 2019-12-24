@@ -126,11 +126,12 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
 
     if (crystMat->GetName() == "CeBr3") {
       //Resolution correction of registered gamma energy for CeBr3.
-      absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355));
+      //absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(108*pow(edep/keV, -0.498))/100)/2.355)); //Quarati [NIM A 729 (2013) 596–604]
+      absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(94.6*pow(edep/keV, -0.476))/100)/2.355)); //KUL 10 measurement with GET
     }
     else if (crystMat->GetName() == "LaBr3") {
       //Resolution correction of registered gamma energy for LaBr3.
-      absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(81*pow(edep/keV, -0.501))/100)/2.355));
+      absoEdep = G4RandGauss::shoot(edep/keV, (((edep/keV)*(81*pow(edep/keV, -0.501))/100)/2.355)); //Quarati [NIM A 729 (2013) 596–604]
     }
     else {
       absoEdep = edep/keV;

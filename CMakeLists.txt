@@ -50,9 +50,9 @@ set(SPECMATSIM_SCRIPTS
   SpecMATSimEnergyScanTotalNoResAnalysis.C
   SpecMATSimEnergyScanTotalNoResAnalysisAddBack.C
   SpecMATSimPositionScanTotalNoResAnalysis.C
-  cerateFileNamesForSpecMATSimEnergyScanTotalNoResAnalysis.py
-  cerateFileNamesForSpecMATSimEnergyScanTotalNoResAnalysisAddBack.py
-  cerateFileNamesForSpecMATSimPositionScanTotalNoResAnalysis.py
+  createFileNamesForSpecMATSimEnergyScanTotalNoResAnalysis.py
+  createFileNamesForSpecMATSimEnergyScanTotalNoResAnalysisAddBack.py
+  createFileNamesForSpecMATSimPositionScanTotalNoResAnalysis.py
   )
 
 foreach(_script ${SPECMATSIM_SCRIPTS})
