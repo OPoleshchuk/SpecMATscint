@@ -42,8 +42,10 @@ SpecMATSimEventAction::SpecMATSimEventAction(SpecMATSimRunAction* runAction)
   fCollID_cryst(0.),
   fCollID_ComptSupp(0.),
   fPrintModulo(1)
+
 {
   sciCryst = new SpecMATSimDetectorConstruction();
+
 }
 
 // ###################################################################################
@@ -104,6 +106,7 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
   analysisManager = G4AnalysisManager::Instance();
   eventNb = event->GetEventID();
   analysisManager->FillNtupleDColumn(0, eventNb);
+
   //Hits collections
   //
   HCE = event->GetHCofThisEvent();
@@ -145,6 +148,7 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
     // fill histograms
     //
     if (copyNb <= ((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1)) {
+      //G4cout << " !!!!!!!!!!!!!!!!!!!!!! " << event->GetPrimaryVertex()->GetZ0() << " rnd Z position" << endl;
       analysisManager->FillH1(copyNb, absoEdep); //each crystal EdepRes
       analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+1, absoEdep); //total EdepRes
       analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+4, edep/keV); //total EdepNoRes
@@ -175,6 +179,9 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
         analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+3, absoEdep); //total EdepRes for 40Cryst
         analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+6, edep/keV); //total EdepNoRes for 40Cryst
       }
+      analysisManager->FillNtupleDColumn(12, event->GetPrimaryVertex()->GetX0());
+      analysisManager->FillNtupleDColumn(13, event->GetPrimaryVertex()->GetY0());
+      analysisManager->FillNtupleDColumn(14, event->GetPrimaryVertex()->GetZ0());
       analysisManager->AddNtupleRow();
     }
   }
@@ -200,11 +207,11 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
       //
       if (copyNbComptSupp > (99)) {
         analysisManager->FillH1((sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments())+2+copyNbComptSupp-100, edepComptSuppRes);
-        analysisManager->FillNtupleDColumn(0, eventNb);
-        analysisManager->FillNtupleDColumn(12, eventNb);
-        analysisManager->FillNtupleDColumn(13, copyNbComptSupp);
-        analysisManager->FillNtupleDColumn(14, edepComptSuppRes);
-        analysisManager->FillNtupleDColumn(15, edepComptSupp/keV);
+        //analysisManager->FillNtupleDColumn(0, eventNb);
+        analysisManager->FillNtupleDColumn(15, eventNb);
+        analysisManager->FillNtupleDColumn(16, copyNbComptSupp);
+        analysisManager->FillNtupleDColumn(17, edepComptSuppRes);
+        analysisManager->FillNtupleDColumn(18, edepComptSupp/keV);
         analysisManager->AddNtupleRow();
 
       }

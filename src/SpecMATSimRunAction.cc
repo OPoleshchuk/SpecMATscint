@@ -83,7 +83,7 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   Columns    = G4UIcommand::ConvertToString(sciCryst->GetNbCrystInSegmentRow());
   circleR    = G4UIcommand::ConvertToString(sciCryst->ComputeCircleR1());
 
-
+  numberOfEvents = G4UIcommand::ConvertToString(run->GetNumberOfEventToBeProcessed());
 
 
 
@@ -95,13 +95,16 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
     Z = gammaSource->GetZ();
     A = gammaSource->GetA();
     excitEnergy = gammaSource->GetExcitEnergy();
-    particleEnergy = gammaSource->GetIonEnergy();
+    particleEnergy = G4UIcommand::ConvertToString(gammaSource->GetIonEnergy()*MeV);
     particleName = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy)->GetParticleName();
   } else {
     particleEnergy = "unknown";
     particleName = "unknown";
   }
   sourceTypeRA =gammaSource->GetSourceType();
+  if (sourceTypeRA=="point") {
+    sourceTypeRA+="_sourcePosition_"+sourcePosition+"mm";
+  }
   sourcePosition = G4UIcommand::ConvertToString(129+(gammaSource->GetPointSourceZposition()));
 
   chamber = sciCryst->GetVacuumChamber();
@@ -149,7 +152,7 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
 
   Gap = G4UIcommand::ConvertToString(sciCryst->GetGap());
 
-  fileName = crystMatName+"_"+crystSizeX+"mmx"+crystSizeY+"mmx"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"crystals_"+"R"+circleR+"mm_"+particleName+particleEnergy+"MeV_"+chamberName+"_wallThick"+"_"+vacuumChamberThicknessRA+"mm_"+sourceTypeRA+"_sourcePosition_"+sourcePosition+"mm"+"_"+sourceHolderRAName+sourceHolderRAMatName+sourceHousingHildeRAName+sourceHousingHildeRAMatName+fieldCageEpoxyName+fieldCageEpoxyMatName+"_gap"+Gap+"mm";
+  fileName = crystMatName+"_"+crystSizeX+"x"+crystSizeY+"x"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"_"+"R"+circleR+"mm_"+sourceTypeRA+"_"+particleName+particleEnergy+"MeV_"+chamberName+vacuumChamberThicknessRA+"mm_"+sourceHolderRAName+sourceHolderRAMatName+sourceHousingHildeRAName+sourceHousingHildeRAMatName+fieldCageEpoxyName+"gap"+Gap+"mm_"+numberOfEvents+"evnt";
   fileNameRoot = fileName +".root";
   fileNAmeSettings = fileName +".txt";
 
@@ -255,14 +258,17 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateNtupleDColumn("EdepNoResCrystNb2");
   analysisManager->CreateNtupleDColumn("EdepNoRes30Cryst");
   analysisManager->CreateNtupleDColumn("EdepNoRes40Cryst");
+  analysisManager->CreateNtupleDColumn("PrimaryVertexX");
+  analysisManager->CreateNtupleDColumn("PrimaryVertexY");
+  analysisManager->CreateNtupleDColumn("PrimaryVertexZ");
   if (ComptSuppFlagTest == "yes") {
     analysisManager->CreateNtupleDColumn("EventCS");
     analysisManager->CreateNtupleDColumn("ComptSuppNb");
     analysisManager->CreateNtupleDColumn("EdepComptSuppRes");
     analysisManager->CreateNtupleDColumn("EdepComptSuppNoRes");
   }
-  //From SteppingAction
   /*
+  //From SteppingAction
   analysisManager->CreateNtupleDColumn("EventSA");
   analysisManager->CreateNtupleDColumn("Step");
   analysisManager->CreateNtupleDColumn("CopyNb");
@@ -276,6 +282,7 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateNtupleDColumn("FinalPointZ");
   analysisManager->CreateNtupleDColumn("EdepSA");
   analysisManager->CreateNtupleDColumn("Time");
+  //From SteppingAction
   */
   analysisManager->FinishNtuple();
 }

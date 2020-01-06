@@ -70,6 +70,7 @@ private:
   void PrintEventStatistics(G4double absoEdep) const;
   SpecMATSimDetectorConstruction* sciCryst;
   SpecMATSimRunAction*  fRunAct;
+  SpecMATSimPrimaryGeneratorAction* gammaSource;
 
   G4int fCollID_cryst;
   G4int fCollID_ComptSupp;

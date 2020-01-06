@@ -17,6 +17,8 @@
 #include "SpecMATSimEventAction.hh"
 #include "SpecMATSimDetectorConstruction.hh"
 #include "SpecMATSimAnalysis.hh"
+
+#include "G4UserSteppingAction.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4UnitsTable.hh"
 #include "G4Step.hh"
@@ -48,82 +50,83 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
 
   //G4ThreeVector vertexPosition = theRunManager->GetCurrentEvent()->GetPrimaryVertex()->GetPosition();
 
-  G4int eventNb = theRunManager->GetCurrentEvent()->GetEventID();
+  eventNb = theRunManager->GetCurrentEvent()->GetEventID();
 
-  G4int stepNb = step->GetTrack()->GetCurrentStepNumber();
+  stepNb = step->GetTrack()->GetCurrentStepNumber();
 
-  G4int crystNb = step->GetTrack()->GetVolume()->GetCopyNo();
+  crystNb = step->GetTrack()->GetVolume()->GetCopyNo();
 
-  G4String materialName = step->GetTrack()->GetMaterial()->GetName();
-  G4int materialID;
+  materialName = step->GetTrack()->GetMaterial()->GetName();
+
   if (materialName == "CeBr3" || materialName == "LaBr3") { // 1 - scintillator; 0 - smth else
-  materialID = 1;
-}
-else {
-materialID = 0;
-}
+    materialID = 1;
+  }
+  else {
+    materialID = 0;
+  }
 
-G4String particleName = step->GetTrack()->GetDefinition()->GetParticleName();
-G4int particleID;
-if (particleName == "gamma") {
-particleID = 1;
-} else if (particleName == "e-") {
-particleID = 2;
-} else {
-particleID = 0;
-}
+  particleName = step->GetTrack()->GetDefinition()->GetParticleName();
+  if (particleName == "gamma") {
+    particleID = 1;
+  } else if (particleName == "e-") {
+    particleID = 2;
+  } else {
+    particleID = 0;
+  }
 
-G4ThreeVector momentumDirection = step->GetTrack()->GetMomentumDirection();
+  momentumDirection = step->GetTrack()->GetMomentumDirection();
 
-initialPoint = step->GetPreStepPoint()->GetPosition();
-G4double initialPointX = initialPoint.getX();
-G4double initialPointY = initialPoint.getY();
-G4double initialPointZ = initialPoint.getZ();
+  initialPoint = step->GetPreStepPoint()->GetPosition();
+  initialPointX = initialPoint.getX();
+  initialPointY = initialPoint.getY();
+  initialPointZ = initialPoint.getZ();
 
-G4ThreeVector finalPoint = step->GetPostStepPoint()->GetPosition();
-G4double finalPointX = finalPoint.getX();
-G4double finalPointY = finalPoint.getY();
-G4double finalPointZ = finalPoint.getZ();
+  finalPoint = step->GetPostStepPoint()->GetPosition();
+  finalPointX = finalPoint.getX();
+  finalPointY = finalPoint.getY();
+  finalPointZ = finalPoint.getZ();
 
-//G4double stepLength = step->GetStepLength();
+  stepLength = step->GetStepLength();
 
-G4double edep = step->GetTotalEnergyDeposit();
+  edep = step->GetTotalEnergyDeposit();
 
-G4double timeing = step->GetPostStepPoint()->GetGlobalTime();
-*/
+  timing = step->GetPostStepPoint()->GetGlobalTime();
 
-/* //Uncomment this to print all this information after each step
-G4cout << "\nEVENT #" << eventNb << G4endl;
-G4cout << "STEP #" << stepNb << G4endl;
-G4cout << "crystNb: " << crystNb << G4endl;
-G4cout << "material: " << materialName << ", ID:" << materialID << G4endl;
-G4cout << "particle: " << particleName << ", ID:" << particleID << G4endl;
-G4cout << "processType: " << G4VProcess::GetProcessTypeName(step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessType()) << G4endl;
-G4cout << "process: " << step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() << G4endl;
-G4cout << "momentumDirection: " << momentumDirection << G4endl;
-G4cout << "initialPoint: " << initialPoint << G4endl;
-G4cout << "finalPoint: " << finalPoint << G4endl;
-G4cout << "length: " << stepLength/mm << "mm" << G4endl;
-G4cout << "edep: " << edep/keV << "keV" << G4endl;
-G4cout << "time: "<< timeing << G4endl;
+  if (crystNb==0 && stepNb==1 && particleID==1) {
+    //Uncomment this to print all this information after each step
+    G4cout << "\nEVENT #" << eventNb << G4endl;
+    G4cout << "STEP #" << stepNb << G4endl;
+    G4cout << "crystNb: " << crystNb << G4endl;
+    G4cout << "material: " << materialName << ", ID:" << materialID << G4endl;
+    G4cout << "particle: " << particleName << ", ID:" << particleID << G4endl;
+    G4cout << "processType: " << G4VProcess::GetProcessTypeName(step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessType()) << G4endl;
+    G4cout << "process: " << step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() << G4endl;
+    G4cout << "momentumDirection: " << momentumDirection << G4endl;
+    G4cout << "initialPoint: " << initialPoint << G4endl;
+    G4cout << "finalPoint: " << finalPoint << G4endl;
+    G4cout << "length: " << stepLength/mm << "mm" << G4endl;
+    G4cout << "edep: " << edep/keV << " keV" << G4endl;
+    G4cout << "time: "<< timing << G4endl;
 
-G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    analysisManager = G4AnalysisManager::Instance();
 
-analysisManager->FillNtupleDColumn(4, eventNb);
-analysisManager->FillNtupleDColumn(5, stepNb);
-analysisManager->FillNtupleDColumn(6, crystNb);
-analysisManager->FillNtupleDColumn(7, materialID); // 1 - scintillator; 0 - smth else
-analysisManager->FillNtupleDColumn(8, particleID); // 1 - gamma; 2 - e-; 0 - smth else
-analysisManager->FillNtupleDColumn(9, initialPointX);
-analysisManager->FillNtupleDColumn(10, initialPointY);
-analysisManager->FillNtupleDColumn(11, initialPointZ);
-analysisManager->FillNtupleDColumn(12, finalPointX);
-analysisManager->FillNtupleDColumn(13, finalPointY);
-analysisManager->FillNtupleDColumn(14, finalPointZ);
-analysisManager->FillNtupleDColumn(15, edep/keV);
-analysisManager->FillNtupleDColumn(16, timeing);
-analysisManager->AddNtupleRow();
-*/
+    analysisManager->FillNtupleDColumn(0, eventNb);
+    analysisManager->FillNtupleDColumn(12, eventNb);
+    analysisManager->FillNtupleDColumn(13, stepNb);
+    analysisManager->FillNtupleDColumn(14, crystNb);
+    analysisManager->FillNtupleDColumn(15, materialID); // 1 - scintillator; 0 - smth else
+    analysisManager->FillNtupleDColumn(16, particleID); // 1 - gamma; 2 - e-; 0 - smth else
+    analysisManager->FillNtupleDColumn(17, initialPointX);
+    analysisManager->FillNtupleDColumn(18, initialPointY);
+    analysisManager->FillNtupleDColumn(19, initialPointZ);
+    analysisManager->FillNtupleDColumn(20, finalPointX);
+    analysisManager->FillNtupleDColumn(21, finalPointY);
+    analysisManager->FillNtupleDColumn(22, finalPointZ);
+    analysisManager->FillNtupleDColumn(23, edep/keV);
+    analysisManager->FillNtupleDColumn(24, timing);
+    analysisManager->AddNtupleRow();
+  }
+  */
 }
 
 // ###################################################################################

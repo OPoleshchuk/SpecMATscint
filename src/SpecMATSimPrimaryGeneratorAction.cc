@@ -36,22 +36,24 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
 {
   source = "gamma";
   //source = "ion";
-  //sourceType = "linear";
-  sourceType = "point";
+  sourceType = "linear";
+  //sourceType = "point";
   sciCryst = new SpecMATSimDetectorConstruction();
   pointSourceZposition= sciCryst->GetPointSourcePositionZ(); //PP=-129.25mm Cathode=194.25mm FCcentre=32.5mm for the 3rings configuration MiddleRingCentre=0mm
   //################### Monoenergetic gamma source ############################//
   n_particle = 1;
   fParticleGun  = new G4ParticleGun(n_particle);
 
-  gammaEnergy=10*keV;
+  gammaEnergy=661.7*keV;
 
   //################### Isotope source ################################//
-  Z = 63;
-  A = 152;
+  Z = 56;
+  A = 137;
   ionCharge = 0.*eplus;
-  excitEnergy = 0.*MeV;
+  excitEnergy = 0.*keV;
+  //excitEnergy = 700.*keV;
   ionEnergy = 0.*MeV;
+  //ionEnergy = A*10.*MeV;
 }
 
 // ###################################################################################
@@ -84,7 +86,7 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     uz = cosTheta;
     //G4int randomNum = G4UniformRand()*201 - 100;
     randomNum = 32.5 + G4UniformRand()*323.5 - 323.5/2; //32.5mm is the offest of the center of the field cage in respect to the center of the middle ring(out of the 3rings) also world center of the simulation
-    //G4cout << randomNum << G4endl;
+
     fParticleGun->SetParticleMomentumDirection(G4ThreeVector(ux,uy,uz));
     if (sourceType == "linear") {
       fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm)); //randomNum*mm
@@ -99,7 +101,7 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     ion= G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
     fParticleGun->SetParticleDefinition(ion);
     fParticleGun->SetParticleCharge(ionCharge);
-    //randomNum = 32.5 + G4UniformRand()*323.5 - 323.5/2;
+    randomNum = 32.5 + G4UniformRand()*323.5 - 323.5/2;
     //G4cout << randomNum << G4endl;
     if (sourceType == "linear") {
       fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm)); //randomNum*mm

@@ -53,18 +53,20 @@ fCheckOverlaps(true)
 
   // Define world material manually
 
-  //N  = new G4Element("Nitrogen", "N", z=7., a=14.01*g/mole);
+  N  = new G4Element("Nitrogen", "N", z=7., a=14.01*g/mole);
+  O  = new G4Element("Oxygen", "O", z=8., a=16.00*g/mole);
 
-  //density = 0.2E-5*mg/cm3;
+  density = 1.225E-5*mg/cm3;
   //density = 1.225*mg/cm3;
-  //Air = new G4Material("Air", density, ncomponents=2);
-  //Air->AddElement(N, fractionmass=70*perCent);
-  //Air->AddElement(O, fractionmass=30*perCent);
+  Air = new G4Material("Air", density, ncomponents=2);
+  Air->AddElement(N, fractionmass=70*perCent);
+  Air->AddElement(O, fractionmass=30*perCent);
   // or from the GEANT4 library
 
   nist = G4NistManager::Instance();
-  default_mat = nist->FindOrBuildMaterial("G4_AIR", false);
+  //default_mat = nist->FindOrBuildMaterial("G4_AIR", false); // build-in Air
 
+  default_mat = Air;
   solidWorld = new G4Box("World", worldSizeXY, worldSizeXY, worldSizeZ);
   logicWorld = new G4LogicalVolume(solidWorld, default_mat, "World");
   physWorld = new G4PVPlacement(0, G4ThreeVector(), logicWorld, "World", 0, false, 0, fCheckOverlaps);

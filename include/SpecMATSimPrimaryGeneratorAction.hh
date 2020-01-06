@@ -80,6 +80,9 @@ public:
   void SetPointSourceZposition(G4double val) { pointSourceZposition = val; }
   G4double GetPointSourceZposition(void) { return pointSourceZposition;}
 
+  void SetPointSourceRandomNum(G4double val) { randomNum = val; }
+  G4double GetPointSourceRandomNum(void) { return randomNum;}
+
 private:
   SpecMATSimDetectorConstruction* sciCryst;
   G4ParticleDefinition* particle;
@@ -95,7 +98,7 @@ private:
   G4double  ux, uy, uz;
   G4double vacuumChamberShiftPGA;
 
-  G4int randomNum;
+  G4double randomNum;
 };
 
 // ###################################################################################

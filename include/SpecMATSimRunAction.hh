@@ -100,6 +100,7 @@ private:
   G4String sourceHolderRAThick;
   G4String sourceHoldersourceHousingHildeRAThick;
   G4String fieldCageEpoxyThick;
+  G4String numberOfEvents;
 
   G4double Z;
   G4double A;
