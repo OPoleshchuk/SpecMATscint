@@ -34,8 +34,8 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
   sciCryst(0),
   fParticleGun(0)
 {
-  source = "gamma";
-  //source = "ion";
+  //source = "gamma";
+  source = "ion";
   sourceType = "linear";
   //sourceType = "point";
   sciCryst = new SpecMATSimDetectorConstruction();
@@ -50,10 +50,10 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
   Z = 56;
   A = 137;
   ionCharge = 0.*eplus;
-  excitEnergy = 0.*keV;
-  //excitEnergy = 700.*keV;
-  ionEnergy = 0.*MeV;
-  //ionEnergy = A*10.*MeV;
+  //excitEnergy = 0.*keV;
+  excitEnergy = 700.*keV;
+  //ionEnergy = 0.*MeV;
+  ionEnergy = A*10.*MeV;
 }
 
 // ###################################################################################
@@ -110,7 +110,7 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
       fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,pointSourceZposition*mm));
     }
     fParticleGun->SetParticleEnergy(ionEnergy);
-    fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,0.));
+    fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,-1.));
     fParticleGun->GeneratePrimaryVertex(anEvent);
   }
 }

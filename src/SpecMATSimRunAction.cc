@@ -27,6 +27,7 @@
 #include "G4ParticleGun.hh"
 #include "G4ParticleTable.hh"
 #include "G4ParticleDefinition.hh"
+#include <algorithm>
 
 // ###################################################################################
 
@@ -97,15 +98,18 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
     excitEnergy = gammaSource->GetExcitEnergy();
     particleEnergy = G4UIcommand::ConvertToString(gammaSource->GetIonEnergy()*MeV);
     particleName = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy)->GetParticleName();
+    std::replace(particleName.begin(), particleName.end(), '[', '_');
+    particleName.erase(std::remove(particleName.begin(), particleName.end(), ']'), particleName.end());
+
   } else {
     particleEnergy = "unknown";
     particleName = "unknown";
   }
+  sourcePosition = G4UIcommand::ConvertToString(129+(gammaSource->GetPointSourceZposition()));
   sourceTypeRA =gammaSource->GetSourceType();
   if (sourceTypeRA=="point") {
     sourceTypeRA+="_sourcePosition_"+sourcePosition+"mm";
   }
-  sourcePosition = G4UIcommand::ConvertToString(129+(gammaSource->GetPointSourceZposition()));
 
   chamber = sciCryst->GetVacuumChamber();
   if (chamber == "yes") {
@@ -152,7 +156,7 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
 
   Gap = G4UIcommand::ConvertToString(sciCryst->GetGap());
 
-  fileName = crystMatName+"_"+crystSizeX+"x"+crystSizeY+"x"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"_"+"R"+circleR+"mm_"+sourceTypeRA+"_"+particleName+particleEnergy+"MeV_"+chamberName+vacuumChamberThicknessRA+"mm_"+sourceHolderRAName+sourceHolderRAMatName+sourceHousingHildeRAName+sourceHousingHildeRAMatName+fieldCageEpoxyName+"gap"+Gap+"mm_"+numberOfEvents+"evnt";
+  fileName = crystMatName+"_"+crystSizeX+"x"+crystSizeY+"x"+crystSizeZ+"mm_"+NbSegments+"x"+Rows+"x"+Columns+"_"+"R"+circleR+"mm_"+sourceTypeRA+"_"+particleName+"_Ek"+particleEnergy+"MeV_"+chamberName+vacuumChamberThicknessRA+"mm_"+sourceHolderRAName+sourceHolderRAMatName+sourceHousingHildeRAName+sourceHousingHildeRAMatName+fieldCageEpoxyName+"gap"+Gap+"mm_"+numberOfEvents+"evnt";
   fileNameRoot = fileName +".root";
   fileNAmeSettings = fileName +".txt";
 
@@ -162,6 +166,8 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   myfile.open(fileNAmeSettings);
     //"CeBr3_48mmx48mmx48mm_15x1x3crystals_R131.5mm_gammaScan__point_sourcePosition_129mm_NOChamber_gap3mm.txt");
   myfile <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
+  myfile <<"$$$$"<< G4endl;
+  myfile <<"$$$$"<< " Number of simulated events: "<< numberOfEvents;
   myfile <<"$$$$"<< G4endl;
   myfile <<"$$$$"<<" Crystal material: "<<crystMatName<< G4endl;
   myfile <<"$$$$"<<" Reflector material: "<<sciCryst->GetSciReflMat()->GetName()<< G4endl;
@@ -233,9 +239,15 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateH1("Total", "Total Edep", 16000, 0., 16000);
   analysisManager->CreateH1("Total30Cryst", "Total 30Cryst Edep", 16000, 0., 16000);
   analysisManager->CreateH1("Total40Cryst", "Total 40Cryst Edep", 16000, 0., 16000);
+  analysisManager->CreateH1("Total1stRow", "Total 1stRow Edep", 16000, 0., 16000);
+  analysisManager->CreateH1("Total2ndRow", "Total 2ndRow Edep", 16000, 0., 16000);
+  analysisManager->CreateH1("Total3rdRow", "Total 3rdRow Edep", 16000, 0., 16000);
   analysisManager->CreateH1("TotalNoRes", "Total EdepNoRes", 16000, 0., 16000);
   analysisManager->CreateH1("TotalNoRes30Cryst", "Total 30Cryst EdepNoRes", 16000, 0., 16000);
   analysisManager->CreateH1("TotalNoRes40Cryst", "Total 40Cryst EdepNoRes", 16000, 0., 16000);
+  analysisManager->CreateH1("TotalNoRes1stRow", "Total 1stRow EdepNoRes", 16000, 0., 16000);
+  analysisManager->CreateH1("TotalNoRes2ndRow", "Total 2ndRow EdepNoRes", 16000, 0., 16000);
+  analysisManager->CreateH1("TotalNoRes3rdRow", "Total 3rdRow EdepNoRes", 16000, 0., 16000);
   ComptSuppFlagTest = sciCryst->GetComptSuppFlag();
   if (ComptSuppFlagTest == "yes") {
     for(segmentNb = 1; segmentNb <= (sciCryst->GetNbSegments()); segmentNb++) {
@@ -253,11 +265,17 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   analysisManager->CreateNtupleDColumn("EdepResCrystNb2");
   analysisManager->CreateNtupleDColumn("EdepRes30Cryst");
   analysisManager->CreateNtupleDColumn("EdepRes40Cryst");
+  analysisManager->CreateNtupleDColumn("EdepRes1stRow");
+  analysisManager->CreateNtupleDColumn("EdepRes2ndRow");
+  analysisManager->CreateNtupleDColumn("EdepRes3rdRow");
   analysisManager->CreateNtupleDColumn("EdepNoRes");
   analysisManager->CreateNtupleDColumn("EdepNoResCrystNb1");
   analysisManager->CreateNtupleDColumn("EdepNoResCrystNb2");
   analysisManager->CreateNtupleDColumn("EdepNoRes30Cryst");
   analysisManager->CreateNtupleDColumn("EdepNoRes40Cryst");
+  analysisManager->CreateNtupleDColumn("EdepNoRes1stRow");
+  analysisManager->CreateNtupleDColumn("EdepNoRes2ndRow");
+  analysisManager->CreateNtupleDColumn("EdepNoRes3rdRow");
   analysisManager->CreateNtupleDColumn("PrimaryVertexX");
   analysisManager->CreateNtupleDColumn("PrimaryVertexY");
   analysisManager->CreateNtupleDColumn("PrimaryVertexZ");
