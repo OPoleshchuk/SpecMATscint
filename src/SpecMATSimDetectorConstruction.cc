@@ -684,7 +684,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   i = 0;          //counter for reconstruction of crystal positions
   crysNb = 1;     //crystal counter
   for (iseg = 0; iseg < nbSegments ; iseg++) {
-    phi = iseg*dPhi+twopi/4;
+    phi = iseg*dPhi+twopi/4;                         // +twopi/4  Rotates crystalls around the Z axes by 90deg to reproduce the same position as in the real setup
     rotm  = G4RotationMatrix();                      //** rotation matrix for positioning segments
     rotm.rotateY(90*deg);                            //** rotation matrix for positioning segments
     rotm.rotateZ(phi);                               //** rotation matrix for positioning segments
