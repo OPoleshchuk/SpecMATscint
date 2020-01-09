@@ -870,7 +870,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   G4cout <<""<< G4endl;
   G4cout <<"Positions of the crystal centers in the world:"<< G4endl;
   G4cout <<""<< G4endl;
-  G4cout <<"!!!!!!!!!!! Z coordinates should be mirrored across the XY plane !!!!!!!!!!!!!"<< G4endl;
+  G4cout <<"!!!!!!!!!!! Z coordinates should be mirrored across the XY plane !!!!!!!!!!!"<< G4endl;
   G4cout <<""<< G4endl;
   for (i = 0; i < TotalCrystNb; i++) {
     //G4cout << "CrystNb" << i+1 << ": " << crystalPositionsArray[i]::getX() << " " << crystalPositionsArray[i]::getY() << " " << crystalPositionsArray[i]::getZ() << G4endl;
