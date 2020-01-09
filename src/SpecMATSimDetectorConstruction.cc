@@ -684,7 +684,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   i = 0;          //counter for reconstruction of crystal positions
   crysNb = 1;     //crystal counter
   for (iseg = 0; iseg < nbSegments ; iseg++) {
-    phi = iseg*dPhi;
+    phi = iseg*dPhi+twopi/4;
     rotm  = G4RotationMatrix();                      //** rotation matrix for positioning segments
     rotm.rotateY(90*deg);                            //** rotation matrix for positioning segments
     rotm.rotateZ(phi);                               //** rotation matrix for positioning segments
@@ -869,9 +869,13 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   G4cout <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
   G4cout <<""<< G4endl;
   G4cout <<"Positions of the crystal centers in the world:"<< G4endl;
+  G4cout <<""<< G4endl;
+  G4cout <<"!!!!!!!!!!! Z coordinates should be mirrored across the XY plane !!!!!!!!!!!!!"<< G4endl;
+  G4cout <<""<< G4endl;
   for (i = 0; i < TotalCrystNb; i++) {
+    //G4cout << "CrystNb" << i+1 << ": " << crystalPositionsArray[i]::getX() << " " << crystalPositionsArray[i]::getY() << " " << crystalPositionsArray[i]::getZ() << G4endl;
     G4cout << "CrystNb" << i+1 << ": " << crystalPositionsArray[i] << G4endl;
-  }
+}
   G4cout <<""<< G4endl;
   delete [] crystalPositionsArray; //Free memory allocated for the crystalPositionsArray array
   crystalPositionsArray = NULL;    //Clear a to prevent using invalid memory reference
