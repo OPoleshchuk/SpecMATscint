@@ -35,6 +35,7 @@ public:
   G4int Z;
   G4int A;
   G4int n_particle;
+  G4int dopplerShiftSim;
   G4double ionCharge;
   G4double excitEnergy;
   G4double ionEnergy;

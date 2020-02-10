@@ -21,6 +21,7 @@
 #include "G4ParticleGun.hh"
 #include "G4ParticleTable.hh"
 #include "G4ParticleDefinition.hh"
+#include "G4IonTable.hh"
 #include "G4Geantino.hh"
 #include "G4SystemOfUnits.hh"
 #include "Randomize.hh"
@@ -36,6 +37,7 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
 {
   //source = "gamma";
   source = "ion";
+  dopplerShiftSim = 0; //1=yes 0=no
   sourceType = "linear";
   //sourceType = "point";
   sciCryst = new SpecMATSimDetectorConstruction();
@@ -47,13 +49,22 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
   gammaEnergy=661.7*keV;
 
   //################### Isotope source ################################//
-  Z = 56;
-  A = 137;
+  Z = 55; //Cs-137
+  A = 137; //Cs-137
   ionCharge = 0.*eplus;
-  //excitEnergy = 0.*keV;
-  excitEnergy = 700.*keV;
-  //ionEnergy = 0.*MeV;
-  ionEnergy = A*10.*MeV;
+  excitEnergy = 0.*keV;
+  ionEnergy = 0.*MeV;
+  if (dopplerShiftSim) {
+    Z = 10; // non-existing Ne-15
+    A = 15; // non-existing Ne-15
+    ionCharge = 0.*eplus;
+    //excitEnergy = 0.*keV;
+    excitEnergy = 3000*keV; // for non-existing Ne-15 to define energy level and excitation energy
+
+    //ionEnergy = 0.*MeV;
+    ionEnergy = A*10.*MeV;
+  }
+
 }
 
 // ###################################################################################
@@ -98,7 +109,10 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   }
   else {
     //################### Isotope source ################################//
-    ion= G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
+    if (dopplerShiftSim) {
+      ion = G4ParticleTable::GetParticleTable()->FindIon(Z,A,excitEnergy);
+    }
+    ion = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
     fParticleGun->SetParticleDefinition(ion);
     fParticleGun->SetParticleCharge(ionCharge);
     randomNum = 32.5 + G4UniformRand()*323.5 - 323.5/2;
