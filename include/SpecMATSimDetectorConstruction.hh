@@ -64,6 +64,8 @@ private:
   G4int iseg;
   G4int icrystRow;
   G4int icrystCol;
+  G4int AlphaSourceFlag;
+  G4int Bfield;
 
   G4String ComptSuppFlag;
   G4String vacuumChamber;
@@ -108,6 +110,8 @@ private:
   G4double vacuumChamberThickness7;
   G4double vacuumChamberInnerRadius7;
   G4double vacuumChamberOuterRadius7;
+
+  G4double gasVolumeOuterRadius;
 
   G4double sourceHolderThickness;
   G4double sourceHolderInnerRadius;
@@ -197,6 +201,8 @@ private:
   //G4Element* Cr;
   //G4Element* Ti;
   //G4Element* Al;
+  G4Element* Fluorine;
+  G4Element* Argon;
 
   G4Material* default_mat;
   G4Material* CeBr3;
@@ -223,6 +229,8 @@ private:
   G4Material* Steel_316L;
   G4Material* Aluminum5083;
   G4Material* epoxy;
+  G4Material* ArCF4;
+  G4Material* gasVolumeMat;
 
   G4NistManager* nist;
 
@@ -276,6 +284,7 @@ private:
   G4VSolid* sourceHolderLeftSolid;
   G4VSolid* sourceHolderRightSolid;
   G4VSolid* sourceHousingHildeSolid;
+  G4VSolid* gasVolumeSolid;
 
   G4LogicalVolume* logicWorld;
   G4LogicalVolume* sciCrystLog;
@@ -301,6 +310,7 @@ private:
   G4LogicalVolume* sourceHolderRightLog;
   G4LogicalVolume* sourceHousingHildeLog;
   G4LogicalVolume* segmentBoxLog;
+  G4LogicalVolume* gasVolumeLog;
 
   G4VPhysicalVolume* physWorld;
 
@@ -324,6 +334,7 @@ private:
   G4VisAttributes* sourceHolderLeftVisAtt;
   G4VisAttributes* sourceHolderRightVisAtt;
   G4VisAttributes* sourceHousingHildeVisAtt;
+  G4VisAttributes* gasVolumeVisAtt;
 
   G4RotationMatrix rotSideFlnge;
   G4RotationMatrix ComptSuppRotmBoxUp;
@@ -354,6 +365,8 @@ private:
   G4PSEnergyDeposit* primitiv;
   G4MultiFunctionalDetector* ComptSupp;
   G4PSEnergyDeposit* ComptSuppPrimitiv;
+  G4MultiFunctionalDetector* AlphaTracker;
+  G4PSEnergyDeposit* AlphaTrackerPrimitiv;
 
   G4bool fCheckOverlaps;
 
@@ -445,6 +458,10 @@ public:
   G4double GetFieldCageEpoxyInnerRadius(void){return fieldCageEpoxyInnerRadius;}
   G4double GetFieldCageEpoxyOuterRadius(void){return fieldCageEpoxyOuterRadius;}
   G4String GetComptSuppFlag(){return ComptSuppFlag;}
+
+  G4int GetAlphaTrackerFlag(){return AlphaSourceFlag;}
+  G4Material* GetGasVolumeMat(){return gasVolumeMat;}
+  G4double GetGasVolumeOuterRadius(void){return gasVolumeOuterRadius;}
 
   G4ThreeVector* GetCrystalPositionsArray(void){return crystalPositionsArray;}
 

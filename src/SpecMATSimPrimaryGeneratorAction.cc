@@ -38,8 +38,8 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
   //source = "gamma";
   source = "ion";
   dopplerShiftSim = 0; //1=yes 0=no
-  sourceType = "linear";
-  //sourceType = "point";
+  //sourceType = "linear";
+  sourceType = "point";
   sciCryst = new SpecMATSimDetectorConstruction();
   pointSourceZposition= sciCryst->GetPointSourcePositionZ(); //PP=-129.25mm Cathode=194.25mm FCcentre=32.5mm for the 3rings configuration MiddleRingCentre=0mm
   //################### Monoenergetic gamma source ############################//
@@ -49,8 +49,8 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
   gammaEnergy=661.7*keV;
 
   //################### Isotope source ################################//
-  Z = 55; //Cs-137
-  A = 137; //Cs-137
+  Z = 94; //Cs-137
+  A = 239; //Cs-137
   ionCharge = 0.*eplus;
   excitEnergy = 0.*keV;
   ionEnergy = 0.*MeV;
@@ -101,31 +101,66 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     fParticleGun->SetParticleMomentumDirection(G4ThreeVector(ux,uy,uz));
     if (sourceType == "linear") {
       fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm)); //randomNum*mm
-    }
-    else {
+    } else {
       fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,pointSourceZposition*mm));
     }
     fParticleGun->GeneratePrimaryVertex(anEvent);
   }
   else {
     //################### Isotope source ################################//
-    if (dopplerShiftSim) {
-      ion = G4ParticleTable::GetParticleTable()->FindIon(Z,A,excitEnergy);
-    }
-    ion = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
-    fParticleGun->SetParticleDefinition(ion);
-    fParticleGun->SetParticleCharge(ionCharge);
-    randomNum = 32.5 + G4UniformRand()*323.5 - 323.5/2;
-    //G4cout << randomNum << G4endl;
-    if (sourceType == "linear") {
-      fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm)); //randomNum*mm
-    }
-    else {
+    if (sciCryst->GetAlphaTrackerFlag()) {
+      /*
+      int randNumb = rand()%100+1;
+      if ((33 > randNumb) && (randNumb > 0)) {
+        Z = 94; //Pu-239
+        A = 239;
+      } else if ((66 > randNumb) && (randNumb > 32)) {
+        Z = 95; //Am-241
+        A = 241;
+      } else {
+        Z = 96; //Cm-244
+        A = 244;
+      }*/
+
+      Z = 2; //Cm-244
+      A = 4;
+      ionEnergy = 5.155*MeV;
+
+      cosTheta = 2*G4UniformRand() - 1.;
+      phi = twopi*G4UniformRand();
+      sinTheta = std::sqrt(1. - cosTheta*cosTheta);
+      ux = sinTheta*std::cos(phi);
+      uy = sinTheta*std::sin(phi);
+      uz = cosTheta;
+
+      ion = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
+      fParticleGun->SetParticleDefinition(ion);
+      fParticleGun->SetParticleCharge(ionCharge);
       fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,pointSourceZposition*mm));
+      fParticleGun->SetParticleEnergy(ionEnergy);
+      //fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,0.));
+      fParticleGun->SetParticleMomentumDirection(G4ThreeVector(ux,uy,uz));
+      fParticleGun->GeneratePrimaryVertex(anEvent);
+
+    } else {
+      if (dopplerShiftSim) {
+        ion = G4ParticleTable::GetParticleTable()->FindIon(Z,A,excitEnergy);
+      }
+      ion = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
+      fParticleGun->SetParticleDefinition(ion);
+      fParticleGun->SetParticleCharge(ionCharge);
+      randomNum = 32.5 + G4UniformRand()*323.5 - 323.5/2;
+      //G4cout << randomNum << G4endl;
+      if (sourceType == "linear") {
+        fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,randomNum*mm)); //randomNum*mm
+      } else {
+        fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,pointSourceZposition*mm));
+      }
+      fParticleGun->SetParticleEnergy(ionEnergy);
+      fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,-1.));
+      fParticleGun->GeneratePrimaryVertex(anEvent);
     }
-    fParticleGun->SetParticleEnergy(ionEnergy);
-    fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,-1.));
-    fParticleGun->GeneratePrimaryVertex(anEvent);
+
   }
 }
 

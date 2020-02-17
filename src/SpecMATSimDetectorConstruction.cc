@@ -34,6 +34,9 @@
 #include "G4SystemOfUnits.hh"
 #include "G4SubtractionSolid.hh"
 #include "G4VSensitiveDetector.hh"
+#include "G4FieldManager.hh"
+#include "G4UniformMagField.hh"
+#include "G4TransportationManager.hh"
 #include <G4AffineTransform.hh>
 
 // ###################################################################################
@@ -97,7 +100,7 @@ fCheckOverlaps(true)
 
   sourceHolder = "no";           //"yes"/"no"
   sourceHousingHilde = "no";     //"yes"/"no" Hilde's radioactive source housing
-  pointSourcePositionZ=0*mm;    //defines position of the point source in the PrimaryGeneratorAction as well as position of the sourceHousingHilde
+  pointSourcePositionZ=-129.25*mm;    //defines position of the point source in the PrimaryGeneratorAction as well as position of the sourceHousingHilde
   sourceHousingHildePositionZ = pointSourcePositionZ;
 
   fieldCageEpoxy = "yes";          //"yes"/"no"
@@ -105,9 +108,23 @@ fCheckOverlaps(true)
 
   ComptSuppFlag = "no";           //"yes"/"no"
 
+  AlphaSourceFlag = 1; // 1="yes" 0="no"
+  if (AlphaSourceFlag) {
+    ComptSuppFlag = "no";
+  }
+
   dPhi = twopi/nbSegments;
   half_dPhi = 0.5*dPhi;
   tandPhi = std::tan(half_dPhi);
+
+  Bfield = 0;
+
+  if (Bfield) {
+    G4UniformMagField* magField = new G4UniformMagField(G4ThreeVector(0., 0., 2.45*tesla));
+    G4FieldManager* fieldMgr = G4TransportationManager::GetTransportationManager()->GetFieldManager();
+    fieldMgr->SetDetectorField(magField);
+    fieldMgr->CreateChordFinder(magField);
+  }
   //****************************************************************************//
   //**************** CeBr3 cubic scintillator 1.5"x1.5"x1.5" *******************//
   //****************************************************************************//
@@ -305,30 +322,30 @@ fCheckOverlaps(true)
 
   vacuumChamberMat = Aluminum5083;
 
-    Chlor = new G4Element("Chlor", "Chlor", z=17., a=35.453*g/mole);
-    Carb = new G4Element("Carb",	"Carb", z=6., a=12.011*g/mole);
-    H = new G4Element("Hidrogen",	"H", z=1., a=1.008*g/mole);
-    //N = new G4Element("Nitrogen", "N",	z=7.,	a=14.007*g/mole);
-    //density = 0.2E-5*mg/cm3;
-    density = 1.45*g/cm3;
-    PVC = new G4Material("PVC", density, ncomponents=3);
-    PVC->AddElement (Chlor, natoms=1);
-    PVC->AddElement (Carb, natoms=2);
-    PVC->AddElement (H, natoms=3);
-    /*
-    PVC = new G4Material("PVC", densitySTM, ncomponents=2);
-    //Quartz->AddElement (Chlor, natoms=1);
-    PVC->AddElement (C, natoms=2);
-    PVC->AddElement (H, natoms=3);
-    */
-    sourceHolderMat = PVC;
-    sourceHousingHildeMat = PVC;
+  Chlor = new G4Element("Chlor", "Chlor", z=17., a=35.453*g/mole);
+  Carb = new G4Element("Carb",	"Carb", z=6., a=12.011*g/mole);
+  H = new G4Element("Hidrogen",	"H", z=1., a=1.008*g/mole);
+  //N = new G4Element("Nitrogen", "N",	z=7.,	a=14.007*g/mole);
+  //density = 0.2E-5*mg/cm3;
+  density = 1.45*g/cm3;
+  PVC = new G4Material("PVC", density, ncomponents=3);
+  PVC->AddElement (Chlor, natoms=1);
+  PVC->AddElement (Carb, natoms=2);
+  PVC->AddElement (H, natoms=3);
+  /*
+  PVC = new G4Material("PVC", densitySTM, ncomponents=2);
+  //Quartz->AddElement (Chlor, natoms=1);
+  PVC->AddElement (C, natoms=2);
+  PVC->AddElement (H, natoms=3);
+  */
+  sourceHolderMat = PVC;
+  sourceHousingHildeMat = PVC;
 
-    densityEpoxy = 1.12*g/cm3;
-    epoxy = new G4Material("epoxy", densityEpoxy, ncomponents=3); //based on the datasheet of 20-3001NC/20-3002NC epoxy from Epoxies,Etc (Triggerbond® T20-3002BK) components of up to 100% is 25068-38-6 Bisphenol A diglycidyl ether with ch formulae C21H24O4 thsi epoxy is used in the SpecMAT field cage v1
-    epoxy->AddElement (O, natoms=4);
-    epoxy->AddElement (Carb, natoms=21);
-    epoxy->AddElement (H, natoms=24);
+  densityEpoxy = 1.12*g/cm3;
+  epoxy = new G4Material("epoxy", densityEpoxy, ncomponents=3); //based on the datasheet of 20-3001NC/20-3002NC epoxy from Epoxies,Etc (Triggerbond® T20-3002BK) components of up to 100% is 25068-38-6 Bisphenol A diglycidyl ether with ch formulae C21H24O4 thsi epoxy is used in the SpecMAT field cage v1
+  epoxy->AddElement (O, natoms=4);
+  epoxy->AddElement (Carb, natoms=21);
+  epoxy->AddElement (H, natoms=24);
   /*
   C = new G4Element("Carbon",	"C", z=6., a=12.011*g/mole);
   Mg = new G4Element("Manganese", "Mg", z=25.,	a=54.938044*g/mole);
@@ -504,6 +521,30 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     ComptSuppVisAtt->SetForceSolid(true);
     ComptSuppTrapLog->SetVisAttributes(ComptSuppVisAtt);
 
+  }
+
+  if (AlphaSourceFlag) {
+    gasVolumeOuterRadius = 225.20/2-fieldCageEpoxyThickness;
+
+    Fluorine  = new G4Element("Fluorine", "F", z=9., 19.00*g/mole);
+    Argon = new G4Element("Argon", "Ar", z=18., 39.948*g/mole);
+    density = 0.00069581*g/cm3; //400mbar
+    //density = 0.00017375*g/cm3;
+    ArCF4 = new G4Material("Ar_95_CF4_5", density, ncomponents=3);
+    ArCF4->AddElement (Argon, 95*perCent);
+    ArCF4->AddElement (Carb, 1*perCent);
+    ArCF4->AddElement (Fluorine, 4*perCent);
+
+    gasVolumeMat = ArCF4;
+
+    gasVolumeSolid = new G4Tubs("gasVolumeSolid",	0, gasVolumeOuterRadius,	161.75*mm, 0*deg, 360*deg);
+    gasVolumeLog = new G4LogicalVolume(gasVolumeSolid, gasVolumeMat, "gasVolumeLog");
+    new G4PVPlacement(0, G4ThreeVector(0,0,32.5), gasVolumeLog, "gasVolumePhys", logicWorld, false, 200, fCheckOverlaps);
+    gasVolumeVisAtt = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));
+    gasVolumeVisAtt->SetVisibility(true);
+    gasVolumeVisAtt->SetForceSolid(true);
+    gasVolumeVisAtt->SetForceWireframe(true);
+    gasVolumeLog->SetVisAttributes(gasVolumeVisAtt);
   }
 
   //Define the vacuum chamber flange
@@ -866,6 +907,12 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     G4cout <<"$$$$"<<" Field Cage inner radius: "<<fieldCageEpoxyInnerRadius<<"mm "<< G4endl;
   }
   G4cout <<"$$$$"<< G4endl;
+  if (AlphaSourceFlag) {
+    G4cout <<"$$$$"<<" Gas material: "<<gasVolumeMat->GetName()<< G4endl;
+    G4cout <<"$$$$"<<" Gas density: "<<gasVolumeMat->GetDensity()/(g/cm3)<<"g/cm3 "<< G4endl;
+    G4cout <<"$$$$"<<" Gas volume outer radius: "<<gasVolumeOuterRadius<<"mm "<< G4endl;
+  }
+  G4cout <<"$$$$"<< G4endl;
   G4cout <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
   G4cout <<""<< G4endl;
   G4cout <<"Positions of the crystal centers in the world:"<< G4endl;
@@ -907,6 +954,14 @@ void SpecMATSimDetectorConstruction::CreateScorers()
       ComptSupp->RegisterPrimitive(ComptSuppPrimitiv);
       SDman->AddNewDetector(ComptSupp);
       ComptSuppTrapLog->SetSensitiveDetector(ComptSupp);
+  }
+
+  if (AlphaSourceFlag) {
+      AlphaTracker = new G4MultiFunctionalDetector("AlphaTracker");
+      AlphaTrackerPrimitiv = new G4PSEnergyDeposit("edep");
+      AlphaTracker->RegisterPrimitive(AlphaTrackerPrimitiv);
+      SDman->AddNewDetector(AlphaTracker);
+      gasVolumeLog->SetSensitiveDetector(AlphaTracker);
   }
 }
 

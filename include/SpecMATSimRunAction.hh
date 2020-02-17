@@ -101,10 +101,13 @@ private:
   G4String sourceHoldersourceHousingHildeRAThick;
   G4String fieldCageEpoxyThick;
   G4String numberOfEvents;
+  G4String gasMaterialName;
 
   G4double Z;
   G4double A;
   G4double excitEnergy;
+  G4double gasMaterialDensity;
+  G4double gasVolumeRadius;
 
   G4int crystNb;
   G4int segmentNb;

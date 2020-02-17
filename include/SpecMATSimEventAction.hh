@@ -74,6 +74,7 @@ private:
 
   G4int fCollID_cryst;
   G4int fCollID_ComptSupp;
+  G4int fCollID_AlphaTracker;
   G4int fCollID_ring;
   G4int eventNb;
   G4int nbOfFired;
@@ -81,6 +82,7 @@ private:
   G4int fPrintModulo;
   G4int copyNbComptSupp;
   G4int copyNb;
+  G4int copyNbAlphaTracker;
 
   G4String ComptSuppFlagTest;
 
@@ -88,6 +90,8 @@ private:
 
   G4double edepComptSupp;
   G4double edep;
+
+  G4double edepAlphaTracker;
 
   G4SDManager* SDMan;
 

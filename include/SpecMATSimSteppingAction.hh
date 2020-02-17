@@ -43,6 +43,7 @@ class SpecMATSimSteppingAction : public G4UserSteppingAction
 private:
   //G4RunManager* theRunManager;
   G4AnalysisManager* analysisManager;
+  SpecMATSimDetectorConstruction* sciCryst;
 
   G4ThreeVector momentumDirection;
   G4ThreeVector initialPoint;
@@ -61,6 +62,7 @@ private:
   G4int eventNb;
   G4int stepNb;
   G4int crystNb;
+  G4int volID;
   G4int materialID;
   G4int particleID;
 

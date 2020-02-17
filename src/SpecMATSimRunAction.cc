@@ -89,21 +89,25 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
 
 
   source =gammaSource->GetSource();
-  if (source=="gamma") {
-    particleEnergy = G4UIcommand::ConvertToString(gammaSource->GetGammaEnergy());
-    particleName = source;
-  } else if (source=="ion") {
-    Z = gammaSource->GetZ();
-    A = gammaSource->GetA();
-    excitEnergy = gammaSource->GetExcitEnergy();
-    particleEnergy = G4UIcommand::ConvertToString(gammaSource->GetIonEnergy()*MeV);
-    particleName = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy)->GetParticleName();
-    std::replace(particleName.begin(), particleName.end(), '[', '_');
-    particleName.erase(std::remove(particleName.begin(), particleName.end(), ']'), particleName.end());
-
+  if (sciCryst->GetAlphaTrackerFlag()) {
+    particleEnergy = "0";
+    particleName = "3alpha";
   } else {
-    particleEnergy = "unknown";
-    particleName = "unknown";
+    if (source=="gamma") {
+      particleEnergy = G4UIcommand::ConvertToString(gammaSource->GetGammaEnergy());
+      particleName = source;
+    } else if (source=="ion") {
+      Z = gammaSource->GetZ();
+      A = gammaSource->GetA();
+      excitEnergy = gammaSource->GetExcitEnergy();
+      particleEnergy = G4UIcommand::ConvertToString(gammaSource->GetIonEnergy()*MeV);
+      particleName = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy)->GetParticleName();
+      std::replace(particleName.begin(), particleName.end(), '[', '_');
+      particleName.erase(std::remove(particleName.begin(), particleName.end(), ']'), particleName.end());
+    } else {
+      particleEnergy = "unknown";
+      particleName = "unknown";
+    }
   }
   sourcePosition = G4UIcommand::ConvertToString(129+(gammaSource->GetPointSourceZposition()));
   sourceTypeRA =gammaSource->GetSourceType();
@@ -153,6 +157,16 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
     fieldCageEpoxyName = "";
     fieldCageEpoxyMatName = "";
   }
+  /*
+  if (sciCryst->GetAlphaTrackerFlag()) {
+    gasMaterialName = sciCryst->GetGasVolumeMat()->GetName();
+    gasMaterialDensity = sciCryst->GetGasVolumeMat()->GetDensity()/(g/cm3);
+    gasVolumeRadius = sciCryst->GetGasVolumeOuterRadius();
+  } else {
+    gasMaterialName = "";
+    gasMaterialDensity = 0;
+    gasVolumeRadius = 0;
+  }*/
 
   Gap = G4UIcommand::ConvertToString(sciCryst->GetGap());
 
@@ -211,10 +225,18 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   myfile <<"$$$$"<< G4endl;
   if (fieldCageEpoxy == "yes") {
     myfile <<"$$$$"<<" Field Cage material: "<<sciCryst->GetFieldCageEpoxyMat()->GetName()<< G4endl;
+    myfile <<"$$$$"<<" Field Cage material: "<<sciCryst->GetFieldCageEpoxyMat()->GetDensity()<< G4endl;
     myfile <<"$$$$"<<" Field Cage thickness: "<<sciCryst->GetFieldCageEpoxyOuterRadius()-sciCryst->GetFieldCageEpoxyInnerRadius()<<"mm "<< G4endl;
     myfile <<"$$$$"<<" Field Cage outer radius: "<<sciCryst->GetFieldCageEpoxyOuterRadius()<<"mm "<< G4endl;
     myfile <<"$$$$"<<" Field Cage inner radius: "<<sciCryst->GetFieldCageEpoxyInnerRadius()<<"mm "<< G4endl;
   }
+  /*
+  myfile <<"$$$$"<< G4endl;
+  if (sciCryst->GetAlphaTrackerFlag()) {
+    myfile <<"$$$$"<<" Gas material: "<<sciCryst->GetGasVolumeMat()->GetName()<< G4endl;
+    myfile <<"$$$$"<<" Gas material: "<<sciCryst->GetGasVolumeMat()->GetDensity()/(g/cm3)<<"g/cm3 "<< G4endl;
+    myfile <<"$$$$"<<" Gas volume outer radius: "<<sciCryst->GetGasVolumeOuterRadius()<<"mm "<< G4endl;
+  }*/
   myfile <<"$$$$"<< G4endl;
   myfile <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
   myfile <<""<< G4endl;
@@ -233,76 +255,92 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
 
   // Creating histograms
   //
-  for(crystNb = 1; crystNb <= (sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments()); crystNb++) {
-    analysisManager->CreateH1(G4UIcommand::ConvertToString(crystNb),"Edep in crystal Nb" + G4UIcommand::ConvertToString(crystNb), 16000, 0., 16000);
-  }
-  analysisManager->CreateH1("Total", "Total Edep", 16000, 0., 16000);
-  analysisManager->CreateH1("Total30Cryst", "Total 30Cryst Edep", 16000, 0., 16000);
-  analysisManager->CreateH1("Total40Cryst", "Total 40Cryst Edep", 16000, 0., 16000);
-  analysisManager->CreateH1("Total1stRow", "Total 1stRow Edep", 16000, 0., 16000);
-  analysisManager->CreateH1("Total2ndRow", "Total 2ndRow Edep", 16000, 0., 16000);
-  analysisManager->CreateH1("Total3rdRow", "Total 3rdRow Edep", 16000, 0., 16000);
-  analysisManager->CreateH1("TotalNoRes", "Total EdepNoRes", 16000, 0., 16000);
-  analysisManager->CreateH1("TotalNoRes30Cryst", "Total 30Cryst EdepNoRes", 16000, 0., 16000);
-  analysisManager->CreateH1("TotalNoRes40Cryst", "Total 40Cryst EdepNoRes", 16000, 0., 16000);
-  analysisManager->CreateH1("TotalNoRes1stRow", "Total 1stRow EdepNoRes", 16000, 0., 16000);
-  analysisManager->CreateH1("TotalNoRes2ndRow", "Total 2ndRow EdepNoRes", 16000, 0., 16000);
-  analysisManager->CreateH1("TotalNoRes3rdRow", "Total 3rdRow EdepNoRes", 16000, 0., 16000);
-  ComptSuppFlagTest = sciCryst->GetComptSuppFlag();
-  if (ComptSuppFlagTest == "yes") {
-    for(segmentNb = 1; segmentNb <= (sciCryst->GetNbSegments()); segmentNb++) {
-      analysisManager->CreateH1(G4UIcommand::ConvertToString(100+segmentNb),"Edep in ComptSupp Nb" + G4UIcommand::ConvertToString(100+segmentNb), 16000, 0., 16000);
+  if (sciCryst->GetAlphaTrackerFlag()) {
+    analysisManager->CreateNtuple("Alpha", "Alpha Edep");
+    analysisManager->CreateNtupleDColumn("Event");
+    analysisManager->CreateNtupleDColumn("Step");
+    analysisManager->CreateNtupleDColumn("InitialPointX");
+    analysisManager->CreateNtupleDColumn("InitialPointY");
+    analysisManager->CreateNtupleDColumn("InitialPointZ");
+    analysisManager->CreateNtupleDColumn("FinalPointX");
+    analysisManager->CreateNtupleDColumn("FinalPointY");
+    analysisManager->CreateNtupleDColumn("FinalPointZ");
+    analysisManager->CreateNtupleDColumn("AlphaEdep");
+    analysisManager->CreateNtupleDColumn("particleID");
+    analysisManager->FinishNtuple();
+  } else {
+    for(crystNb = 1; crystNb <= (sciCryst->GetNbCrystInSegmentRow())*(sciCryst->GetNbCrystInSegmentColumn())*(sciCryst->GetNbSegments()); crystNb++) {
+      analysisManager->CreateH1(G4UIcommand::ConvertToString(crystNb),"Edep in crystal Nb" + G4UIcommand::ConvertToString(crystNb), 16000, 0., 16000);
     }
+    analysisManager->CreateH1("Total", "Total Edep", 16000, 0., 16000);
+    analysisManager->CreateH1("Total30Cryst", "Total 30Cryst Edep", 16000, 0., 16000);
+    analysisManager->CreateH1("Total40Cryst", "Total 40Cryst Edep", 16000, 0., 16000);
+    analysisManager->CreateH1("Total1stRow", "Total 1stRow Edep", 16000, 0., 16000);
+    analysisManager->CreateH1("Total2ndRow", "Total 2ndRow Edep", 16000, 0., 16000);
+    analysisManager->CreateH1("Total3rdRow", "Total 3rdRow Edep", 16000, 0., 16000);
+    analysisManager->CreateH1("TotalNoRes", "Total EdepNoRes", 16000, 0., 16000);
+    analysisManager->CreateH1("TotalNoRes30Cryst", "Total 30Cryst EdepNoRes", 16000, 0., 16000);
+    analysisManager->CreateH1("TotalNoRes40Cryst", "Total 40Cryst EdepNoRes", 16000, 0., 16000);
+    analysisManager->CreateH1("TotalNoRes1stRow", "Total 1stRow EdepNoRes", 16000, 0., 16000);
+    analysisManager->CreateH1("TotalNoRes2ndRow", "Total 2ndRow EdepNoRes", 16000, 0., 16000);
+    analysisManager->CreateH1("TotalNoRes3rdRow", "Total 3rdRow EdepNoRes", 16000, 0., 16000);
+    ComptSuppFlagTest = sciCryst->GetComptSuppFlag();
+    if (ComptSuppFlagTest == "yes") {
+      for(segmentNb = 1; segmentNb <= (sciCryst->GetNbSegments()); segmentNb++) {
+        analysisManager->CreateH1(G4UIcommand::ConvertToString(100+segmentNb),"Edep in ComptSupp Nb" + G4UIcommand::ConvertToString(100+segmentNb), 16000, 0., 16000);
+      }
+    }
+    // Creating ntuple
+    //
+    //From EventAction
+    analysisManager->CreateNtuple("Total", "Total Edep");
+    analysisManager->CreateNtupleDColumn("Event");
+    analysisManager->CreateNtupleDColumn("CrystNb");
+    analysisManager->CreateNtupleDColumn("EdepRes");
+    analysisManager->CreateNtupleDColumn("EdepResCrystNb1");
+    analysisManager->CreateNtupleDColumn("EdepResCrystNb2");
+    analysisManager->CreateNtupleDColumn("EdepRes30Cryst");
+    analysisManager->CreateNtupleDColumn("EdepRes40Cryst");
+    analysisManager->CreateNtupleDColumn("EdepRes1stRow");
+    analysisManager->CreateNtupleDColumn("EdepRes2ndRow");
+    analysisManager->CreateNtupleDColumn("EdepRes3rdRow");
+    analysisManager->CreateNtupleDColumn("EdepNoRes");
+    analysisManager->CreateNtupleDColumn("EdepNoResCrystNb1");
+    analysisManager->CreateNtupleDColumn("EdepNoResCrystNb2");
+    analysisManager->CreateNtupleDColumn("EdepNoRes30Cryst");
+    analysisManager->CreateNtupleDColumn("EdepNoRes40Cryst");
+    analysisManager->CreateNtupleDColumn("EdepNoRes1stRow");
+    analysisManager->CreateNtupleDColumn("EdepNoRes2ndRow");
+    analysisManager->CreateNtupleDColumn("EdepNoRes3rdRow");
+    analysisManager->CreateNtupleDColumn("PrimaryVertexX");
+    analysisManager->CreateNtupleDColumn("PrimaryVertexY");
+    analysisManager->CreateNtupleDColumn("PrimaryVertexZ");
+    if (ComptSuppFlagTest == "yes") {
+      analysisManager->CreateNtupleDColumn("EventCS");
+      analysisManager->CreateNtupleDColumn("ComptSuppNb");
+      analysisManager->CreateNtupleDColumn("EdepComptSuppRes");
+      analysisManager->CreateNtupleDColumn("EdepComptSuppNoRes");
+    }
+    /*
+    //From SteppingAction
+    analysisManager->CreateNtupleDColumn("EventSA");
+    analysisManager->CreateNtupleDColumn("Step");
+    analysisManager->CreateNtupleDColumn("CopyNb");
+    analysisManager->CreateNtupleDColumn("materialID"); // 1 - scintillator; 0 - smth else
+    analysisManager->CreateNtupleDColumn("particleID");
+    analysisManager->CreateNtupleDColumn("InitialPointX");
+    analysisManager->CreateNtupleDColumn("InitialPointY");
+    analysisManager->CreateNtupleDColumn("InitialPointZ");
+    analysisManager->CreateNtupleDColumn("FinalPointX");
+    analysisManager->CreateNtupleDColumn("FinalPointY");
+    analysisManager->CreateNtupleDColumn("FinalPointZ");
+    analysisManager->CreateNtupleDColumn("EdepSA");
+    analysisManager->CreateNtupleDColumn("Time");
+    //From SteppingAction
+    */
+    analysisManager->FinishNtuple();
+
   }
-  // Creating ntuple
-  //
-  //From EventAction
-  analysisManager->CreateNtuple("Total", "Total Edep");
-  analysisManager->CreateNtupleDColumn("Event");
-  analysisManager->CreateNtupleDColumn("CrystNb");
-  analysisManager->CreateNtupleDColumn("EdepRes");
-  analysisManager->CreateNtupleDColumn("EdepResCrystNb1");
-  analysisManager->CreateNtupleDColumn("EdepResCrystNb2");
-  analysisManager->CreateNtupleDColumn("EdepRes30Cryst");
-  analysisManager->CreateNtupleDColumn("EdepRes40Cryst");
-  analysisManager->CreateNtupleDColumn("EdepRes1stRow");
-  analysisManager->CreateNtupleDColumn("EdepRes2ndRow");
-  analysisManager->CreateNtupleDColumn("EdepRes3rdRow");
-  analysisManager->CreateNtupleDColumn("EdepNoRes");
-  analysisManager->CreateNtupleDColumn("EdepNoResCrystNb1");
-  analysisManager->CreateNtupleDColumn("EdepNoResCrystNb2");
-  analysisManager->CreateNtupleDColumn("EdepNoRes30Cryst");
-  analysisManager->CreateNtupleDColumn("EdepNoRes40Cryst");
-  analysisManager->CreateNtupleDColumn("EdepNoRes1stRow");
-  analysisManager->CreateNtupleDColumn("EdepNoRes2ndRow");
-  analysisManager->CreateNtupleDColumn("EdepNoRes3rdRow");
-  analysisManager->CreateNtupleDColumn("PrimaryVertexX");
-  analysisManager->CreateNtupleDColumn("PrimaryVertexY");
-  analysisManager->CreateNtupleDColumn("PrimaryVertexZ");
-  if (ComptSuppFlagTest == "yes") {
-    analysisManager->CreateNtupleDColumn("EventCS");
-    analysisManager->CreateNtupleDColumn("ComptSuppNb");
-    analysisManager->CreateNtupleDColumn("EdepComptSuppRes");
-    analysisManager->CreateNtupleDColumn("EdepComptSuppNoRes");
-  }
-  /*
-  //From SteppingAction
-  analysisManager->CreateNtupleDColumn("EventSA");
-  analysisManager->CreateNtupleDColumn("Step");
-  analysisManager->CreateNtupleDColumn("CopyNb");
-  analysisManager->CreateNtupleDColumn("materialID"); // 1 - scintillator; 0 - smth else
-  analysisManager->CreateNtupleDColumn("particleID");
-  analysisManager->CreateNtupleDColumn("InitialPointX");
-  analysisManager->CreateNtupleDColumn("InitialPointY");
-  analysisManager->CreateNtupleDColumn("InitialPointZ");
-  analysisManager->CreateNtupleDColumn("FinalPointX");
-  analysisManager->CreateNtupleDColumn("FinalPointY");
-  analysisManager->CreateNtupleDColumn("FinalPointZ");
-  analysisManager->CreateNtupleDColumn("EdepSA");
-  analysisManager->CreateNtupleDColumn("Time");
-  //From SteppingAction
-  */
-  analysisManager->FinishNtuple();
 }
 
 // ###################################################################################
