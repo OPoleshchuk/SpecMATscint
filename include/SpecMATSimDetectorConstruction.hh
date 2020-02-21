@@ -65,7 +65,7 @@ private:
   G4int icrystRow;
   G4int icrystCol;
   G4int AlphaSourceFlag;
-  G4int Bfield;
+  G4int BfieldFlag;
 
   G4String ComptSuppFlag;
   G4String vacuumChamber;

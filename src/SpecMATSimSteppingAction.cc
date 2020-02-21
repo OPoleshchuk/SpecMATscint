@@ -148,6 +148,8 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
     //G4cout << particleName << " " << crystNb << G4endl;
     if (particleName == "alpha") {
       particleID = 3;
+    } else if (particleName == "e-") {
+      particleID = 1;
     } else {
       particleID = 0;
     }
@@ -171,6 +173,7 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
     timing = step->GetPostStepPoint()->GetGlobalTime();
 
     if (materialName=="Ar_95_CF4_5") {
+
       //Uncomment this to print all this information after each step
       G4cout << "\nEVENT #" << eventNb << G4endl;
       G4cout << "STEP #" << stepNb << G4endl;

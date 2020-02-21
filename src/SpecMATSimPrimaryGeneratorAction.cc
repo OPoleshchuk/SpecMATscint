@@ -111,6 +111,7 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     if (sciCryst->GetAlphaTrackerFlag()) {
       /*
       int randNumb = rand()%100+1;
+
       if ((33 > randNumb) && (randNumb > 0)) {
         Z = 94; //Pu-239
         A = 239;
@@ -122,11 +123,38 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
         A = 244;
       }*/
 
-      Z = 2; //Cm-244
+      Z = 2; //He-4
       A = 4;
-      ionEnergy = 5.155*MeV;
 
-      cosTheta = 2*G4UniformRand() - 1.;
+      int randNumb = rand()%100+1;
+      if ((33 > randNumb) && (randNumb > 0)) {
+        int randNumbPu239 = rand()%10000+1;
+        if (randNumbPu239>0 && randNumbPu239<=1194) {
+          ionEnergy = 5.1055*MeV;
+        } else if (randNumbPu239>1194 && randNumbPu239<=(1711+1194)) {
+          ionEnergy = 5.1443*MeV;
+        } else {
+          ionEnergy = 5.1567*MeV;
+        }
+      } else if ((66 > randNumb) && (randNumb > 32)) {
+        int randNumbAm241 = rand()%10000+1;
+        if (randNumbAm241>0 && randNumbAm241<=166) {
+          ionEnergy = 5.388*MeV;
+        } else if (randNumbAm241>166 && randNumbAm241<=(166+1310)) {
+          ionEnergy = 5.4428*MeV;
+        } else {
+          ionEnergy = 5.48556*MeV;
+        }
+      } else {
+        int randNumbCm244 = rand()%10000+1;
+        if (randNumbCm244>0 && randNumbCm244<=2310) {
+          ionEnergy = 5.76264*MeV;
+        } else {
+          ionEnergy = 5.80488*MeV;
+        }
+      }
+
+      cosTheta = G4UniformRand();
       phi = twopi*G4UniformRand();
       sinTheta = std::sqrt(1. - cosTheta*cosTheta);
       ux = sinTheta*std::cos(phi);

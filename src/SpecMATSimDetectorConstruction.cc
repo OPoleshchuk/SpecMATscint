@@ -117,9 +117,9 @@ fCheckOverlaps(true)
   half_dPhi = 0.5*dPhi;
   tandPhi = std::tan(half_dPhi);
 
-  Bfield = 0;
+  BfieldFlag = 1;
 
-  if (Bfield) {
+  if (BfieldFlag) {
     G4UniformMagField* magField = new G4UniformMagField(G4ThreeVector(0., 0., 2.45*tesla));
     G4FieldManager* fieldMgr = G4TransportationManager::GetTransportationManager()->GetFieldManager();
     fieldMgr->SetDetectorField(magField);

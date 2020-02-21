@@ -256,6 +256,10 @@ void SpecMATSimRunAction::BeginOfRunAction(const G4Run* run)
   // Creating histograms
   //
   if (sciCryst->GetAlphaTrackerFlag()) {
+    analysisManager->CreateH1("AlphaTotal", "Total Edep in TPC", 16000, 0., 16000);
+    analysisManager->CreateH1("AlphaTotalRes", "Total EdepRes in TPC", 16000, 0., 16000);
+
+
     analysisManager->CreateNtuple("Alpha", "Alpha Edep");
     analysisManager->CreateNtupleDColumn("Event");
     analysisManager->CreateNtupleDColumn("Step");

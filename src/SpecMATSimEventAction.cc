@@ -109,7 +109,7 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
 {
   analysisManager = G4AnalysisManager::Instance();
   eventNb = event->GetEventID();
-  analysisManager->FillNtupleDColumn(0, eventNb);
+  //analysisManager->FillNtupleDColumn(0, eventNb);
 
   //Hits collections
   //
@@ -130,7 +130,12 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
       copyNbAlphaTracker  = (itr3->first);
       edepAlphaTracker = *(itr3->second);
 
-      G4cout << "copyNbAlphaTracker = " << copyNbAlphaTracker << " ; " << "edepAlphaTracker = " << edepAlphaTracker/keV << G4endl;
+      //G4cout << "copyNbAlphaTracker = " << copyNbAlphaTracker << " ; " << "edepAlphaTracker = " << edepAlphaTracker/keV << G4endl;
+      if (edepAlphaTracker/keV < 16000) {
+        analysisManager->FillH1(1, edepAlphaTracker/keV);
+        analysisManager->FillH1(2, G4RandGauss::shoot(edepAlphaTracker/keV,10));
+      }
+
     }
   } else {
 
