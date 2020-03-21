@@ -175,6 +175,7 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
     if (materialName=="Ar_95_CF4_5") {
 
       //Uncomment this to print all this information after each step
+      /*
       G4cout << "\nEVENT #" << eventNb << G4endl;
       G4cout << "STEP #" << stepNb << G4endl;
       G4cout << "volID: " << volID << G4endl;
@@ -188,6 +189,7 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
       G4cout << "length: " << stepLength/mm << "mm" << G4endl;
       G4cout << "edep: " << edep/keV << " keV" << G4endl;
       G4cout << "time: "<< timing << G4endl;
+      */
 
       analysisManager = G4AnalysisManager::Instance();
 

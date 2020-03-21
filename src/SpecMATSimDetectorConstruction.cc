@@ -117,10 +117,11 @@ fCheckOverlaps(true)
   half_dPhi = 0.5*dPhi;
   tandPhi = std::tan(half_dPhi);
 
-  BfieldFlag = 1;
+  BfieldFlag = 0;
 
   if (BfieldFlag) {
     G4UniformMagField* magField = new G4UniformMagField(G4ThreeVector(0., 0., 2.45*tesla));
+    //G4UniformMagField* magField = new G4UniformMagField(G4ThreeVector(0., 0., 8*tesla));
     G4FieldManager* fieldMgr = G4TransportationManager::GetTransportationManager()->GetFieldManager();
     fieldMgr->SetDetectorField(magField);
     fieldMgr->CreateChordFinder(magField);
@@ -525,7 +526,6 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 
   if (AlphaSourceFlag) {
     gasVolumeOuterRadius = 225.20/2-fieldCageEpoxyThickness;
-
     Fluorine  = new G4Element("Fluorine", "F", z=9., 19.00*g/mole);
     Argon = new G4Element("Argon", "Ar", z=18., 39.948*g/mole);
     density = 0.00069581*g/cm3; //400mbar

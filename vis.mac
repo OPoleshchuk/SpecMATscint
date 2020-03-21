@@ -85,7 +85,7 @@
 # To superimpose all of the events from a given run:
 /vis/scene/endOfEventAction accumulate
 
-/vis/viewer/set/style wireframe
+# /vis/viewer/set/style wireframe
 /vis/viewer/set/hiddenMarker true
 #/vis/viewer/set/viewpointThetaPhi -120 150
 /vis/viewer/set/viewpointThetaPhi 120 150
