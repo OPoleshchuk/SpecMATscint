@@ -169,7 +169,6 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
       //fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,0.));
       fParticleGun->SetParticleMomentumDirection(G4ThreeVector(ux,uy,uz));
       fParticleGun->GeneratePrimaryVertex(anEvent);
-
     } else {
       if (dopplerShiftSim) {
         ion = G4ParticleTable::GetParticleTable()->FindIon(Z,A,excitEnergy);
