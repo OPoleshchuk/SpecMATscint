@@ -119,7 +119,7 @@ fCheckOverlaps(true)
   half_dPhi = 0.5*dPhi;
   tandPhi = std::tan(half_dPhi);
 
-  BfieldFlag = 1;
+  BfieldFlag = 0;
 
   if (BfieldFlag) {
     BfieldZ = 2.45;
