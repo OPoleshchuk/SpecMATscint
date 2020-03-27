@@ -49,13 +49,15 @@ int main(int argc,char** argv)
 
   // Set mandatory initialization classes
   //
-  runManager->SetUserInitialization(new SpecMATSimDetectorConstruction);
+  SpecMATSimDetectorConstruction* detector = new SpecMATSimDetectorConstruction;
+  runManager->SetUserInitialization(detector);
   //
   runManager->SetUserInitialization(new SpecMATSimPhysicsList);
 
   // Set user action classes
   //
-  runManager->SetUserAction(new SpecMATSimPrimaryGeneratorAction);
+  SpecMATSimPrimaryGeneratorAction* primary = new SpecMATSimPrimaryGeneratorAction;
+  runManager->SetUserAction(primary);
   //
   SpecMATSimRunAction* runAction = new SpecMATSimRunAction();
   runManager->SetUserAction(runAction);

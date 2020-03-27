@@ -18,19 +18,19 @@
 
 #include "SpecMATSimAnalysis.hh"
 
-#include "G4UserRunAction.hh"
-#include "G4ParticleDefinition.hh"
 #include "G4Material.hh"
+#include "G4ParticleDefinition.hh"
 #include "G4RotationMatrix.hh"
 #include "G4Transform3D.hh"
+#include "G4UserRunAction.hh"
 
 #include "globals.hh"
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <string>
-using namespace std;
 
+using namespace std;
 
 class G4Run;
 class SpecMATSimDetectorConstruction;
@@ -52,7 +52,6 @@ public:
 
   //void SetFileName (G4String val){fileName=val;}
   //G4String GetFileName(){return fileName;}
-
 
 private:
   SpecMATSimDetectorConstruction* sciCryst;
@@ -83,7 +82,7 @@ private:
   G4String Gap;
   G4String fileName;
   G4String fileNameRoot;
-  G4String fileNAmeSettings;
+  G4String fileNameParamTXT;
   G4String ComptSuppFlagTest;
   G4String partName;
   G4String vacuumChamberThicknessRA;
@@ -102,6 +101,7 @@ private:
   G4String fieldCageEpoxyThick;
   G4String numberOfEvents;
   G4String gasMaterialName;
+  G4String strBfieldZ;
 
   G4double Z;
   G4double A;

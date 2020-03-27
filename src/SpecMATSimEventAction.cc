@@ -92,7 +92,7 @@ void SpecMATSimEventAction::BeginOfEventAction(const G4Event* event )
     if (ComptSuppFlagTest == "yes") {
       fCollID_ComptSupp = +SDMan->GetCollectionID("ComptSupp/edep");
     }
-    if (sciCryst->GetAlphaTrackerFlag()) {
+    if (sciCryst->GetTPCFlag()) {
       fCollID_AlphaTracker = +SDMan->GetCollectionID("AlphaTracker/edep");
     }
   }
@@ -121,7 +121,7 @@ void SpecMATSimEventAction::EndOfEventAction(const G4Event* event )
   const G4double eThreshold = 0*eV;
   nbOfFired = 0;
 
-  if (sciCryst->GetAlphaTrackerFlag()) {
+  if (sciCryst->GetTPCFlag()) {
     G4THitsMap<G4double>* eventMapAlphaTracker = (G4THitsMap<G4double>*)(HCE->GetHC(fCollID_AlphaTracker));
 
     std::map<G4int,G4double*>::iterator itr3;

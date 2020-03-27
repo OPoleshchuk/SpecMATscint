@@ -90,7 +90,7 @@ fCheckOverlaps(true)
   gap = 3*mm;                     //distance between detector rings
 
   //Optional parts of the TPC, to introduce real gamma ray attenuation
-  vacuumChamber = "yes";          //"yes"/"no"
+  vacuumChamberFlag = 1;          //1="yes"/0="no"
   vacuumChamberThickness = 3*mm;  // 3*mm is the real thickness of the tinnest wall in the vacuum chamber
   vacuumChamberShift = -29.25*mm; //to align with the scintillation detector array
   /*vacuumFlangeSizeX = 150*mm;
@@ -98,29 +98,32 @@ fCheckOverlaps(true)
   vacuumFlangeSizeZ = 3*mm;
   vacuumFlangeThickFrontOfScint = 3*mm;*/
 
-  sourceHolder = "no";           //"yes"/"no"
-  sourceHousingHilde = "no";     //"yes"/"no" Hilde's radioactive source housing
+  sourceHolderFlag = 0;           //1="yes"/0="no"
+  sourceHousingHildeFlag = 0;     //1="yes"/0="no" if Hilde's radioactive sources from 00.87 is used
   pointSourcePositionZ=-129.25*mm;    //defines position of the point source in the PrimaryGeneratorAction as well as position of the sourceHousingHilde
   sourceHousingHildePositionZ = pointSourcePositionZ;
 
-  fieldCageEpoxy = "yes";          //"yes"/"no"
+  fieldCageEpoxyFlag = 1;          //1="yes" 0="no"
   fieldCageEpoxyThickness = 16.25*mm;
 
-  ComptSuppFlag = "no";           //"yes"/"no"
+  comptSuppFlag = 0;              //1="yes" 0="no"
 
-  AlphaSourceFlag = 1; // 1="yes" 0="no"
-  if (AlphaSourceFlag) {
-    ComptSuppFlag = "no";
+  TPCFlag = 1;                    //1="yes" 0="no"
+  if (TPCFlag) {
+    comptSuppFlag = 0;
+    sourceHolderFlag = 0;
+    sourceHousingHildeFlag = 0;
   }
 
   dPhi = twopi/nbSegments;
   half_dPhi = 0.5*dPhi;
   tandPhi = std::tan(half_dPhi);
 
-  BfieldFlag = 0;
+  BfieldFlag = 1;
 
   if (BfieldFlag) {
-    G4UniformMagField* magField = new G4UniformMagField(G4ThreeVector(0., 0., 2.45*tesla));
+    BfieldZ = 2.45;
+    G4UniformMagField* magField = new G4UniformMagField(G4ThreeVector(0., 0., BfieldZ*tesla));
     //G4UniformMagField* magField = new G4UniformMagField(G4ThreeVector(0., 0., 8*tesla));
     G4FieldManager* fieldMgr = G4TransportationManager::GetTransportationManager()->GetFieldManager();
     fieldMgr->SetDetectorField(magField);
@@ -420,7 +423,7 @@ G4double SpecMATSimDetectorConstruction::ComputeCircleR1()
     circleR1 = 100;
   }
   else {
-    if (vacuumChamber == "yes") {
+    if (vacuumChamberFlag) {
       /*if (vacuumFlangeSizeY>sciHousSizeY*nbCrystInSegmentColumn) {
         circleR1 = vacuumFlangeSizeY/(tandPhi);
       }
@@ -462,7 +465,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   //--------------------------------------------------------//
   //****************** Compton Suppressor ******************//
   //--------------------------------------------------------//
-  if (ComptSuppFlag == "yes") {
+  if (comptSuppFlag) {
     Bi = new G4Element("Bismuth",	"Bi",	z=83., a=208.98*g/mole);
     Ge = new G4Element("Germanium",	"Ge",	z=32., a=72.63*g/mole);
     O = new G4Element("Oxygen",	"O", z=8., a=15.99*g/mole);
@@ -524,7 +527,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
 
   }
 
-  if (AlphaSourceFlag) {
+  if (TPCFlag) {
     gasVolumeOuterRadius = 225.20/2-fieldCageEpoxyThickness;
     Fluorine  = new G4Element("Fluorine", "F", z=9., 19.00*g/mole);
     Argon = new G4Element("Argon", "Ar", z=18., 39.948*g/mole);
@@ -548,7 +551,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   }
 
   //Define the vacuum chamber flange
-  if (vacuumChamber == "yes") {
+  if (vacuumChamberFlag) {
     /*vacuumFlangeBox = new G4Box("vacuumFlangeBox", vacuumFlangeSizeX,	vacuumFlangeSizeY, vacuumFlangeSizeZ);
     // Subtracts Reflector box from Housing box
     vacuumFlangeSolid = new G4SubtractionSolid("vacuumFlangeSolid", vacuumFlangeBox, segmentBox, 0, G4ThreeVector(0, 0, (sciHousSizeZ+sciWindSizeZ)+vacuumFlangeSizeZ-(2*vacuumFlangeSizeZ-vacuumFlangeThickFrontOfScint)));
@@ -642,7 +645,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     // Visualization attributes for the insulation tube
     vacuumChamberLog7->SetVisAttributes(vacuumChamberVisAtt);
 
-    if (sourceHolder == "yes") {
+    if (sourceHolderFlag) {
       //PlasticSource Holder
       sourceHolderInnerRadius = 12.7*mm;
       sourceHolderOuterRadius = 15*mm;
@@ -676,11 +679,9 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
       sourceHolderRightVisAtt->SetVisibility(true);
       sourceHolderRightVisAtt->SetForceSolid(true);
       sourceHolderRightLog->SetVisAttributes(sourceHolderRightVisAtt);
-
-
     }
 
-    if (sourceHousingHilde == "yes") {
+    if (sourceHousingHildeFlag) {
       //PlasticSourceHousing
       sourceHousingHildeInnerRadius = 6.7*mm;
       sourceHousingHildeOuterRadius = 12.7*mm;
@@ -692,13 +693,12 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
       sourceHousingHildeVisAtt->SetVisibility(true);
       sourceHousingHildeVisAtt->SetForceSolid(true);
       sourceHousingHildeLog->SetVisAttributes(sourceHousingHildeVisAtt);
-
     }
   }
 
   //Defines the field cage
   //
-  if (fieldCageEpoxy == "yes") {
+  if (fieldCageEpoxyFlag) {
     //Geometry of the insulation Tube
     fieldCageEpoxyInnerRadius = 225.20/2-fieldCageEpoxyThickness;
     fieldCageEpoxyOuterRadius = 225.20/2;
@@ -796,7 +796,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     }
 
     //segment and flange positioning
-    /*if (vacuumChamber == "yes") {
+    /*if (vacuumChamberFlag) {
       //Flange positioning
       positionVacuumFlange = (circleR1+vacuumFlangeSizeZ)*uz;
       transformVacuumFlange = G4Transform3D(rotm, positionVacuumFlange);
@@ -831,7 +831,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
         crystalPositionsArray[i] = TransformCrystPos.TransformPoint(crystalPositionsArray[i]);
       }
     }*/
-    //segment position in case vacuumChamber is "no"
+    //segment position in case vacuumChamberFlagis "no"
     //else {
       //Segment positioning
       positionSegment = (circleR1+(sciHousSizeZ+sciWindSizeZ))*uz;
@@ -879,51 +879,155 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   G4cout <<"$$$$"<< G4endl;
   G4cout <<"$$$$"<<" Radius of a circle inscribed in the array: "<<circleR1<<"mm "<< G4endl;
   G4cout <<"$$$$"<< G4endl;
-  if (vacuumChamber == "yes") {
+  if (vacuumChamberFlag) {
     G4cout <<"$$$$"<<" Vacuum Chamber Material: "<<vacuumChamberMat->GetName()<< G4endl;
     G4cout <<"$$$$"<<" Vacuum Chamber Wall Thickness: "<<vacuumChamberThickness<<"mm "<< G4endl;
     G4cout <<"$$$$"<<" Vacuum Chamber outer radius: "<<vacuumChamberInnerRadius<<"mm "<< G4endl;
     G4cout <<"$$$$"<<" Vacuum Chamber inner radius: "<<vacuumChamberOuterRadius<<"mm "<< G4endl;
+    G4cout <<"$$$$"<< G4endl;
   }
-  G4cout <<"$$$$"<< G4endl;
-  if (sourceHolder == "yes") {
+  if (sourceHolderFlag) {
     G4cout <<"$$$$"<<" Source Holder Material: "<<sourceHolderMat->GetName()<< G4endl;
     G4cout <<"$$$$"<<" Source Holder Wall Thickness: "<<sourceHolderOuterRadius-sourceHolderInnerRadius<<"mm "<< G4endl;
     G4cout <<"$$$$"<<" Source Holder outer radius: "<<sourceHolderInnerRadius<<"mm "<< G4endl;
     G4cout <<"$$$$"<<" Source Holder inner radius: "<<sourceHolderOuterRadius<<"mm "<< G4endl;
+    G4cout <<"$$$$"<< G4endl;
   }
-  G4cout <<"$$$$"<< G4endl;
-  if (sourceHousingHilde == "yes") {
+  if (sourceHousingHildeFlag) {
     G4cout <<"$$$$"<<" Source Housing Material: "<<sourceHousingHildeMat->GetName()<< G4endl;
     G4cout <<"$$$$"<<" Source Housing Wall Thickness: "<<sourceHousingHildeOuterRadius-sourceHousingHildeInnerRadius<<"mm "<< G4endl;
     G4cout <<"$$$$"<<" Source Housing outer radius: "<<sourceHousingHildeInnerRadius<<"mm "<< G4endl;
     G4cout <<"$$$$"<<" Source Housing inner radius: "<<sourceHousingHildeOuterRadius<<"mm "<< G4endl;
+    G4cout <<"$$$$"<< G4endl;
   }
-  G4cout <<"$$$$"<< G4endl;
-  if (fieldCageEpoxy == "yes") {
+  if (fieldCageEpoxyFlag) {
     G4cout <<"$$$$"<<" Field Cage material: "<<fieldCageEpoxyMat->GetName()<< G4endl;
     G4cout <<"$$$$"<<" Field Cage thickness: "<<fieldCageEpoxyThickness<<"mm "<< G4endl;
     G4cout <<"$$$$"<<" Field Cage outer radius: "<<fieldCageEpoxyOuterRadius<<"mm "<< G4endl;
     G4cout <<"$$$$"<<" Field Cage inner radius: "<<fieldCageEpoxyInnerRadius<<"mm "<< G4endl;
+    G4cout <<"$$$$"<< G4endl;
   }
-  G4cout <<"$$$$"<< G4endl;
-  if (AlphaSourceFlag) {
+  if (TPCFlag) {
     G4cout <<"$$$$"<<" Gas material: "<<gasVolumeMat->GetName()<< G4endl;
     G4cout <<"$$$$"<<" Gas density: "<<gasVolumeMat->GetDensity()/(g/cm3)<<"g/cm3 "<< G4endl;
     G4cout <<"$$$$"<<" Gas volume outer radius: "<<gasVolumeOuterRadius<<"mm "<< G4endl;
+    G4cout <<"$$$$"<< G4endl;
   }
-  G4cout <<"$$$$"<< G4endl;
   G4cout <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
   G4cout <<""<< G4endl;
-  G4cout <<"Positions of the crystal centers in the world:"<< G4endl;
+  G4cout <<"Position of the crystal centers in the G4 world:"<< G4endl;
   G4cout <<""<< G4endl;
-  G4cout <<"!!!!!!!!!!! Z coordinates should be mirrored across the XY plane !!!!!!!!!!!"<< G4endl;
-  G4cout <<""<< G4endl;
+  G4cout << "CrystID X Y Z" << G4endl;
   for (i = 0; i < TotalCrystNb; i++) {
-    //G4cout << "CrystNb" << i+1 << ": " << crystalPositionsArray[i]::getX() << " " << crystalPositionsArray[i]::getY() << " " << crystalPositionsArray[i]::getZ() << G4endl;
-    G4cout << "CrystNb" << i+1 << ": " << crystalPositionsArray[i] << G4endl;
-}
+    //fileParam << "CrystNb" << i+1 << ": " << crystalPositionsArray[i]::getX() << " " << crystalPositionsArray[i]::getY() << " " << crystalPositionsArray[i]::getZ() << G4endl;
+    if (crystalPositionsArray[i].getX() > -0.001 && crystalPositionsArray[i].getX() < 0.001) {
+      crystalPositionsArrayX = 0;
+    } else {
+      crystalPositionsArrayX = crystalPositionsArray[i].getX();
+    }
+    if (crystalPositionsArray[i].getY() > -0.001 && crystalPositionsArray[i].getY() < 0.001) {
+      crystalPositionsArrayY = 0;
+    } else {
+      crystalPositionsArrayY = crystalPositionsArray[i].getY();
+    }
+    if (crystalPositionsArray[i].getZ() > -0.001 && crystalPositionsArray[i].getZ() < 0.001) {
+      crystalPositionsArrayZ = 0;
+    } else {
+      crystalPositionsArrayZ = -1*crystalPositionsArray[i].getZ();
+    }
+    G4cout << "CrystNb" << i+1 << " " << crystalPositionsArrayX << " " << crystalPositionsArrayY << " " << crystalPositionsArrayZ << G4endl;
+    //G4cout << "#/vis/scene/add/text" << " " << crystalPositionsArrayX << " " << crystalPositionsArrayY << " " << crystalPositionsArrayZ << " mm 18 0 0 " << i+1 << G4endl;
+  }
   G4cout <<""<< G4endl;
+
+  crystalPositionsArrayX = 0;
+  crystalPositionsArrayY = 0;
+  crystalPositionsArrayZ = 0;
+
+  // Saveing parameters into a file
+  fileParam.open("simParam.txt");
+  fileParam <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
+  fileParam <<"$$$$"<< G4endl;
+  fileParam <<"$$$$"<<" Crystal material: "<<sciCrystMat->GetName()<< G4endl;
+  fileParam <<"$$$$"<<" Reflector material: "<<sciReflMat->GetName()<< G4endl;
+  fileParam <<"$$$$"<<" Housing material: "<<sciHousMat->GetName()<< G4endl;
+  fileParam <<"$$$$"<<" Optic window material: "<<sciWindMat->GetName()<< G4endl;
+  fileParam <<"$$$$"<< G4endl;
+  fileParam <<"$$$$"<<" Single crystal dimensions: "<<sciCrystSizeX*2<<"mmx"<<sciCrystSizeY*2<<"mmx"<<sciCrystSizeZ*2<<"mm "<< G4endl;
+  fileParam <<"$$$$"<<" Dimensions of the crystal housing: "<<sciHousSizeX*2<<"mmx"<<sciHousSizeY*2<<"mmx"<<sciHousSizeZ*2<<"mm "<< G4endl;
+  fileParam <<"$$$$"<<" Housing wall thickness: "<<sciHousWallThickX<<"mm "<< G4endl;
+  fileParam <<"$$$$"<<" Housing window thickness: "<<sciHousWindThick<<"mm "<< G4endl;
+  fileParam <<"$$$$"<<" Reflecting material wall thickness: "<<sciReflWallThickX<<"mm "<< G4endl;
+  fileParam <<"$$$$"<<" Reflecting material thickness in front of the window: "<<sciReflWindThick<<"mm "<< G4endl;
+  fileParam <<"$$$$"<< G4endl;
+  fileParam <<"$$$$"<<" Number of segments in the array: "<<nbSegments<<" "<< G4endl;
+  fileParam <<"$$$$"<<" Number of crystals in the segment row: "<<nbCrystInSegmentRow<<" "<< G4endl;
+  fileParam <<"$$$$"<<" Number of crystals in the segment column: "<<nbCrystInSegmentColumn<<" "<< G4endl;
+  fileParam <<"$$$$"<<" Number of crystals in the array: "<<nbSegments*nbCrystInSegmentRow*nbCrystInSegmentColumn<<" "<< G4endl;
+  fileParam <<"$$$$"<<" Segment width: "<<sciHousSizeY*nbCrystInSegmentColumn*2<<"mm "<< G4endl;
+  fileParam <<"$$$$"<< G4endl;
+  fileParam <<"$$$$"<<" Radius of a circle inscribed in the array: "<<circleR1<<"mm "<< G4endl;
+  fileParam <<"$$$$"<< G4endl;
+  if (vacuumChamberFlag) {
+    fileParam <<"$$$$"<<" Vacuum Chamber Material: "<<vacuumChamberMat->GetName()<< G4endl;
+    fileParam <<"$$$$"<<" Vacuum Chamber Wall Thickness: "<<vacuumChamberThickness<<"mm "<< G4endl;
+    fileParam <<"$$$$"<<" Vacuum Chamber outer radius: "<<vacuumChamberInnerRadius<<"mm "<< G4endl;
+    fileParam <<"$$$$"<<" Vacuum Chamber inner radius: "<<vacuumChamberOuterRadius<<"mm "<< G4endl;
+    fileParam <<"$$$$"<< G4endl;
+  }
+  if (sourceHolderFlag) {
+    fileParam <<"$$$$"<<" Source Holder Material: "<<sourceHolderMat->GetName()<< G4endl;
+    fileParam <<"$$$$"<<" Source Holder Wall Thickness: "<<sourceHolderOuterRadius-sourceHolderInnerRadius<<"mm "<< G4endl;
+    fileParam <<"$$$$"<<" Source Holder outer radius: "<<sourceHolderInnerRadius<<"mm "<< G4endl;
+    fileParam <<"$$$$"<<" Source Holder inner radius: "<<sourceHolderOuterRadius<<"mm "<< G4endl;
+    fileParam <<"$$$$"<< G4endl;
+  }
+  if (sourceHousingHildeFlag) {
+    fileParam <<"$$$$"<<" Source Housing Material: "<<sourceHousingHildeMat->GetName()<< G4endl;
+    fileParam <<"$$$$"<<" Source Housing Wall Thickness: "<<sourceHousingHildeOuterRadius-sourceHousingHildeInnerRadius<<"mm "<< G4endl;
+    fileParam <<"$$$$"<<" Source Housing outer radius: "<<sourceHousingHildeInnerRadius<<"mm "<< G4endl;
+    fileParam <<"$$$$"<<" Source Housing inner radius: "<<sourceHousingHildeOuterRadius<<"mm "<< G4endl;
+    fileParam <<"$$$$"<< G4endl;
+  }
+  if (fieldCageEpoxyFlag) {
+    fileParam <<"$$$$"<<" Field Cage material: "<<fieldCageEpoxyMat->GetName()<< G4endl;
+    fileParam <<"$$$$"<<" Field Cage thickness: "<<fieldCageEpoxyThickness<<"mm "<< G4endl;
+    fileParam <<"$$$$"<<" Field Cage outer radius: "<<fieldCageEpoxyOuterRadius<<"mm "<< G4endl;
+    fileParam <<"$$$$"<<" Field Cage inner radius: "<<fieldCageEpoxyInnerRadius<<"mm "<< G4endl;
+    fileParam <<"$$$$"<< G4endl;
+  }
+  if (TPCFlag) {
+    fileParam <<"$$$$"<<" Gas material: "<<gasVolumeMat->GetName()<< G4endl;
+    fileParam <<"$$$$"<<" Gas density: "<<gasVolumeMat->GetDensity()/(g/cm3)<<"g/cm3 "<< G4endl;
+    fileParam <<"$$$$"<<" Gas volume outer radius: "<<gasVolumeOuterRadius<<"mm "<< G4endl;
+    fileParam <<"$$$$"<< G4endl;
+  }
+  fileParam <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<< G4endl;
+  fileParam <<""<< G4endl;
+  fileParam <<"Position of the crystal centers in the G4 world:"<< G4endl;
+  fileParam <<""<< G4endl;
+  fileParam << "CrystID X Y Z" << G4endl;
+  for (i = 0; i < TotalCrystNb; i++) {
+    //fileParam << "CrystNb" << i+1 << ": " << crystalPositionsArray[i]::getX() << " " << crystalPositionsArray[i]::getY() << " " << crystalPositionsArray[i]::getZ() << G4endl;
+    if (crystalPositionsArray[i].getX() > -0.001 && crystalPositionsArray[i].getX() < 0.001) {
+      crystalPositionsArrayX = 0;
+    } else {
+      crystalPositionsArrayX = crystalPositionsArray[i].getX();
+    }
+    if (crystalPositionsArray[i].getY() > -0.001 && crystalPositionsArray[i].getY() < 0.001) {
+      crystalPositionsArrayY = 0;
+    } else {
+      crystalPositionsArrayY = crystalPositionsArray[i].getY();
+    }
+    if (crystalPositionsArray[i].getZ() > -0.001 && crystalPositionsArray[i].getZ() < 0.001) {
+      crystalPositionsArrayZ = 0;
+    } else {
+      crystalPositionsArrayZ = -1*crystalPositionsArray[i].getZ();
+    }
+    fileParam << "CrystNb" << i+1 << " " << crystalPositionsArrayX << " " << crystalPositionsArrayY << " " << crystalPositionsArrayZ << G4endl;
+  }
+  fileParam <<""<< G4endl;
+  fileParam.close();
   delete [] crystalPositionsArray; //Free memory allocated for the crystalPositionsArray array
   crystalPositionsArray = NULL;    //Clear a to prevent using invalid memory reference
 
@@ -948,7 +1052,7 @@ void SpecMATSimDetectorConstruction::CreateScorers()
   SDman->AddNewDetector(cryst);
   sciCrystLog->SetSensitiveDetector(cryst);
 
-  if (ComptSuppFlag == "yes") {
+  if (comptSuppFlag) {
       ComptSupp = new G4MultiFunctionalDetector("ComptSupp");
       ComptSuppPrimitiv = new G4PSEnergyDeposit("edep");
       ComptSupp->RegisterPrimitive(ComptSuppPrimitiv);
@@ -956,7 +1060,7 @@ void SpecMATSimDetectorConstruction::CreateScorers()
       ComptSuppTrapLog->SetSensitiveDetector(ComptSupp);
   }
 
-  if (AlphaSourceFlag) {
+  if (TPCFlag) {
       AlphaTracker = new G4MultiFunctionalDetector("AlphaTracker");
       AlphaTrackerPrimitiv = new G4PSEnergyDeposit("edep");
       AlphaTracker->RegisterPrimitive(AlphaTrackerPrimitiv);

@@ -37,7 +37,8 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
 {
   //source = "gamma";
   source = "ion";
-  dopplerShiftSim = 0; //1=yes 0=no
+  tripleAlphaSourceFlag = 1;
+  dopplerShiftSimFlag = 0; //1=yes 0=no
   //sourceType = "linear";
   sourceType = "point";
   sciCryst = new SpecMATSimDetectorConstruction();
@@ -54,7 +55,7 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
   ionCharge = 0.*eplus;
   excitEnergy = 0.*keV;
   ionEnergy = 0.*MeV;
-  if (dopplerShiftSim) {
+  if (dopplerShiftSimFlag) {
     Z = 10; // non-existing Ne-15
     A = 15; // non-existing Ne-15
     ionCharge = 0.*eplus;
@@ -64,7 +65,6 @@ SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
     //ionEnergy = 0.*MeV;
     ionEnergy = A*10.*MeV;
   }
-
 }
 
 // ###################################################################################
@@ -108,7 +108,7 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   }
   else {
     //################### Isotope source ################################//
-    if (sciCryst->GetAlphaTrackerFlag()) {
+    if (tripleAlphaSourceFlag) {
       /*
       int randNumb = rand()%100+1;
 
@@ -154,13 +154,18 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
         }
       }
 
+      //ionEnergy = 5.80488*MeV;
+
       cosTheta = G4UniformRand();
+      //cosTheta = 0.5;
+      theta = std::acos(cosTheta);
       phi = twopi*G4UniformRand();
+      //phi = 1.0472/2;
       sinTheta = std::sqrt(1. - cosTheta*cosTheta);
       ux = sinTheta*std::cos(phi);
       uy = sinTheta*std::sin(phi);
       uz = cosTheta;
-
+      //G4cout << "ux: " << ux << "; uy: " << uy << "; uz: " << uz << G4endl;
       ion = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
       fParticleGun->SetParticleDefinition(ion);
       fParticleGun->SetParticleCharge(ionCharge);
@@ -170,8 +175,10 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
       fParticleGun->SetParticleMomentumDirection(G4ThreeVector(ux,uy,uz));
       fParticleGun->GeneratePrimaryVertex(anEvent);
     } else {
-      if (dopplerShiftSim) {
+      fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,0.));
+      if (dopplerShiftSimFlag) {
         ion = G4ParticleTable::GetParticleTable()->FindIon(Z,A,excitEnergy);
+        fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,-1.));
       }
       ion = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
       fParticleGun->SetParticleDefinition(ion);
@@ -184,10 +191,8 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
         fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,pointSourceZposition*mm));
       }
       fParticleGun->SetParticleEnergy(ionEnergy);
-      fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,-1.));
       fParticleGun->GeneratePrimaryVertex(anEvent);
     }
-
   }
 }
 

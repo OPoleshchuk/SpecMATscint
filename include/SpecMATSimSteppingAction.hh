@@ -29,6 +29,7 @@
 #include "G4RunManager.hh"
 
 class SpecMATSimDetectorConstruction;
+class SpecMATSimPrimaryGeneratorAction;
 class SpecMATSimEventAction;
 
 /// Stepping action class.
@@ -67,6 +68,7 @@ private:
   G4int particleID;
 
   G4String materialName;
+  G4String gasMaterialName;
   G4String particleName;
 
 
@@ -75,8 +77,7 @@ public:
   virtual ~SpecMATSimSteppingAction();
 
   virtual void UserSteppingAction(const G4Step* step);
-
-
+  
 };
 
 // ###################################################################################

@@ -16,6 +16,7 @@
 #include "SpecMATSimSteppingAction.hh"
 #include "SpecMATSimEventAction.hh"
 #include "SpecMATSimDetectorConstruction.hh"
+#include "SpecMATSimPrimaryGeneratorAction.hh"
 #include "SpecMATSimAnalysis.hh"
 
 #include "G4UserSteppingAction.hh"
@@ -24,11 +25,12 @@
 #include "G4Step.hh"
 #include "G4Event.hh"
 #include "G4RunManager.hh"
+#include "G4ParticleGun.hh"
 
 // ###################################################################################
 
-SpecMATSimSteppingAction::SpecMATSimSteppingAction()
-: sciCryst(0)
+SpecMATSimSteppingAction::SpecMATSimSteppingAction():
+sciCryst(0)
 {
   sciCryst = new SpecMATSimDetectorConstruction();
 }
@@ -37,7 +39,7 @@ SpecMATSimSteppingAction::SpecMATSimSteppingAction()
 
 SpecMATSimSteppingAction::~SpecMATSimSteppingAction()
 {
-
+  delete sciCryst;
 }
 
 // ###################################################################################
@@ -127,8 +129,11 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
     analysisManager->FillNtupleDColumn(24, timing);
     analysisManager->AddNtupleRow();
   }*/
+  const SpecMATSimPrimaryGeneratorAction* source = static_cast<const SpecMATSimPrimaryGeneratorAction*>(G4RunManager::GetRunManager()->GetUserPrimaryGeneratorAction());
+  G4ThreeVector primaryDirection = source->GetParticleGun()->GetParticleMomentumDirection();
+  G4double primaryEnergy = source->GetParticleGun()->GetParticleEnergy();
 
-  if (sciCryst->GetAlphaTrackerFlag()) {
+  if (sciCryst->GetTPCFlag()) {
 
     // Collects energy and track data step by step
     G4RunManager* theRunManager = G4RunManager::GetRunManager();
@@ -203,8 +208,11 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
       analysisManager->FillNtupleDColumn(7, finalPointZ/mm);
       analysisManager->FillNtupleDColumn(8, edep/keV);
       analysisManager->FillNtupleDColumn(9, particleID);
+      analysisManager->FillNtupleDColumn(10, primaryDirection.getX());
+      analysisManager->FillNtupleDColumn(11, primaryDirection.getY());
+      analysisManager->FillNtupleDColumn(12, primaryDirection.getZ());
+      analysisManager->FillNtupleDColumn(13, primaryEnergy);
       analysisManager->AddNtupleRow();
-
     }
 
     /*

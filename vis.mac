@@ -1,7 +1,6 @@
 # Macro file for the visualization setting in the initialization phase
 # when running in interactive mode
 #
-
 /control/verbose 2
 /run/verbose 2
 #
@@ -34,6 +33,7 @@
 # Draw geometry:
 /vis/drawVolume
 #
+#/vis/geometry/set/lineWidth 3
 
 /vis/viewer/set/viewpointVector 0 0 -1
 /vis/viewer/set/lightsVector 0 0 -1
@@ -50,6 +50,52 @@
 #
 # Draw coordinate axes:
 #/vis/scene/add/axes 0 0 0 0.1 m
+#
+#/vis/scene/add/text 0 157.25 58 mm 18 0 0 1
+#/vis/scene/add/text 0 157.25 0 mm 18 0 0 2
+#/vis/scene/add/text 0 157.25 -58 mm 18 0 0 3
+#/vis/scene/add/text -63.9593 143.655 58 mm 18 0 0 4
+#/vis/scene/add/text -63.9593 143.655 0 mm 18 0 0 5
+#/vis/scene/add/text -63.9593 143.655 -58 mm 18 0 0 6
+#/vis/scene/add/text -116.86 105.221 58 mm 18 0 0 7
+#/vis/scene/add/text -116.86 105.221 0 mm 18 0 0 8
+#/vis/scene/add/text -116.86 105.221 -58 mm 18 0 0 9
+#/vis/scene/add/text -149.554 48.5929 58 mm 18 0 0 10
+#/vis/scene/add/text -149.554 48.5929 0 mm 18 0 0 11
+#/vis/scene/add/text -149.554 48.5929 -58 mm 18 0 0 12
+#/vis/scene/add/text -156.389 -16.4371 58 mm 18 0 0 13
+#/vis/scene/add/text -156.389 -16.4371 0 mm 18 0 0 14
+#/vis/scene/add/text -156.389 -16.4371 -58 mm 18 0 0 15
+#/vis/scene/add/text -136.182 -78.625 58 mm 18 0 0 16
+#/vis/scene/add/text -136.182 -78.625 0 mm 18 0 0 17
+#/vis/scene/add/text -136.182 -78.625 -58 mm 18 0 0 18
+#/vis/scene/add/text -92.4292 -127.218 58 mm 18 0 0 19
+#/vis/scene/add/text -92.4292 -127.218 0 mm 18 0 0 20
+#/vis/scene/add/text -92.4292 -127.218 -58 mm 18 0 0 21
+#/vis/scene/add/text -32.6941 -153.814 58 mm 18 0 0 22
+#/vis/scene/add/text -32.6941 -153.814 0 mm 18 0 0 23
+#/vis/scene/add/text -32.6941 -153.814 -58 mm 18 0 0 24
+#/vis/scene/add/text 32.6941 -153.814 58 mm 18 0 0 25
+#/vis/scene/add/text 32.6941 -153.814 0 mm 18 0 0 26
+#/vis/scene/add/text 32.6941 -153.814 -58 mm 18 0 0 27
+#/vis/scene/add/text 92.4292 -127.218 58 mm 18 0 0 28
+#/vis/scene/add/text 92.4292 -127.218 0 mm 18 0 0 29
+#/vis/scene/add/text 92.4292 -127.218 -58 mm 18 0 0 30
+#/vis/scene/add/text 136.182 -78.625 58 mm 18 0 0 31
+#/vis/scene/add/text 136.182 -78.625 0 mm 18 0 0 32
+#/vis/scene/add/text 136.182 -78.625 -58 mm 18 0 0 33
+#/vis/scene/add/text 156.389 -16.4371 58 mm 18 0 0 34
+#/vis/scene/add/text 156.389 -16.4371 0 mm 18 0 0 35
+#/vis/scene/add/text 156.389 -16.4371 -58 mm 18 0 0 36
+#/vis/scene/add/text 149.554 48.5929 58 mm 18 0 0 37
+#/vis/scene/add/text 149.554 48.5929 0 mm 18 0 0 38
+#/vis/scene/add/text 149.554 48.5929 -58 mm 18 0 0 39
+#/vis/scene/add/text 116.86 105.221 58 mm 18 0 0 40
+#/vis/scene/add/text 116.86 105.221 0 mm 18 0 0 41
+#/vis/scene/add/text 116.86 105.221 -58 mm 18 0 0 42
+#/vis/scene/add/text 63.9593 143.655 58 mm 18 0 0 43
+#/vis/scene/add/text 63.9593 143.655 0 mm 18 0 0 44
+#/vis/scene/add/text 63.9593 143.655 -58 mm 18 0 0 45
 #
 # Draw smooth trajectories at end of event, showing trajectory points
 # as markers 2 pixels wide:

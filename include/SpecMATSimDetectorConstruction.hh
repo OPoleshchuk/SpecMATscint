@@ -38,7 +38,10 @@
 
 #include "globals.hh"
 
+#include <fstream>
+#include <iostream>
 
+using namespace std;
 
 class G4VPhysicalVolume;
 class G4LogicalVolume;
@@ -52,7 +55,7 @@ private:
   void DefineMaterials();
   void CreateScorers();
 
-
+  ofstream fileParam;
 
   G4int nbSegments;
   G4int nbCrystInSegmentRow;
@@ -64,14 +67,13 @@ private:
   G4int iseg;
   G4int icrystRow;
   G4int icrystCol;
-  G4int AlphaSourceFlag;
+  G4int TPCFlag;
   G4int BfieldFlag;
-
-  G4String ComptSuppFlag;
-  G4String vacuumChamber;
-  G4String sourceHolder;
-  G4String sourceHousingHilde;
-  G4String fieldCageEpoxy;
+  G4int vacuumChamberFlag;
+  G4int sourceHolderFlag;
+  G4int sourceHousingHildeFlag;
+  G4int fieldCageEpoxyFlag;
+  G4int comptSuppFlag;
 
   G4double a, z, density, densitySTM, densityEpoxy, densityAluminum5083;
   G4double fractionmass, fractionmassMn, fractionmassFe, fractionmassCu, fractionmassMg, fractionmassSi, fractionmassZn, fractionmassCr, fractionmassTi, fractionmassAl;
@@ -86,33 +88,24 @@ private:
   G4double vacuumChamberThickness;
   G4double vacuumChamberInnerRadius;
   G4double vacuumChamberOuterRadius;
-
   G4double vacuumChamberThickness2;
   G4double vacuumChamberInnerRadius2;
   G4double vacuumChamberOuterRadius2;
-
   G4double vacuumChamberThickness3;
   G4double vacuumChamberInnerRadius3;
   G4double vacuumChamberOuterRadius3;
-
   G4double vacuumChamberThickness4;
   G4double vacuumChamberInnerRadius4;
   G4double vacuumChamberOuterRadius4;
-
   G4double vacuumChamberThickness5;
   G4double vacuumChamberInnerRadius5;
   G4double vacuumChamberOuterRadius5;
-
   G4double vacuumChamberThickness6;
   G4double vacuumChamberInnerRadius6;
   G4double vacuumChamberOuterRadius6;
-
   G4double vacuumChamberThickness7;
   G4double vacuumChamberInnerRadius7;
   G4double vacuumChamberOuterRadius7;
-
-  G4double gasVolumeOuterRadius;
-
   G4double sourceHolderThickness;
   G4double sourceHolderInnerRadius;
   G4double sourceHolderOuterRadius;
@@ -123,7 +116,6 @@ private:
   G4double sourceHousingHildeThickness;
   G4double sourceHousingHildeInnerRadius;
   G4double sourceHousingHildeOuterRadius;
-
   G4double fieldCageEpoxyThickness;
   G4double fieldCageEpoxyInnerRadius;
   G4double fieldCageEpoxyOuterRadius;
@@ -131,6 +123,7 @@ private:
   G4double half_dPhi;
   G4double tandPhi;
   G4double circleR1;
+  G4double BfieldZ;
   G4double sciCrystSizeX;
   G4double sciCrystSizeY;
   G4double sciCrystSizeZ;
@@ -171,6 +164,10 @@ private:
   G4double phi;
   G4double pointSourcePositionZ;
   G4double sourceHousingHildePositionZ;
+  G4double gasVolumeOuterRadius;
+  G4double crystalPositionsArrayX;
+  G4double crystalPositionsArrayY;
+  G4double crystalPositionsArrayZ;
 
   G4Element* Ce;
   G4Element* La;
@@ -234,25 +231,25 @@ private:
 
   G4NistManager* nist;
 
-  G4ThreeVector sciCrystPos;
+  G4ThreeVector* crystalPositionsArray;
   G4ThreeVector ComptSuppPos;
-  G4ThreeVector sciWindPos;
-  G4ThreeVector sciReflPos;
+  G4ThreeVector sciCrystPos;
   G4ThreeVector sciHousPos;
-  G4ThreeVector positionSideFlange1;
-  G4ThreeVector positionSideFlange2;
+  G4ThreeVector sciReflPos;
+  G4ThreeVector sciWindPos;
   G4ThreeVector positionComptSuppBoxUp;
   G4ThreeVector positionComptSuppBoxDown;
   G4ThreeVector positionComptSuppTrap;
-  G4ThreeVector uz;
-  G4ThreeVector positionInSegment;
-  G4ThreeVector* crystalPositionsArray;
   G4ThreeVector positionCryst;
-  G4ThreeVector positionWind;
-  G4ThreeVector positionRefl;
   G4ThreeVector positionHous;
-  G4ThreeVector positionVacuumFlange;
+  G4ThreeVector positionInSegment;
+  G4ThreeVector positionRefl;
   G4ThreeVector positionSegment;
+  G4ThreeVector positionSideFlange1;
+  G4ThreeVector positionSideFlange2;
+  G4ThreeVector positionVacuumFlange;
+  G4ThreeVector positionWind;
+  G4ThreeVector uz;
 
   G4VSolid* solidWorld;
   G4VSolid* sciCrystSolid;
@@ -429,20 +426,20 @@ public:
 
   G4Material* GetSciCrystMat(){return sciCrystMat;}
 
-  void SetSourceHolder (G4String val){sourceHolder = val;}
-  G4String GetSourceHolder(){return sourceHolder;}
+  void SetSourceHolderFlag (G4int val){sourceHolderFlag = val;}
+  G4int GetSourceHolderFlag(){return sourceHolderFlag;}
   G4Material* GetSourceHolderMat(){return sourceHolderMat;}
   G4double GetSourceHolderInnerRadius(void){return sourceHolderInnerRadius;}
   G4double GetSourceHolderOuterRadius(void){return sourceHolderOuterRadius;}
 
-  void SetSourceHousingHilde (G4String val){sourceHousingHilde = val;}
-  G4String GetSourceHousingHilde(){return sourceHousingHilde;}
+  void SetSourceHousingHildeFlag (G4int val){sourceHousingHildeFlag = val;}
+  G4int GetSourceHousingHildeFlag(){return sourceHousingHildeFlag;}
   G4Material* GetSourceHousingHildeMat(){return sourceHousingHildeMat;}
   G4double GetSourceHousingHildeInnerRadius(void){return sourceHousingHildeInnerRadius;}
   G4double GetSourceHousingHildeOuterRadius(void){return sourceHousingHildeOuterRadius;}
 
-  void SetVacuumChamber (G4String val){vacuumChamber = val;}
-  G4String GetVacuumChamber(){return vacuumChamber;}
+  void SetVacuumChamberFlag (G4int val){vacuumChamberFlag = val;}
+  G4int GetVacuumChamberFlag(){return vacuumChamberFlag;}
   G4Material* GetVacuumFlangeMat(){return vacuumFlangeMat;}
   G4Material* GetVacuumChamberMat(){return vacuumChamberMat;}
   void SetVacuumChamberThickness(G4double val){vacuumChamberThickness = val;}
@@ -452,14 +449,14 @@ public:
   G4double GetVacuumChamberInnerRadius(void){return vacuumChamberInnerRadius;}
   G4double GetVacuumChamberOuterRadius(void){return vacuumChamberOuterRadius;}
 
-
-  G4String GetFieldCageEpoxy(){return fieldCageEpoxy;}
+  void SetFieldCageEpoxyFlag(G4int val){fieldCageEpoxyFlag = val;}
+  G4int GetFieldCageEpoxyFlag(){return fieldCageEpoxyFlag;}
   G4Material* GetFieldCageEpoxyMat(){return fieldCageEpoxyMat;}
   G4double GetFieldCageEpoxyInnerRadius(void){return fieldCageEpoxyInnerRadius;}
   G4double GetFieldCageEpoxyOuterRadius(void){return fieldCageEpoxyOuterRadius;}
-  G4String GetComptSuppFlag(){return ComptSuppFlag;}
+  G4int GetComptSuppFlag(){return comptSuppFlag;}
 
-  G4int GetAlphaTrackerFlag(){return AlphaSourceFlag;}
+  G4int GetTPCFlag(){return TPCFlag;}
   G4Material* GetGasVolumeMat(){return gasVolumeMat;}
   G4double GetGasVolumeOuterRadius(void){return gasVolumeOuterRadius;}
 
@@ -467,6 +464,12 @@ public:
 
   void SetGap(G4double val){gap = val;}
   G4double GetGap(void){return gap;}
+
+  void SetBfieldZ(G4double val){BfieldZ = val;}
+  G4double GetBfieldZ(void){return BfieldZ;}
+
+  void SetGetBfieldFlag(G4int val){BfieldFlag = val;}
+  G4int GetBfieldFlag(void){return BfieldFlag;}
 };
 
 // ###################################################################################
