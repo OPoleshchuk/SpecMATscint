@@ -8,7 +8,8 @@
 # Use these open statements to open selected visualization
 #
 # Use this open statement to create an OpenGL view:
-/vis/open OGL 600x600-0+0
+/vis/open OGL 1920x1080-0+0
+#/vis/open OGLIQt
 #
 # Use this open statement to create an OpenInventor view:
 #/vis/open OIX
@@ -33,18 +34,21 @@
 # Draw geometry:
 /vis/drawVolume
 #
-#/vis/geometry/set/lineWidth 3
-
 /vis/viewer/set/viewpointVector 0 0 -1
 /vis/viewer/set/lightsVector 0 0 -1
 # Specify view angle:
 #/vis/viewer/set/viewpointThetaPhi 180. 0.
+#/vis/viewer/set/viewpointThetaPhi -120 150
+/vis/viewer/set/viewpointThetaPhi 120 150
+#
+/vis/viewer/set/hiddenMarker true
 #
 # Specify zoom value:
 /vis/viewer/zoom 1
 #
 # Specify style (surface, wireframe, auxiliary edges,...)
 #/vis/viewer/set/style wireframe
+#/vis/set/lineWidth 2
 #/vis/viewer/set/auxiliaryEdge true
 #/vis/viewer/set/lineSegmentsPerCircle 100
 #
@@ -130,11 +134,6 @@
 /vis/modeling/trajectories/drawByParticleID-0/set geantino red
 # To superimpose all of the events from a given run:
 /vis/scene/endOfEventAction accumulate
-
-# /vis/viewer/set/style wireframe
-/vis/viewer/set/hiddenMarker true
-#/vis/viewer/set/viewpointThetaPhi -120 150
-/vis/viewer/set/viewpointThetaPhi 120 150
 #
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true

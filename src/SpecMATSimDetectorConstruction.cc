@@ -129,6 +129,9 @@ fCheckOverlaps(true)
     fieldMgr->SetDetectorField(magField);
     fieldMgr->CreateChordFinder(magField);
   }
+
+  wireframeFlag = 0;
+  lineWidth = 5.0;
   //****************************************************************************//
   //**************** CeBr3 cubic scintillator 1.5"x1.5"x1.5" *******************//
   //****************************************************************************//
@@ -173,8 +176,13 @@ fCheckOverlaps(true)
   // Visualization attributes for the Crystal logical volume
   sciCrystVisAtt = new G4VisAttributes(G4Colour(0.0, 0.0, 1.0));
   sciCrystVisAtt->SetVisibility(true);
-  sciCrystVisAtt->SetForceSolid(true);
-  //sciCrystVisAtt->SetForceWireframe(true);
+  if (wireframeFlag) {
+    sciCrystVisAtt->SetForceWireframe(true);
+    sciCrystVisAtt->SetLineWidth(lineWidth*mm);
+  } else {
+    sciCrystVisAtt->SetForceSolid(true);
+  }
+
   sciCrystLog->SetVisAttributes(sciCrystVisAtt);
 
   //--------------------------------------------------------//
@@ -291,6 +299,9 @@ fCheckOverlaps(true)
   sciWindVisAtt = new G4VisAttributes(G4Colour(0.0, 1.0, 1.0));
   sciWindVisAtt->SetVisibility(true);
   sciWindVisAtt->SetForceWireframe(true);
+  if (wireframeFlag) {
+    sciWindVisAtt->SetLineWidth(lineWidth*mm);
+  }
   sciWindLog->SetVisAttributes(sciWindVisAtt);
 
   //--------------------------------------------------------//
@@ -522,7 +533,12 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     // Visualization attributes for the Compton Suppressor logical volume
     ComptSuppVisAtt = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));
     ComptSuppVisAtt->SetVisibility(true);
-    ComptSuppVisAtt->SetForceSolid(true);
+    if (wireframeFlag) {
+      ComptSuppVisAtt->SetForceWireframe(true);
+      ComptSuppVisAtt->SetLineWidth(lineWidth*mm);
+    } else {
+      ComptSuppVisAtt->SetForceSolid(true);
+    }
     ComptSuppTrapLog->SetVisAttributes(ComptSuppVisAtt);
 
   }
@@ -545,8 +561,10 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     new G4PVPlacement(0, G4ThreeVector(0,0,32.5), gasVolumeLog, "gasVolumePhys", logicWorld, false, 200, fCheckOverlaps);
     gasVolumeVisAtt = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));
     gasVolumeVisAtt->SetVisibility(true);
-    gasVolumeVisAtt->SetForceSolid(true);
     gasVolumeVisAtt->SetForceWireframe(true);
+    if (wireframeFlag) {
+      gasVolumeVisAtt->SetLineWidth(lineWidth*mm);
+    }
     gasVolumeLog->SetVisAttributes(gasVolumeVisAtt);
   }
 
@@ -582,7 +600,12 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     // Visualization attributes for the insulation tube
     vacuumChamberVisAtt = new G4VisAttributes(G4Colour(0.5, 0.5, 0.5));
     vacuumChamberVisAtt->SetVisibility(true);
-    vacuumChamberVisAtt->SetForceSolid(true);
+    if (wireframeFlag) {
+      vacuumChamberVisAtt->SetForceWireframe(true);
+      vacuumChamberVisAtt->SetLineWidth(lineWidth*mm);
+    } else {
+      vacuumChamberVisAtt->SetForceSolid(true);
+    }
     vacuumChamberLog->SetVisAttributes(vacuumChamberVisAtt);
 
     //Secondtube
@@ -655,7 +678,12 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
       // Visualization attributes for the insulation tube
       sourceHolderVisAtt = new G4VisAttributes(G4Colour(0.97, 0.82, 0.09));
       sourceHolderVisAtt->SetVisibility(true);
-      sourceHolderVisAtt->SetForceSolid(true);
+      if (wireframeFlag) {
+        sourceHolderVisAtt->SetForceWireframe(true);
+        sourceHolderVisAtt->SetLineWidth(lineWidth*mm);
+      } else {
+        sourceHolderVisAtt->SetForceSolid(true);
+      }
       sourceHolderLog->SetVisAttributes(sourceHolderVisAtt);
 
       sourceHolderLeftInnerRadius = 0*mm;
@@ -666,7 +694,12 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
       // Visualization attributes for the insulation tube
       sourceHolderLeftVisAtt = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));
       sourceHolderLeftVisAtt->SetVisibility(true);
-      sourceHolderLeftVisAtt->SetForceSolid(true);
+      if (wireframeFlag) {
+        sourceHolderLeftVisAtt->SetForceWireframe(true);
+        sourceHolderLeftVisAtt->SetLineWidth(lineWidth*mm);
+      } else {
+        sourceHolderLeftVisAtt->SetForceSolid(true);
+      }
       sourceHolderLeftLog->SetVisAttributes(sourceHolderLeftVisAtt);
 
       sourceHolderRightInnerRadius = 0*mm;
@@ -677,7 +710,12 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
       // Visualization attributes for the insulation tube
       sourceHolderRightVisAtt = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));
       sourceHolderRightVisAtt->SetVisibility(true);
-      sourceHolderRightVisAtt->SetForceSolid(true);
+      if (wireframeFlag) {
+        sourceHolderRightVisAtt->SetForceWireframe(true);
+        sourceHolderRightVisAtt->SetLineWidth(lineWidth*mm);
+      } else {
+        sourceHolderRightVisAtt->SetForceSolid(true);
+      }
       sourceHolderRightLog->SetVisAttributes(sourceHolderRightVisAtt);
     }
 
@@ -691,7 +729,12 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
       // Visualization attributes for the insulation tube
       sourceHousingHildeVisAtt = new G4VisAttributes(G4Colour(0.0, 1.0, 0.0));
       sourceHousingHildeVisAtt->SetVisibility(true);
-      sourceHousingHildeVisAtt->SetForceSolid(true);
+      if (wireframeFlag) {
+        sourceHousingHildeVisAtt->SetForceWireframe(true);
+        sourceHousingHildeVisAtt->SetLineWidth(lineWidth*mm);
+      } else {
+        sourceHousingHildeVisAtt->SetForceSolid(true);
+      }
       sourceHousingHildeLog->SetVisAttributes(sourceHousingHildeVisAtt);
     }
   }
@@ -709,10 +752,15 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     // Visualization attributes for the insulation tube
     fieldCageEpoxyVisAtt = new G4VisAttributes(G4Colour(0.96, 0.63, 0.15));
     fieldCageEpoxyVisAtt->SetVisibility(true);
-    fieldCageEpoxyVisAtt->SetForceSolid(true);
+    if (wireframeFlag) {
+      fieldCageEpoxyVisAtt->SetForceWireframe(true);
+      fieldCageEpoxyVisAtt->SetLineWidth(lineWidth*mm);
+    } else {
+      fieldCageEpoxyVisAtt->SetForceSolid(true);
+    }
+
     fieldCageEpoxyLog->SetVisAttributes(fieldCageEpoxyVisAtt);
   }
-
   //Positioning of segments and crystals in the segment
 
   //In TotalCrystNb array will be stored coordinates of the all crystals, which could be used for further Doppler correction

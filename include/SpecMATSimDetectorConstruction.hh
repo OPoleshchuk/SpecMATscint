@@ -74,6 +74,8 @@ private:
   G4int sourceHousingHildeFlag;
   G4int fieldCageEpoxyFlag;
   G4int comptSuppFlag;
+  G4int wireframeFlag;
+  G4double lineWidth;
 
   G4double a, z, density, densitySTM, densityEpoxy, densityAluminum5083;
   G4double fractionmass, fractionmassMn, fractionmassFe, fractionmassCu, fractionmassMg, fractionmassSi, fractionmassZn, fractionmassCr, fractionmassTi, fractionmassAl;
