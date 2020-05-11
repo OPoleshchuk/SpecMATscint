@@ -34,8 +34,9 @@
 #include <iomanip>
 #include <string>
 
-FILE *fp = fopen("angles_test.dat","w");
-
+//saving angle in the file should be removed after solving the angle issue //
+FILE *fp = fopen("alpha_particle_primary_angles.dat","w");
+//saving angle in the file should be removed after solving the angle issue //
 
 // ###################################################################################
 
@@ -170,12 +171,15 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
       //cosTheta = 0.5;
       theta = std::acos(cosTheta);
       phi = twopi*G4UniformRand();
+      //phi = 1.0472/2;
 
+      //saving angle in the file should be removed after solving the angle issue //
       fprintf(fp,"%f",theta*180./3.141592653589);
       fprintf(fp," ");
       fprintf(fp,"%f",phi*180./3.141592653589);
       fprintf(fp,"\n");
-      //phi = 1.0472/2;
+      //saving angle in the file should be removed after solving the angle issue //
+
       sinTheta = std::sqrt(1. - cosTheta*cosTheta);
       ux = sinTheta*std::cos(phi);
       uy = sinTheta*std::sin(phi);
@@ -185,7 +189,7 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
       // Circle source randomisation //
       if (sciCryst->GetCircleSourceFlag()) {
         circleSourcePhi = twopi*G4UniformRand();
-        circleSourceR = 5*G4UniformRand() - 5./2;
+        circleSourceR = 7*G4UniformRand() - 7./2;
         circleSourcePositionX = circleSourceR*std::cos(circleSourcePhi);
         circleSourcePositionY = circleSourceR*std::sin(circleSourcePhi);
       }
