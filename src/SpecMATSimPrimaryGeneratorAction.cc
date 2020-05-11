@@ -28,6 +28,15 @@
 #include <stdlib.h>
 #include <iostream>
 
+#include "stdio.h"
+
+#include <fstream>
+#include <iomanip>
+#include <string>
+
+FILE *fp = fopen("angles_test.dat","w");
+
+
 // ###################################################################################
 
 SpecMATSimPrimaryGeneratorAction::SpecMATSimPrimaryGeneratorAction()
@@ -156,20 +165,41 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 
       //ionEnergy = 5.80488*MeV;
 
+      // Particle direction //
       cosTheta = G4UniformRand();
       //cosTheta = 0.5;
       theta = std::acos(cosTheta);
       phi = twopi*G4UniformRand();
+
+      fprintf(fp,"%f",theta*180./3.141592653589);
+      fprintf(fp," ");
+      fprintf(fp,"%f",phi*180./3.141592653589);
+      fprintf(fp,"\n");
       //phi = 1.0472/2;
       sinTheta = std::sqrt(1. - cosTheta*cosTheta);
       ux = sinTheta*std::cos(phi);
       uy = sinTheta*std::sin(phi);
       uz = cosTheta;
+      // Particle direction //
+
+      // Circle source randomisation //
+      if (sciCryst->GetCircleSourceFlag()) {
+        circleSourcePhi = twopi*G4UniformRand();
+        circleSourceR = 5*G4UniformRand() - 5./2;
+        circleSourcePositionX = circleSourceR*std::cos(circleSourcePhi);
+        circleSourcePositionY = circleSourceR*std::sin(circleSourcePhi);
+      }
+      else {
+        circleSourcePositionX = 0;
+        circleSourcePositionY = 0;
+      }
+
       //G4cout << "ux: " << ux << "; uy: " << uy << "; uz: " << uz << G4endl;
       ion = G4ParticleTable::GetParticleTable()->GetIon(Z,A,excitEnergy);
       fParticleGun->SetParticleDefinition(ion);
       fParticleGun->SetParticleCharge(ionCharge);
-      fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,pointSourceZposition*mm));
+      fParticleGun->SetParticlePosition(G4ThreeVector(circleSourcePositionX*mm,circleSourcePositionY*mm,pointSourceZposition*mm));
+      //fParticleGun->SetParticlePosition(G4ThreeVector(0.*mm,0.*mm,pointSourceZposition*mm));
       fParticleGun->SetParticleEnergy(ionEnergy);
       //fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,0.));
       fParticleGun->SetParticleMomentumDirection(G4ThreeVector(ux,uy,uz));

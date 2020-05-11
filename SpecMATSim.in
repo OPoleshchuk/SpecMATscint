@@ -21,4 +21,4 @@
 #/gun/ion 28 60 0 2100
 #/gun/energy 0 MeV
 #
-/run/beamOn 3000000
+/run/beamOn 10000

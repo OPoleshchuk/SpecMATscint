@@ -48,6 +48,10 @@ public:
   G4double theta;
   G4double ux, uy, uz;
   G4double pointSourceZposition;
+  G4double circleSourcePhi;
+  G4double circleSourceR;
+  G4double circleSourcePositionX;
+  G4double circleSourcePositionY;
 
   G4String source;
   G4String sourceType;

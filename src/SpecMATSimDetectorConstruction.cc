@@ -69,7 +69,19 @@ fCheckOverlaps(true)
   nist = G4NistManager::Instance();
   //default_mat = nist->FindOrBuildMaterial("G4_AIR", false); // build-in Air
 
-  default_mat = Air;
+
+  Argon = new G4Element("Argon", "Ar", z=18., 39.948*g/mole);
+  Carb = new G4Element("Carb",	"Carb", z=6., a=12.011*g/mole);
+  Fluorine  = new G4Element("Fluorine", "F", z=9., 19.00*g/mole);
+  density = 0.00069581*g/cm3; //400mbar
+  //density = 0.00017375*g/cm3;
+  ArCF4 = new G4Material("Ar_95_CF4_5", density, ncomponents=3);
+  ArCF4->AddElement (Argon, 95*perCent);
+  ArCF4->AddElement (Carb, 1*perCent);
+  ArCF4->AddElement (Fluorine, 4*perCent);
+
+  default_mat = ArCF4;
+  //default_mat = Air;
   solidWorld = new G4Box("World", worldSizeXY, worldSizeXY, worldSizeZ);
   logicWorld = new G4LogicalVolume(solidWorld, default_mat, "World");
   physWorld = new G4PVPlacement(0, G4ThreeVector(), logicWorld, "World", 0, false, 0, fCheckOverlaps);
@@ -100,7 +112,8 @@ fCheckOverlaps(true)
 
   sourceHolderFlag = 0;           //1="yes"/0="no"
   sourceHousingHildeFlag = 0;     //1="yes"/0="no" if Hilde's radioactive sources from 00.87 is used
-  pointSourcePositionZ=-129.25*mm;    //defines position of the point source in the PrimaryGeneratorAction as well as position of the sourceHousingHilde
+  circleSourceFlag = 1;
+  pointSourcePositionZ=(-129.25-8)*mm;    //defines position of the point source in the PrimaryGeneratorAction as well as position of the sourceHousingHilde
   sourceHousingHildePositionZ = pointSourcePositionZ;
 
   fieldCageEpoxyFlag = 1;          //1="yes" 0="no"
@@ -109,6 +122,7 @@ fCheckOverlaps(true)
   comptSuppFlag = 0;              //1="yes" 0="no"
 
   TPCFlag = 1;                    //1="yes" 0="no"
+  padPlaneFlag = 1;
   if (TPCFlag) {
     comptSuppFlag = 0;
     sourceHolderFlag = 0;
@@ -338,7 +352,7 @@ fCheckOverlaps(true)
   vacuumChamberMat = Aluminum5083;
 
   Chlor = new G4Element("Chlor", "Chlor", z=17., a=35.453*g/mole);
-  Carb = new G4Element("Carb",	"Carb", z=6., a=12.011*g/mole);
+  //Carb = new G4Element("Carb",	"Carb", z=6., a=12.011*g/mole);
   H = new G4Element("Hidrogen",	"H", z=1., a=1.008*g/mole);
   //N = new G4Element("Nitrogen", "N",	z=7.,	a=14.007*g/mole);
   //density = 0.2E-5*mg/cm3;
@@ -544,15 +558,15 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   }
 
   if (TPCFlag) {
-    gasVolumeOuterRadius = 225.20/2-fieldCageEpoxyThickness;
-    Fluorine  = new G4Element("Fluorine", "F", z=9., 19.00*g/mole);
+    gasVolumeOuterRadius = 252.50/2-fieldCageEpoxyThickness;
+    /*Fluorine  = new G4Element("Fluorine", "F", z=9., 19.00*g/mole);
     Argon = new G4Element("Argon", "Ar", z=18., 39.948*g/mole);
     density = 0.00069581*g/cm3; //400mbar
     //density = 0.00017375*g/cm3;
     ArCF4 = new G4Material("Ar_95_CF4_5", density, ncomponents=3);
     ArCF4->AddElement (Argon, 95*perCent);
     ArCF4->AddElement (Carb, 1*perCent);
-    ArCF4->AddElement (Fluorine, 4*perCent);
+    ArCF4->AddElement (Fluorine, 4*perCent);*/
 
     gasVolumeMat = ArCF4;
 
@@ -566,6 +580,26 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
       gasVolumeVisAtt->SetLineWidth(lineWidth*mm);
     }
     gasVolumeLog->SetVisAttributes(gasVolumeVisAtt);
+
+    if (padPlaneFlag) {
+      padPlaneInnerRadius = 4*mm;
+      padPlaneOuterRadius = (270/2)*mm;
+      padPlaneSolid = new G4Tubs("vacuumChamberSolid2",	padPlaneInnerRadius, padPlaneOuterRadius,	5*mm, 0*deg, 360*deg);
+      padPlaneLog = new G4LogicalVolume(padPlaneSolid, vacuumChamberMat, "padPlaneLog");
+      new G4PVPlacement(0, G4ThreeVector(0,0,(-129.25-5)*mm), padPlaneLog, "padPlanePhys", logicWorld, false, 1, fCheckOverlaps);
+
+      // Visualization attributes for the insulation tube
+      padPlaneVisAtt = new G4VisAttributes(G4Colour(0.722, 0.451, 0.2));
+      padPlaneVisAtt->SetVisibility(true);
+      if (wireframeFlag) {
+        padPlaneVisAtt->SetForceWireframe(true);
+        padPlaneVisAtt->SetLineWidth(lineWidth*mm);
+      } else {
+        padPlaneVisAtt->SetForceSolid(true);
+      }
+      // Visualization attributes for the insulation tube
+      padPlaneLog->SetVisAttributes(padPlaneVisAtt);
+    }
   }
 
   //Define the vacuum chamber flange
@@ -743,8 +777,8 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
   //
   if (fieldCageEpoxyFlag) {
     //Geometry of the insulation Tube
-    fieldCageEpoxyInnerRadius = 225.20/2-fieldCageEpoxyThickness;
-    fieldCageEpoxyOuterRadius = 225.20/2;
+    fieldCageEpoxyInnerRadius = 252.50/2-fieldCageEpoxyThickness;
+    fieldCageEpoxyOuterRadius = 252.50/2;
     fieldCageEpoxySolid = new G4Tubs("fieldCageEpoxySolid",	fieldCageEpoxyInnerRadius, fieldCageEpoxyOuterRadius,	161.75*mm, 0*deg, 360*deg);
     fieldCageEpoxyLog = new G4LogicalVolume(fieldCageEpoxySolid, fieldCageEpoxyMat, "fieldCageEpoxyLog");
     new G4PVPlacement(0, G4ThreeVector(0,0,32.5), fieldCageEpoxyLog, "fieldCageEpoxyPhys", logicWorld, false, 1, fCheckOverlaps);
