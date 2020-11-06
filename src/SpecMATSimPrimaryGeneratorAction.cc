@@ -136,8 +136,8 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
       Z = 2; //He-4
       A = 4;
 
-      int randNumb = rand()%100+1;
-      if ((33 > randNumb) && (randNumb > 0)) {
+      float randNumb = (rand()%1000+1)/10.;
+      if (33.3 >= randNumb) {
         int randNumbPu239 = rand()%10000+1;
         if (randNumbPu239>0 && randNumbPu239<=1194) {
           ionEnergy = 5.1055*MeV;
@@ -146,7 +146,7 @@ void SpecMATSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
         } else {
           ionEnergy = 5.1567*MeV;
         }
-      } else if ((66 > randNumb) && (randNumb > 32)) {
+      } else if ((66.6 >= randNumb) && (randNumb > 33.3)) {
         int randNumbAm241 = rand()%10000+1;
         if (randNumbAm241>0 && randNumbAm241<=166) {
           ionEnergy = 5.388*MeV;
