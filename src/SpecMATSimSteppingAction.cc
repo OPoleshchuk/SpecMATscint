@@ -177,7 +177,7 @@ void SpecMATSimSteppingAction::UserSteppingAction(const G4Step* step)
 
     timing = step->GetPostStepPoint()->GetGlobalTime();
 
-    if (materialName=="Ar_95_CF4_5") {
+    if (materialName=="Ar_95_CF4_5_TPC") {
 
       //Uncomment this to print all this information after each step
       /*

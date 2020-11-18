@@ -75,6 +75,11 @@ fCheckOverlaps(true)
   Fluorine  = new G4Element("Fluorine", "F", z=9., 19.00*g/mole);
   density = 0.00069581*g/cm3; //400mbar
   //density = 0.00017375*g/cm3;
+  ArCF4_TPC = new G4Material("Ar_95_CF4_5_TPC", density, ncomponents=3);
+  ArCF4_TPC->AddElement (Argon, 95*perCent);
+  ArCF4_TPC->AddElement (Carb, 1*perCent);
+  ArCF4_TPC->AddElement (Fluorine, 4*perCent);
+
   ArCF4 = new G4Material("Ar_95_CF4_5", density, ncomponents=3);
   ArCF4->AddElement (Argon, 95*perCent);
   ArCF4->AddElement (Carb, 1*perCent);
@@ -568,7 +573,7 @@ G4VPhysicalVolume* SpecMATSimDetectorConstruction::Construct()
     ArCF4->AddElement (Carb, 1*perCent);
     ArCF4->AddElement (Fluorine, 4*perCent);*/
 
-    gasVolumeMat = ArCF4;
+    gasVolumeMat = ArCF4_TPC;
 
     gasVolumeSolid = new G4Tubs("gasVolumeSolid",	0, gasVolumeOuterRadius,	161.75*mm, 0*deg, 360*deg);
     gasVolumeLog = new G4LogicalVolume(gasVolumeSolid, gasVolumeMat, "gasVolumeLog");

@@ -234,6 +234,7 @@ private:
   G4Material* Aluminum5083;
   G4Material* epoxy;
   G4Material* ArCF4;
+  G4Material* ArCF4_TPC;
   G4Material* gasVolumeMat;
 
   G4NistManager* nist;
